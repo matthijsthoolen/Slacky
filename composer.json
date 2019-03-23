@@ -1,0 +1,21 @@
+{
+    "name": "matthijsthoolen/slacky",
+    "description": "A slack connector written in PHP",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Matthijs Thoolen",
+            "email": "matthijsthoolen@hotmail.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "symfony/dotenv": "^4.2",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "MatthijsThoolen\\Slacky\\": "src/"
+        }
+    }
+}
