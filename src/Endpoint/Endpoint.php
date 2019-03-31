@@ -2,7 +2,8 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint;
 
-use MatthijsThoolen\Slacky\Slacky;
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Endpoints are splitted and structured into seperate folders based on this list: https://api.slack.com/methods
@@ -42,31 +43,28 @@ abstract class Endpoint
     /**
      * @returns array
      */
-    public function getParameters() : array
+    public function getParameters()
     {
         if ($this->method === 'GET') {
             return array(
                 'query' => $this->parameters
             );
+        } else if ($this->method === 'POST') {
+            return [
+                'headers' => [
+                    'content-type' => 'application/json; charset=utf-8',
+                ],
+                'body' => json_encode($this->parameters)
+            ];
         }
     }
 
     /**
-     * @return array
+     * @param Response $response
+     * @return mixed|ResponseInterface
      */
-    public function getHeaders() : array
+    public function handleResponse(Response $response)
     {
-        return $this->headers;
-    }
-
-    /**
-     * @param Slacky $slacky
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function request(Slacky $slacky)
-    {
-        $response = $slacky->sendRequest($this);
         return json_decode($response->getBody()->getContents(), true);
     }
 

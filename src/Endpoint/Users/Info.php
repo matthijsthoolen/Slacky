@@ -2,6 +2,7 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Users;
 
+use GuzzleHttp\Psr7\Response;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\User;
 use MatthijsThoolen\Slacky\Slacky;
@@ -9,7 +10,8 @@ use MatthijsThoolen\Slacky\Slacky;
 /**
  * Class Info
  *
- * Endpoint for the User.info slack API. More info: https://api.slack.com/methods/users.info
+ * Endpoint for the User.info slack API.
+ * @documentation https://api.slack.com/methods/users.info
  */
 class Info extends Endpoint
 {
@@ -19,30 +21,37 @@ class Info extends Endpoint
     /** @var string */
     protected $uri = 'users.info';
 
-    /** @var string */
-    private $userId;
+    /** @var User */
+    private $user;
 
     /**
      * Info constructor.
-     * @param string $userId
+     * @param User $user
      */
-    public function __construct($userId)
+    public function __construct(User $user)
     {
-        $this->userId = $userId;
+        $this->user = $user;
     }
 
     /**
-     * @param Slacky $slacky
-     * @return User
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @inheritDoc
      */
-    public function request(Slacky $slacky) : User
+    public function getParameters()
     {
-        $this->parameters = array('user' => $this->userId);
+        $this->parameters = array('user' => $this->user->getId());
 
-        $body = parent::request($slacky);
-
-        return new User($body);
+        return parent::getParameters();
     }
 
+    /**
+     * @param Response $response
+     * @return User
+     */
+    public function handleResponse(Response $response)
+    {
+        $body = parent::handleResponse($response);
+
+        // TODO: Update the given user instead of creating a new one
+        return new User($body);
+    }
 }

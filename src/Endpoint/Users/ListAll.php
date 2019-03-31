@@ -2,9 +2,9 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Users;
 
+use GuzzleHttp\Psr7\Response;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\User;
-use MatthijsThoolen\Slacky\Slacky;
 
 /**
  * Class ListAll
@@ -20,14 +20,13 @@ class ListAll extends Endpoint
     public $uri = 'users.list';
 
     /**
-     * @param Slacky $slacky
+     * @param Response $response
      * @return User[]
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function request(Slacky $slacky) : array
+    public function request(Response $response)
     {
-        // Switch to cursor based pagination
-        $body = parent::request($slacky);
+        //TODO: Switch to cursor based pagination
+        $body = parent::handleResponse($response);
 
         $users = array();
 

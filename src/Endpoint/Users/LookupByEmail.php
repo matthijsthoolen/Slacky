@@ -2,9 +2,9 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Users;
 
+use GuzzleHttp\Psr7\Response;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\User;
-use MatthijsThoolen\Slacky\Slacky;
 
 class LookupByEmail extends Endpoint
 {
@@ -26,12 +26,25 @@ class LookupByEmail extends Endpoint
         $this->email = $email;
     }
 
-    public function request (Slacky $slacky) : User
+    /**
+     * @inheritDoc
+     */
+    public function getParameters()
     {
         $this->parameters = array('email' => $this->email);
 
-        $body = parent::request($slacky);
+        return parent::getParameters();
+    }
 
+    /**
+     * @param Response $response
+     * @return User
+     */
+    public function handleResponse(Response $response)
+    {
+        $body = parent::handleResponse($response);
+
+        // TODO: Update the given user instead of creating a new one
         return new User($body);
     }
 

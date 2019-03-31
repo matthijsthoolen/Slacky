@@ -2,10 +2,14 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Channels;
 
+use GuzzleHttp\Psr7\Response;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\Channel;
-use MatthijsThoolen\Slacky\Slacky;
 
+/**
+ * Class ListAll
+ * @package MatthijsThoolen\Slacky\Endpoint\Channels
+ */
 class ListAll extends Endpoint
 {
     /** @var string */
@@ -14,9 +18,13 @@ class ListAll extends Endpoint
     /** @var string */
     protected $uri = 'channels.list';
 
-    public function request(Slacky $slacky) : array
+    /**
+     * @param Response $response
+     * @return Channel[]
+     */
+    public function handleResponse(Response $response)
     {
-        $body = parent::request($slacky);
+        $body = parent::handleResponse($response);
 
         $channels = array();
 

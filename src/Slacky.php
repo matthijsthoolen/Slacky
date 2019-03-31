@@ -2,12 +2,15 @@
 
 namespace MatthijsThoolen\Slacky;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
+use Psr\Http\Message\ResponseInterface;
 
 class Slacky
 {
 
-    /** @var \GuzzleHttp\Client */
+    /** @var Client */
     private $client;
 
     public function __construct()
@@ -19,12 +22,13 @@ class Slacky
 
     /**
      * @param Endpoint $object
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return ResponseInterface
+     * @throws GuzzleException
      */
     public function sendRequest($object)
     {
-        return $this->client->request($object->getMethod(), $object->getUri(), $object->getParameters());
+        return $object->handleResponse(
+            $this->client->request($object->getMethod(), $object->getUri(), $object->getParameters())
+        );
     }
-
 }
