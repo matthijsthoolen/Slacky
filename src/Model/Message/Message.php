@@ -3,7 +3,7 @@
 namespace MatthijsThoolen\Slacky\Model;
 
 use JsonSerializable;
-use MatthijsThoolen\Slacky\Model\Messages\Attachment;
+use MatthijsThoolen\Slacky\Model\Message\Attachment;
 
 /**
  * Class Message

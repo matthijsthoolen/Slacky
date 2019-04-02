@@ -1,6 +1,6 @@
 <?php
 
-namespace MatthijsThoolen\Slacky\Model\Messages;
+namespace MatthijsThoolen\Slacky\Model\Message;
 
 use MatthijsThoolen\Slacky\Model\Message;
 
