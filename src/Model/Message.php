@@ -3,6 +3,7 @@
 namespace MatthijsThoolen\Slacky\Model;
 
 use JsonSerializable;
+use MatthijsThoolen\Slacky\Model\Messages\Attachment;
 
 /**
  * Class Message
@@ -21,7 +22,7 @@ class Message extends Model implements JsonSerializable
     /** @var bool */
     private $as_user = false;
 
-    /** @var string */
+    /** @var Attachment[] */
     private $attachments;
 
     /** @var string */
@@ -145,7 +146,7 @@ class Message extends Model implements JsonSerializable
     }
 
     /**
-     * @return string
+     * @return Attachment[]
      */
     public function getAttachments(): string
     {
@@ -153,12 +154,23 @@ class Message extends Model implements JsonSerializable
     }
 
     /**
-     * @param string $attachments
+     * @param Attachment[] $attachments
      * @return Message
      */
-    public function setAttachments(string $attachments): Message
+    public function setAttachments(array $attachments): Message
     {
         $this->attachments = $attachments;
+        return $this;
+    }
+
+    /**
+     * @param Attachment $attachment
+     *
+     * @return Message
+     */
+    public function addAttachment(Attachment $attachment) : Message
+    {
+        $this->attachments[] = $attachment;
         return $this;
     }
 
