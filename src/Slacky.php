@@ -13,10 +13,8 @@ class Slacky
     /** @var Client */
     private $client;
 
-    public function __construct()
+    public function __construct($token)
     {
-        $token = getenv('SLACK_BOT_TOKEN');
-
         $this->client = ClientFactory::create($token);
     }
 

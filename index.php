@@ -26,7 +26,8 @@ $client = new \GuzzleHttp\Client(['base_uri' => 'https://slack.com/api/']);
 $dotenv = new Dotenv();
 $dotenv->load(__DIR__.'/.env');
 
-$slacky = new Slacky();
+$slackToken = getenv('SLACK_BOT_TOKEN');
+$slacky = new Slacky($slackToken);
 
 //$userInfo = new \MatthijsThoolen\Slacky\Endpoint\Users\LookupByEmail('mthoolen@123inkt.nl');
 //$response = $userInfo->request($slacky);
