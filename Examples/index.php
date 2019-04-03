@@ -1,5 +1,6 @@
 <?php
 
+use GuzzleHttp\Client;
 use MatthijsThoolen\Slacky\Endpoint\Channels\ListAll;
 use MatthijsThoolen\Slacky\Endpoint\Chat\PostMessage;
 use MatthijsThoolen\Slacky\Endpoint\Users\Info;
@@ -9,7 +10,7 @@ use Symfony\Component\Dotenv\Dotenv;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$client = new \GuzzleHttp\Client(['base_uri' => 'https://slack.com/api/']);
+$client = new Client(['base_uri' => 'https://slack.com/api/']);
 //$response = $client->request('POST', 'https://hooks.slack.com/services/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', [
 //    'json' => [
 //        'text' => 'Hello Slack World!'
@@ -24,7 +25,7 @@ $client = new \GuzzleHttp\Client(['base_uri' => 'https://slack.com/api/']);
 
 
 $dotenv = new Dotenv();
-$dotenv->load(__DIR__.'/.env');
+$dotenv->load(__DIR__ . '/.env');
 
 $slackToken = getenv('SLACK_BOT_TOKEN');
 $slacky = new Slacky($slackToken);

@@ -3,7 +3,7 @@
 namespace MatthijsThoolen\Slacky\Endpoint\Chat;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
-use MatthijsThoolen\Slacky\Model\Message;
+use MatthijsThoolen\Slacky\Model\Message\Message;
 
 /**
  * Class postMessage

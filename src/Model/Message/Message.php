@@ -1,9 +1,10 @@
 <?php
 
-namespace MatthijsThoolen\Slacky\Model;
+namespace MatthijsThoolen\Slacky\Model\Message;
 
 use JsonSerializable;
-use MatthijsThoolen\Slacky\Model\Message\Attachment;
+use MatthijsThoolen\Slacky\Model\Message\Block\Block;
+use MatthijsThoolen\Slacky\Model\Model;
 
 /**
  * Class Message
@@ -24,6 +25,9 @@ class Message extends Model implements JsonSerializable
 
     /** @var Attachment[] */
     private $attachments;
+
+    /** @var Block[] */
+    private $blocks;
 
     /** @var string */
     private $icon_emoji;
@@ -61,6 +65,7 @@ class Message extends Model implements JsonSerializable
         'text',
         'as_user',
         'attachments',
+        'blocks',
         'icon_emoji',
         'icon_url',
         'link_names',
@@ -83,11 +88,13 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param float $ts
+     *
      * @return Message
      */
     public function setTs(float $ts): Message
     {
         $this->ts = $ts;
+
         return $this;
     }
 
@@ -101,15 +108,19 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param string $channel
+     *
      * @return Message
      */
     public function setChannel(string $channel): Message
     {
         $this->channel = $channel;
+
         return $this;
     }
 
     /**
+     * Only use text as fallback for the new Slack Blocks.
+     *
      * @return string
      */
     public function getText(): string
@@ -119,11 +130,13 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param string $text
+     *
      * @return Message
      */
     public function setText(string $text): Message
     {
         $this->text = $text;
+
         return $this;
     }
 
@@ -137,16 +150,19 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param bool $as_user
+     *
      * @return Message
      */
     public function setAsUser(bool $as_user): Message
     {
         $this->as_user = $as_user;
+
         return $this;
     }
 
     /**
      * @return Attachment[]
+     * @deprecated please use blocks instead
      */
     public function getAttachments(): string
     {
@@ -155,11 +171,14 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param Attachment[] $attachments
+     *
      * @return Message
+     * @deprecated please use blocks instead
      */
     public function setAttachments(array $attachments): Message
     {
         $this->attachments = $attachments;
+
         return $this;
     }
 
@@ -167,10 +186,44 @@ class Message extends Model implements JsonSerializable
      * @param Attachment $attachment
      *
      * @return Message
+     * @deprecated please use blocks instead
      */
-    public function addAttachment(Attachment $attachment) : Message
+    public function addAttachment(Attachment $attachment): Message
     {
         $this->attachments[] = $attachment;
+
+        return $this;
+    }
+
+    /**
+     * @return Block[]
+     */
+    public function getBlocks(): array
+    {
+        return $this->blocks;
+    }
+
+    /**
+     * @param Block[] $blocks
+     *
+     * @return Message
+     */
+    public function setBlocks(array $blocks): Message
+    {
+        $this->blocks = $blocks;
+
+        return $this;
+    }
+
+    /**
+     * @param Block $block
+     *
+     * @return Message
+     */
+    public function addBlock(Block $block): Message
+    {
+        $this->blocks[] = $block;
+
         return $this;
     }
 
@@ -184,11 +237,13 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param string $icon_emoji
+     *
      * @return Message
      */
     public function setIconEmoji(string $icon_emoji): Message
     {
         $this->icon_emoji = $icon_emoji;
+
         return $this;
     }
 
@@ -202,11 +257,13 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param string $icon_url
+     *
      * @return Message
      */
     public function setIconUrl(string $icon_url): Message
     {
         $this->icon_url = $icon_url;
+
         return $this;
     }
 
@@ -220,11 +277,13 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param bool $link_names
+     *
      * @return Message
      */
     public function setLinkNames(bool $link_names): Message
     {
         $this->link_names = $link_names;
+
         return $this;
     }
 
@@ -238,11 +297,13 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param bool $mrkdwn
+     *
      * @return Message
      */
     public function setMrkdwn(bool $mrkdwn): Message
     {
         $this->mrkdwn = $mrkdwn;
+
         return $this;
     }
 
@@ -256,11 +317,13 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param string $parse
+     *
      * @return Message
      */
     public function setParse(string $parse): Message
     {
         $this->parse = $parse;
+
         return $this;
     }
 
@@ -274,11 +337,13 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param bool $reply_broadcast
+     *
      * @return Message
      */
     public function setReplyBroadcast(bool $reply_broadcast): Message
     {
         $this->reply_broadcast = $reply_broadcast;
+
         return $this;
     }
 
@@ -292,11 +357,13 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param float $thread_ts
+     *
      * @return Message
      */
     public function setThreadTs(float $thread_ts): Message
     {
         $this->thread_ts = $thread_ts;
+
         return $this;
     }
 
@@ -310,11 +377,13 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param bool $unfurl_links
+     *
      * @return Message
      */
     public function setUnfurlLinks(bool $unfurl_links): Message
     {
         $this->unfurl_links = $unfurl_links;
+
         return $this;
     }
 
@@ -328,11 +397,13 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param bool $unfurl_media
+     *
      * @return Message
      */
     public function setUnfurlMedia(bool $unfurl_media): Message
     {
         $this->unfurl_media = $unfurl_media;
+
         return $this;
     }
 
@@ -346,19 +417,38 @@ class Message extends Model implements JsonSerializable
 
     /**
      * @param string $username
+     *
      * @return Message
      */
     public function setUsername(string $username): Message
     {
         $this->username = $username;
+
         return $this;
     }
 
-    public function jsonSerialize()
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
     {
-        return [
-            'channel'         => $this->channel,
-            'text'            => $this->text
+        $data = [
+            'channel' => $this->channel,
+            'mrkdwn'  => $this->mrkdwn
         ];
+
+        if (count($this->blocks) > 0) {
+            $data['blocks'] = $this->blocks;
+        }
+
+        if ($this->text !== null) {
+            $data['text'] = $this->text;
+        }
+
+        if (count($this->attachments) > 0) {
+            $data['attachments'] = $this->attachments;
+        }
+
+        return $data;
     }
 }

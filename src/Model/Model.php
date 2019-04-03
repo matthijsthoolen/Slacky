@@ -21,7 +21,7 @@ abstract class Model
      * Model constructor.
      * @param array $data
      */
-    public function __construct($data)
+    public function __construct($data = [])
     {
         $this->loadData($data);
     }
