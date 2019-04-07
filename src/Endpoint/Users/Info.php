@@ -5,7 +5,6 @@ namespace MatthijsThoolen\Slacky\Endpoint\Users;
 use GuzzleHttp\Psr7\Response;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\User;
-use MatthijsThoolen\Slacky\Slacky;
 
 /**
  * Class Info

@@ -12,15 +12,16 @@ $slackToken = getenv('SLACK_BOT_TOKEN');
 $slacky     = new Slacky($slackToken);
 
 $message = new Message();
-$message->setChannel('CHBTBLNMP');
+$message->setChannel('#random');
 $message->setText('Hallo iedereen, samengevat!');
 
-$textObject = new TextObject();
-$textObject->setText('Hallo iedereen!');
+// Optionally a TextObject can be created.
+//$textObject = new TextObject();
+//$textObject->setText('Hallo iedereen!');
 
 $textBlock = new SectionBlock();
-$textBlock->setText($textObject);
-
+// Sets the text, use setTextObject to add a already generated textObject
+$textBlock->setText('Hallo iedereen, wat fijn dat je er bent!');
 $message->addBlock($textBlock);
 
 $postMessage = new PostMessage($message);

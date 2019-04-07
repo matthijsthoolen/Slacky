@@ -31,11 +31,21 @@ class SectionBlock extends Block
     }
 
     /**
-     * @param TextObject $text
+     * Set the text, a textobject is automatically generated
+     *
+     * @param TextObject|string $text
      *
      * @return SectionBlock
      */
-    public function setText(TextObject $text): SectionBlock
+    public function setText($text): SectionBlock
+    {
+        $this->text = new TextObject();
+        $this->text->setText($text);
+
+        return $this;
+    }
+
+    public function setTextObject(TextObject $text): SectionBlock
     {
         $this->text = $text;
 
