@@ -45,6 +45,11 @@ class SectionBlock extends Block
         return $this;
     }
 
+    /**
+     * @param TextObject $text
+     *
+     * @return SectionBlock
+     */
     public function setTextObject(TextObject $text): SectionBlock
     {
         $this->text = $text;

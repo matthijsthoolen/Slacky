@@ -2,6 +2,7 @@
 
 namespace MatthijsThoolen\Slacky\Model\Message\Element;
 
+use MatthijsThoolen\Slacky\Model\Message\Block\SectionBlock;
 use MatthijsThoolen\Slacky\Model\Message\Composition\TextObject;
 
 /**
@@ -30,11 +31,26 @@ class Button extends Element
     }
 
     /**
+     * Set the text, a textobject is automatically generated
+     *
+     * @param TextObject|string $text
+     *
+     * @return Button
+     */
+    public function setText($text): Button
+    {
+        $this->text = new TextObject();
+        $this->text->setText($text);
+
+        return $this;
+    }
+
+    /**
      * @param TextObject $text
      *
      * @return Button
      */
-    public function setText(TextObject $text): Button
+    public function setTextObject(TextObject $text): Button
     {
         $this->text = $text;
 
