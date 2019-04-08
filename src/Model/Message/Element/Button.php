@@ -22,6 +22,46 @@ class Button extends Element
     protected $url;
 
     /**
+     * @return TextObject
+     */
+    public function getText(): TextObject
+    {
+        return $this->text;
+    }
+
+    /**
+     * @param TextObject $text
+     *
+     * @return Button
+     */
+    public function setText(TextObject $text): Button
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return Button
+     */
+    public function setUrl(string $url): Button
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function jsonSerialize(): array
