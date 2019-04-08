@@ -17,9 +17,14 @@ class DividerBlock extends Block
      */
     public function jsonSerialize(): array
     {
-        return [
-            'block_id' => $this->block_id,
+        $data = [
             'type'     => $this->type
         ];
+
+        if ($this->block_id !== null) {
+            $data['block_id'] = $this->block_id;
+        }
+
+        return $data;
     }
 }

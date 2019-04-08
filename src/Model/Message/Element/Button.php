@@ -2,7 +2,6 @@
 
 namespace MatthijsThoolen\Slacky\Model\Message\Element;
 
-use MatthijsThoolen\Slacky\Model\Message\Block\SectionBlock;
 use MatthijsThoolen\Slacky\Model\Message\Composition\TextObject;
 
 /**
