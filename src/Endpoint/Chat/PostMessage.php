@@ -21,8 +21,14 @@ class PostMessage extends Endpoint
     /** @var Message */
     protected $message;
 
-    public function __construct(Message $message)
+    /**
+     * @param Message $message
+     * @return PostMessage
+     */
+    public function setMessage(Message $message)
     {
         $this->message = $this->parameters = $message;
+
+        return $this;
     }
 }

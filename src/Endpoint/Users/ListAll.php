@@ -31,7 +31,7 @@ class ListAll extends Endpoint
 
         if ($body['ok'] === true) {
             foreach ($body['members'] as $member) {
-                $users[] = new User($member);
+                $users[] = (new User())->loadData($member);
             }
         }
 

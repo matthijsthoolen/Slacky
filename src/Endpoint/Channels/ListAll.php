@@ -30,7 +30,7 @@ class ListAll extends Endpoint
 
         if ($body['ok'] === true) {
             foreach ($body['channels'] as $channel) {
-                $channels[] = new Channel($channel);
+                $channels[] = (new Channel())->loadData($channel);
             }
         }
 

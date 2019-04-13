@@ -2,7 +2,9 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint;
 
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
+use MatthijsThoolen\Slacky\Slacky;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -19,6 +21,25 @@ abstract class Endpoint
 
     /** @var array */
     protected $parameters = array();
+
+    /** @var Slacky */
+    private $slacky;
+
+    public function __construct(Slacky $slacky)
+    {
+        $this->slacky = $slacky;
+    }
+
+    /**
+     * Send the request
+     *
+     * @return mixed
+     * @throws GuzzleException
+     */
+    public function send()
+    {
+        return $this->slacky->sendRequest($this);
+    }
 
     /**
      * Return the http method

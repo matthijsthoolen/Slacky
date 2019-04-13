@@ -2,6 +2,8 @@
 
 namespace MatthijsThoolen\Slacky\Model;
 
+use MatthijsThoolen\Slacky\Slacky;
+
 abstract class Model
 {
 
@@ -17,13 +19,16 @@ abstract class Model
     /** @var array */
     protected $allowedProperties = array();
 
+    /** @var Slacky */
+    protected $slacky;
+
     /**
      * Model constructor.
-     * @param array $data
+     * @param Slacky $slacky
      */
-    public function __construct($data = [])
+    public function __construct(Slacky $slacky = null)
     {
-        $this->loadData($data);
+        $this->slacky = $slacky;
     }
 
     /**
@@ -46,6 +51,7 @@ abstract class Model
      * Load the data into the model by using the setters
      *
      * @param array $data
+     * @return Model
      */
     function loadData(array $data)
     {
@@ -73,6 +79,8 @@ abstract class Model
 
             $this->{$setter}($value);
         }
+
+        return $this;
     }
 
 }

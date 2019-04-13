@@ -27,7 +27,7 @@ class ListAll extends Endpoint
 
         if ($body['ok'] === true) {
             foreach($body['ims'] as $im) {
-                $ims[] = new Im($im);
+                $ims[] = (new Im())->loadData($im);
             }
         }
 
