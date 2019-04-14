@@ -2,9 +2,10 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Channels;
 
-use GuzzleHttp\Psr7\Response;
+use Exception;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\Channel;
+use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 /**
  * Class ListAll
@@ -19,19 +20,21 @@ class ListAll extends Endpoint
     protected $uri = 'channels.list';
 
     /**
-     * @param Response $response
+     * @param SlackyResponse $response
      * @return Channel[]
+     * @throws Exception
      */
-    public function handleResponse(Response $response)
+    public function handleResponse(SlackyResponse $response)
     {
         $body = parent::handleResponse($response);
 
         $channels = array();
 
-        if ($body['ok'] === true) {
-            foreach ($body['channels'] as $channel) {
-                $channels[] = (new Channel())->loadData($channel);
-            }
+        /** @noinspection PhpUndefinedMethodInspection */
+        $bodyChannels = $body->getChannels();
+
+        foreach ($bodyChannels as $channel) {
+            $channels[] = (new Channel())->loadData($channel);
         }
 
         return $channels;

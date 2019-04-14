@@ -2,6 +2,9 @@
 
 namespace MatthijsThoolen\Slacky\Model;
 
+use Exception;
+use MatthijsThoolen\Slacky\SlackyFactory;
+
 /**
  * Class Channel
  * Documentation: https://api.slack.com/methods/channels.list
@@ -50,6 +53,9 @@ class Channel extends Model
     /** @var int */
     private $numMembers;
 
+    /** @var string  */
+    protected $endpointName = 'Channels.Info';
+
     /** @var array */
     protected $allowedProperties = array(
         'id',
@@ -88,9 +94,11 @@ class Channel extends Model
 
     /**
      * @return string
+     * @throws Exception
      */
     public function getName(): string
     {
+        parent::get();
         return $this->name;
     }
 
@@ -106,9 +114,11 @@ class Channel extends Model
 
     /**
      * @return bool
+     * @throws Exception
      */
     public function isChannel(): bool
     {
+        parent::get();
         return $this->isChannel;
     }
 
@@ -124,9 +134,11 @@ class Channel extends Model
 
     /**
      * @return int
+     * @throws Exception
      */
     public function getCreated(): int
     {
+        parent::get();
         return $this->created;
     }
 
@@ -142,9 +154,11 @@ class Channel extends Model
 
     /**
      * @return string
+     * @throws Exception
      */
     public function getCreator(): string
     {
+        parent::get();
         return $this->creator;
     }
 
@@ -160,9 +174,11 @@ class Channel extends Model
 
     /**
      * @return bool
+     * @throws Exception
      */
     public function isArchived(): bool
     {
+        parent::get();
         return $this->isArchived;
     }
 
@@ -178,9 +194,11 @@ class Channel extends Model
 
     /**
      * @return bool
+     * @throws Exception
      */
     public function isGeneral(): bool
     {
+        parent::get();
         return $this->isGeneral;
     }
 
@@ -196,9 +214,11 @@ class Channel extends Model
 
     /**
      * @return bool
+     * @throws Exception
      */
     public function isPrivate(): bool
     {
+        parent::get();
         return $this->isPrivate;
     }
 
@@ -214,9 +234,11 @@ class Channel extends Model
 
     /**
      * @return bool
+     * @throws Exception
      */
     public function isMpim(): bool
     {
+        parent::get();
         return $this->isMpim;
     }
 
@@ -232,27 +254,41 @@ class Channel extends Model
 
     /**
      * @return array
+     * @throws Exception
      */
     public function getMembers(): array
     {
+        parent::get();
         return $this->members;
     }
 
     /**
      * @param array $members
      * @return Channel
+     * @throws Exception
      */
     public function setMembers(array $members): Channel
     {
-        $this->members = $members;
+        $this->members = [];
+
+        foreach ($members as $member) {
+            /** @var User $user */
+            $user = SlackyFactory::buildModel('User');
+            $user->setId($member);
+
+            $this->members[] = $user;
+        }
+
         return $this;
     }
 
     /**
      * @return array
+     * @throws Exception
      */
     public function getTopic(): array
     {
+        parent::get();
         return $this->topic;
     }
 
@@ -268,9 +304,11 @@ class Channel extends Model
 
     /**
      * @return array
+     * @throws Exception
      */
     public function getPurpose(): array
     {
+        parent::get();
         return $this->purpose;
     }
 
@@ -286,9 +324,11 @@ class Channel extends Model
 
     /**
      * @return array
+     * @throws Exception
      */
     public function getPreviousNames(): array
     {
+        parent::get();
         return $this->previousNames;
     }
 
@@ -304,9 +344,11 @@ class Channel extends Model
 
     /**
      * @return int
+     * @throws Exception
      */
     public function getNumMembers(): int
     {
+        parent::get();
         return $this->numMembers;
     }
 

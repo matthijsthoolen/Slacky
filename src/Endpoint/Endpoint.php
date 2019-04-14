@@ -2,10 +2,10 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint;
 
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Response;
+use \Exception;
+use MatthijsThoolen\Slacky\Model\Model;
+use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Slacky;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * Endpoints are splitted and structured into seperate folders based on this list: https://api.slack.com/methods
@@ -25,20 +25,56 @@ abstract class Endpoint
     /** @var Slacky */
     private $slacky;
 
+    /** @var string */
+    protected $expectedResponse;
+
     public function __construct(Slacky $slacky)
     {
         $this->slacky = $slacky;
     }
 
     /**
+     * @param Model $model
+     * @return self
+     */
+    public function setModel($model = null)
+    {
+        return $this;
+    }
+
+    /**
      * Send the request
      *
-     * @return mixed
-     * @throws GuzzleException
+     * @param string $expect model or array (default)
+     * @return Mixed
+     * @throws Exception
      */
-    public function send()
+    public function send($expect = 'array')
     {
-        return $this->slacky->sendRequest($this);
+        if (in_array($expect, ['array', 'model'], true)) {
+            $this->expectedResponse = $expect;
+        }
+        $response = $this->slacky->sendRequest($this);
+
+        return $this->handleResponse($response);
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function sendExpectArray()
+    {
+        return $this->send('array');
+    }
+
+    /**
+     * @return Model
+     * @throws Exception
+     */
+    public function sendExpectModel()
+    {
+        return $this->send('model');
     }
 
     /**
@@ -46,7 +82,7 @@ abstract class Endpoint
      *
      * @returns string
      */
-    public function getMethod() : string
+    public function getMethod(): string
     {
         return $this->method;
     }
@@ -56,7 +92,7 @@ abstract class Endpoint
      *
      * @returns string
      */
-    public function getUri() : string
+    public function getUri(): string
     {
         return $this->uri;
     }
@@ -70,23 +106,30 @@ abstract class Endpoint
             return array(
                 'query' => $this->parameters
             );
-        } else if ($this->method === 'POST') {
-            return [
-                'headers' => [
-                    'content-type' => 'application/json; charset=utf-8',
-                ],
-                'body' => json_encode($this->parameters)
-            ];
+        } else {
+            if ($this->method === 'POST') {
+                return [
+                    'headers' => [
+                        'content-type' => 'application/json; charset=utf-8',
+                    ],
+                    'body'    => json_encode($this->parameters)
+                ];
+            }
         }
     }
 
     /**
-     * @param Response $response
-     * @return mixed|ResponseInterface
+     * @param SlackyResponse $response
+     * @return SlackyResponse
+     * @throws Exception
      */
-    public function handleResponse(Response $response)
+    public function handleResponse(SlackyResponse $response)
     {
-        return json_decode($response->getBody()->getContents(), true);
+        if ($response->isOk() === true) {
+            return $response;
+        }
+
+        throw new Exception('A slack response failed to execute successfully. Reason: ' . $response->getError(), 0);
     }
 
 }

@@ -2,8 +2,10 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Users;
 
+use Exception;
 use GuzzleHttp\Psr7\Response;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
+use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Model\User;
 
 /**
@@ -19,20 +21,30 @@ class ListAll extends Endpoint
     public $uri = 'users.list';
 
     /**
-     * @param Response $response
+     * @param SlackyResponse $response
      * @return User[]
+     * @throws Exception
      */
-    public function request(Response $response)
+    public function request(SlackyResponse $response)
     {
         //TODO: Switch to cursor based pagination
         $body = parent::handleResponse($response);
 
+        /** @noinspection PhpUndefinedMethodInspection */
+        $bodyMembers = $body->getMembers();
+
+        if ($bodyMembers === null) {
+            return [];
+        }
+
+        if ($this->expectedResponse === 'array') {
+            return $bodyMembers;
+        }
+
         $users = array();
 
-        if ($body['ok'] === true) {
-            foreach ($body['members'] as $member) {
-                $users[] = (new User())->loadData($member);
-            }
+        foreach ($bodyMembers as $member) {
+            $users[] = (new User())->loadData($member);
         }
 
         return $users;

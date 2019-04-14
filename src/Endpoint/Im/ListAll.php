@@ -2,9 +2,10 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Im;
 
-use GuzzleHttp\Psr7\Response;
+use Exception;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\Im;
+use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 class ListAll extends Endpoint
 {
@@ -15,20 +16,26 @@ class ListAll extends Endpoint
     public $uri = 'im.list';
 
     /**
-     * @param Response $response
+     * @param SlackyResponse $response
      * @return Im[]
+     * @throws Exception
      */
-    public function request(Response $response)
+    public function request(SlackyResponse $response)
     {
         //TODO: Switch to cursor based pagination
-        $body = parent::handleResponse($response);
+        $slackyResponse = parent::handleResponse($response);
 
         $ims = array();
 
-        if ($body['ok'] === true) {
-            foreach($body['ims'] as $im) {
-                $ims[] = (new Im())->loadData($im);
-            }
+        /** @noinspection PhpUndefinedMethodInspection */
+        $bodyIms = $slackyResponse->getIms();
+
+        if ($bodyIms === null) {
+            return $ims;
+        }
+
+        foreach ($bodyIms as $im) {
+            $ims[] = (new Im())->loadData($im);
         }
 
         return $ims;

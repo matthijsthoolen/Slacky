@@ -2,7 +2,9 @@
 
 namespace MatthijsThoolen\Slacky\Model;
 
+use Exception;
 use MatthijsThoolen\Slacky\Slacky;
+use MatthijsThoolen\Slacky\SlackyFactory;
 
 abstract class Model
 {
@@ -18,6 +20,12 @@ abstract class Model
 
     /** @var array */
     protected $allowedProperties = array();
+
+    /** @var bool */
+    protected $initialized = false;
+
+    /** @var string */
+    protected $endpointName;
 
     /** @var Slacky */
     protected $slacky;
@@ -51,9 +59,9 @@ abstract class Model
      * Load the data into the model by using the setters
      *
      * @param array $data
-     * @return Model
+     * @return self
      */
-    function loadData(array $data)
+    public function loadData(array $data)
     {
         if (isset($data['ok']) === true) {
             $this->isOk = $data['ok'];
@@ -80,7 +88,46 @@ abstract class Model
             $this->{$setter}($value);
         }
 
+        $this->initialized = true;
+
         return $this;
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function get()
+    {
+        // Quick return if model is already initialized or no endpoint set
+        if ($this->initialized === true || $this->endpointName === null) {
+            return;
+        }
+
+        // Else doLoad
+        $this->doLoad();
+
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function doLoad()
+    {
+        try {
+            $endpoint = SlackyFactory::buildEndpoint($this->endpointName);
+        } catch (Exception $e) {
+            throw new Exception('Unable to load model', 0, $e);
+        }
+
+        $endpoint->setModel($this);
+
+        try {
+            $response = $endpoint->sendExpectArray();
+        } catch (Exception $e) {
+            throw new Exception('Unable to load model', 0, $e);
+        }
+
+        $this->loadData($response);
     }
 
 }

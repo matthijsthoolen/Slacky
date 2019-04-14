@@ -2,6 +2,8 @@
 
 namespace MatthijsThoolen\Slacky\Model;
 
+use Exception;
+
 class User extends Model
 {
     /** @var string */
@@ -27,6 +29,9 @@ class User extends Model
 
     /** @var string */
     protected $objectName = 'user';
+
+    /** @var string */
+    protected $endpointName = 'Users.Info';
 
     /** @var array */
     protected $allowedProperties = array(
@@ -59,9 +64,12 @@ class User extends Model
 
     /**
      * @return string
+     * @throws Exception
      */
     public function getTeamId(): string
     {
+        parent::get();
+
         return $this->teamId;
     }
 
@@ -77,9 +85,12 @@ class User extends Model
 
     /**
      * @return string
+     * @throws Exception
      */
     public function getName(): string
     {
+        parent::get();
+
         return $this->name;
     }
 
@@ -95,9 +106,12 @@ class User extends Model
 
     /**
      * @return bool
+     * @throws Exception
      */
     public function isDeleted(): bool
     {
+        parent::get();
+
         return $this->deleted;
     }
 
@@ -113,9 +127,12 @@ class User extends Model
 
     /**
      * @return string
+     * @throws Exception
      */
     public function getColor(): string
     {
+        parent::get();
+
         return $this->color;
     }
 
@@ -131,9 +148,12 @@ class User extends Model
 
     /**
      * @return string
+     * @throws Exception
      */
     public function getRealName(): string
     {
+        parent::get();
+
         return $this->realName;
     }
 
@@ -149,9 +169,12 @@ class User extends Model
 
     /**
      * @return array
+     * @throws Exception
      */
     public function getProfile(): array
     {
+        parent::get();
+
         return $this->profile;
     }
 

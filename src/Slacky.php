@@ -2,10 +2,10 @@
 
 namespace MatthijsThoolen\Slacky;
 
+use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
-use Psr\Http\Message\ResponseInterface;
+use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 class Slacky
 {
@@ -20,13 +20,11 @@ class Slacky
 
     /**
      * @param Endpoint $object
-     * @return ResponseInterface
-     * @throws GuzzleException
+     * @return SlackyResponse
+     * @throws Exception
      */
     public function sendRequest($object)
     {
-        return $object->handleResponse(
-            $this->client->request($object->getMethod(), $object->getUri(), $object->getParameters())
-        );
+        return new SlackyResponse($this->client->request($object->getMethod(), $object->getUri(), $object->getParameters()));
     }
 }

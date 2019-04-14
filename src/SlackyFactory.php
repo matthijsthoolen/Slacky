@@ -4,6 +4,7 @@ namespace MatthijsThoolen\Slacky;
 
 use Exception;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
+use MatthijsThoolen\Slacky\Model\Model;
 
 class SlackyFactory
 {
@@ -37,7 +38,7 @@ class SlackyFactory
     /**
      * @param string $name
      * @param string $type
-     * @return Endpoint
+     * @return Endpoint|Model
      * @throws Exception
      */
     public static function build($name = '', $type = 'endpoint')
@@ -81,7 +82,7 @@ class SlackyFactory
 
     /**
      * @param $name
-     * @return Endpoint
+     * @return Model
      * @throws Exception
      */
     public static function buildModel($name)
