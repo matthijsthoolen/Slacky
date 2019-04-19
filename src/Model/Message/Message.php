@@ -443,6 +443,11 @@ class Message extends Model implements JsonSerializable
 
         if ($this->text !== null) {
             $data['text'] = $this->text;
+        } else {
+            $blocks = $this->getBlocks();
+            if (count($blocks) > 0) {
+                $data['text'] = $blocks[0]->getText();
+            }
         }
 
         if (count($this->attachments) > 0) {

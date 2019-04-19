@@ -33,13 +33,14 @@ class SectionBlock extends Block
     /**
      * Set the text, a textobject is automatically generated
      *
-     * @param TextObject|string $text
+     * @param string $text
+     * @param bool   $markdown
      *
      * @return SectionBlock
      */
-    public function setText($text): SectionBlock
+    public function setText($text, $markdown = false): SectionBlock
     {
-        $this->text = new TextObject();
+        $this->text = new TextObject($markdown);
         $this->text->setText($text);
 
         return $this;

@@ -32,13 +32,14 @@ class Button extends Element
     /**
      * Set the text, a textobject is automatically generated
      *
-     * @param TextObject|string $text
+     * @param string $text
+     * @param bool   $markdown
      *
      * @return Button
      */
-    public function setText($text): Button
+    public function setText($text, $markdown = false): Button
     {
-        $this->text = new TextObject();
+        $this->text = new TextObject($markdown);
         $this->text->setText($text);
 
         return $this;
