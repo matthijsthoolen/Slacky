@@ -3,6 +3,7 @@
 namespace MatthijsThoolen\Slacky\Endpoint;
 
 use \Exception;
+use function json_encode;
 use MatthijsThoolen\Slacky\Model\Model;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Slacky;
@@ -14,6 +15,9 @@ abstract class Endpoint
 {
     /** @var string */
     protected $method = 'POST';
+
+    /** @var string */
+    protected $contentType = 'json';
 
     /** @var string */
     protected $uri;
@@ -105,16 +109,30 @@ abstract class Endpoint
             return array(
                 'query' => $this->parameters
             );
-        } else {
-            if ($this->method === 'POST') {
+        } else if ($this->method === 'POST' && $this->contentType === 'json') {
                 return [
                     'headers' => [
                         'content-type' => 'application/json; charset=utf-8',
                     ],
                     'body'    => json_encode($this->parameters)
                 ];
-            }
+        } else if ($this->method === 'POST' && $this->contentType === 'urlencoded') {
+            return [
+                'headers' => [
+                    'content-type' => 'application/x-www-form-urlencoded; charset=utf-8',
+                ],
+                'form_params'    => $this->parameters
+            ];
+        }  else if ($this->method === 'POST' && $this->contentType === 'form-data') {
+            return [
+                'headers' => [
+                    'content-type' => 'multipart/form-data; charset=utf-8',
+                ],
+                'multipart'    => $this->parameters
+            ];
         }
+
+        return [];
     }
 
     /**
@@ -130,5 +148,4 @@ abstract class Endpoint
 
         throw new Exception('A slack response failed to execute successfully. Reason: ' . $response->getError(), 0);
     }
-
 }

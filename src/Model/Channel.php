@@ -273,7 +273,7 @@ class Channel extends Model
 
         foreach ($members as $member) {
             /** @var User $user */
-            $user = SlackyFactory::buildModel('User');
+            $user = SlackyFactory::buildModel(User::class);
             $user->setId($member);
 
             $this->members[] = $user;
