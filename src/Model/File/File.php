@@ -34,6 +34,9 @@ class File extends Model
     private $title;
 
     /** @var string */
+    private $thread_ts;
+
+    /** @var string */
     private $mimeType;
 
     /** @var string */
@@ -75,6 +78,7 @@ class File extends Model
         'timestamp',
         'name',
         'title',
+        'thread_ts',
         'mimetype',
         'filetype',
         'pretty_type',
@@ -248,6 +252,24 @@ class File extends Model
     public function setTitle(string $title): File
     {
         $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getThreadTs(): string
+    {
+        return $this->thread_ts;
+    }
+
+    /**
+     * @param string $thread_ts
+     * @return File
+     */
+    public function setThreadTs(string $thread_ts): File
+    {
+        $this->thread_ts = $thread_ts;
         return $this;
     }
 

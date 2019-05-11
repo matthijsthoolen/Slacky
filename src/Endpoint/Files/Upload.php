@@ -47,7 +47,8 @@ class Upload extends Endpoint
                 'filename'        => $this->file->getFilename(),
                 'filetype'        => $this->file->getFileType(),
                 'initial_comment' => $this->file->getInitialComment(),
-                'title'           => $this->file->getTitle()
+                'title'           => $this->file->getTitle(),
+                'thread_ts'       => $this->file->getThreadTs()
             ]
         );
 

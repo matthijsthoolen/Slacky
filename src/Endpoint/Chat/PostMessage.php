@@ -4,6 +4,7 @@ namespace MatthijsThoolen\Slacky\Endpoint\Chat;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\Message\Message;
+use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 /**
  * Class postMessage
@@ -30,5 +31,22 @@ class PostMessage extends Endpoint
         $this->message = $this->parameters = $message;
 
         return $this;
+    }
+
+    /**
+     * @param SlackyResponse $response
+     * @return Message
+     * @throws \Exception
+     */
+    public function handleResponse(SlackyResponse $response)
+    {
+        parent::handleResponse($response);
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        $body = $response->getMessage();
+
+        $this->message->loadData($body);
+
+        return $this->message;
     }
 }

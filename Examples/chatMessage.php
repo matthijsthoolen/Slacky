@@ -9,7 +9,7 @@ use MatthijsThoolen\Slacky\Model\Message\Block\SectionBlock;
 use MatthijsThoolen\Slacky\SlackyFactory;
 
 $message = new Message();
-$message->setChannel('#random');
+$message->setChannel('#bot-test');
 $message->setText('Hallo iedereen, samengevat!');
 
 // Optionally a TextObject can be created.
@@ -23,12 +23,12 @@ $message->addBlock($textBlock);
 
 /** @var PostMessage $postMessage */
 $postMessage = SlackyFactory::build(PostMessage::class);
-$response = $postMessage->setMessage($message)->send();
+$postMessage->setMessage($message)->send();
 
 // Print request
 echo '<pre>' . json_encode($message, JSON_PRETTY_PRINT) . '</pre>';
 
 // Print response
 echo '<pre>';
-var_dump($response);
+var_dump($message);
 echo '</pre>';

@@ -11,7 +11,7 @@ use MatthijsThoolen\Slacky\Model\Model;
  */
 class Message extends Model implements JsonSerializable
 {
-    /** @var float */
+    /** @var string */
     private $ts;
 
     /** @var string */
@@ -79,19 +79,19 @@ class Message extends Model implements JsonSerializable
     ];
 
     /**
-     * @return float
+     * @return string
      */
-    public function getTs(): float
+    public function getTs(): string
     {
         return $this->ts;
     }
 
     /**
-     * @param float $ts
+     * @param string $ts
      *
      * @return Message
      */
-    public function setTs(float $ts): Message
+    public function setTs(string $ts): Message
     {
         $this->ts = $ts;
 
