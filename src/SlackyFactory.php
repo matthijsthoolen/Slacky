@@ -36,37 +36,22 @@ class SlackyFactory
     }
 
     /**
-     * @param string $name
-     * @param string $type
+     * @param string $endpointNamespace
      * @return Endpoint|Model
      * @throws Exception
      */
-    public static function build($name = '', $type = 'endpoint')
+    public static function build($endpointNamespace)
     {
         self::initialize();
-        if ($name === '') {
+        if ($endpointNamespace === '') {
             throw new Exception('Invalid endpoint');
         }
-
-        $type = ucfirst($type);
-
-        if (in_array($type, ['Endpoint', 'Model'], true) === false) {
-            throw new Exception('Invalid type');
-        }
-
-        $currentNamespace = __NAMESPACE__;
-        $className = str_replace('.', '\\', $name);
-
-        // Small hack if we need a List endpoint because List is a reserved keyword.
-        $className .= substr($className, -4) === 'List' ? 'All' : '';
-
-        $endpointNamespace = $currentNamespace . '\\' . $type . '\\' .  $className;
 
         if (class_exists($endpointNamespace) === true) {
             $endpoint = new $endpointNamespace(self::$slacky);
             return $endpoint;
         } else {
-            throw new Exception($type . ' does not exist!');
+            throw new Exception($endpointNamespace . ' does not exist!');
         }
     }
 
@@ -77,7 +62,7 @@ class SlackyFactory
      */
     public static function buildEndpoint($name)
     {
-        return self::build($name, 'Endpoint');
+        return self::build($name);
     }
 
     /**
@@ -87,7 +72,7 @@ class SlackyFactory
      */
     public static function buildModel($name)
     {
-        return self::build($name, 'Model');
+        return self::build($name);
     }
 
 }

@@ -8,7 +8,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 require_once('head.php');
 
-$listAllChannel = SlackyFactory::build('Channels.List');
+$listAllChannel = SlackyFactory::build(\MatthijsThoolen\Slacky\Endpoint\Channels\ListAll::class);
 $channels = $listAllChannel->send();
 
 /** @var Channel $channel */

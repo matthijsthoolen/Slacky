@@ -8,7 +8,7 @@ require_once('head.php');
 $slackToken = getenv('SLACK_BOT_TOKEN');
 $slacky     = new Slacky($slackToken);
 
-$listAllChannel = SlackyFactory::build('Channels.List');
+$listAllChannel = SlackyFactory::build(\MatthijsThoolen\Slacky\Endpoint\Channels\ListAll::class);
 $response = $listAllChannel->send();
 
 echo '<pre>';

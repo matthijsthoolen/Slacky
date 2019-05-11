@@ -9,7 +9,6 @@ use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 class Slacky
 {
-
     /** @var Client */
     private $client;
 

@@ -12,7 +12,6 @@ use MatthijsThoolen\Slacky\Slacky;
  */
 abstract class Endpoint
 {
-
     /** @var string */
     protected $method = 'POST';
 
