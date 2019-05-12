@@ -47,7 +47,7 @@ class Message extends Model implements JsonSerializable
     /** @var bool */
     private $reply_broadcast = false;
 
-    /** @var float */
+    /** @var string */
     private $thread_ts;
 
     /** @var bool */
@@ -348,19 +348,19 @@ class Message extends Model implements JsonSerializable
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function getThreadTs(): float
+    public function getThreadTs(): string
     {
         return $this->thread_ts;
     }
 
     /**
-     * @param float $thread_ts
+     * @param string $thread_ts
      *
      * @return Message
      */
-    public function setThreadTs(float $thread_ts): Message
+    public function setThreadTs(string $thread_ts): Message
     {
         $this->thread_ts = $thread_ts;
 
@@ -433,9 +433,22 @@ class Message extends Model implements JsonSerializable
     public function jsonSerialize(): array
     {
         $data = [
-            'channel' => $this->channel,
-            'mrkdwn'  => $this->mrkdwn
+            'channel'         => $this->channel,
+            'as_user'         => $this->as_user,
+            'icon_emoji'      => $this->icon_emoji,
+            'icon_url'        => $this->icon_url,
+            'link_names'      => $this->link_names,
+            'mrkdwn'          => $this->mrkdwn,
+            'parse'           => $this->parse,
+            'reply_broadcast' => $this->reply_broadcast,
+            'thread_ts'       => $this->thread_ts,
+            'unfurl_links'    => $this->unfurl_links,
+            'unfurl_media'    => $this->unfurl_media,
+            'username'        => $this->username
         ];
+
+        // Remove null values from array
+        $data = array_filter($data, function($var){return !is_null($var);});
 
         if (count($this->blocks) > 0) {
             $data['blocks'] = $this->blocks;

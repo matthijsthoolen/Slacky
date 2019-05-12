@@ -4,6 +4,7 @@ namespace MatthijsThoolen\Slacky\Endpoint\Files;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\File\File;
+use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 /**
  * Class Upload
@@ -53,5 +54,22 @@ class Upload extends Endpoint
         );
 
         return parent::getParameters();
+    }
+
+    /**
+     * @param SlackyResponse $response
+     * @return File
+     * @throws \Exception
+     */
+    public function handleResponse(SlackyResponse $response)
+    {
+        parent::handleResponse($response);
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        $body = $response->getFile();
+
+        $this->file->loadData($body);
+
+        return $this->file;
     }
 }
