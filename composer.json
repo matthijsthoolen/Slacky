@@ -9,8 +9,8 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^6.3",
-        "symfony/dotenv": "^4.2",
+        "guzzlehttp/guzzle": "~6.3",
+        "symfony/dotenv": "~4.2",
         "ext-json": "*"
     },
     "autoload": {
