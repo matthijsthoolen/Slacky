@@ -24,10 +24,10 @@ class Message extends Model implements JsonSerializable
     private $as_user = false;
 
     /** @var Attachment[] */
-    private $attachments;
+    private $attachments = array();
 
     /** @var Block[] */
-    private $blocks;
+    private $blocks = array();
 
     /** @var string */
     private $icon_emoji;
