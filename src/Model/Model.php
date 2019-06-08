@@ -6,9 +6,9 @@ use Exception;
 use MatthijsThoolen\Slacky\Slacky;
 use MatthijsThoolen\Slacky\SlackyFactory;
 
+// TODO: add annotations functionality with https://github.com/doctrine/annotations
 abstract class Model
 {
-
     /** @var bool */
     private $isOk = false;
 
