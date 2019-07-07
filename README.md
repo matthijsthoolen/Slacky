@@ -1,7 +1,5 @@
-### TODO's
-1) Lazy-loading. 
+This repository is a work-in-progress Slack Client API. 
 
-$user = new User($id);
-iff $user object is used the API get's called.
+For examples see the Examples directory.
 
-Same for sub-methods $user->getChannels e.g.
+The documentation will be expanded after the beta release.
