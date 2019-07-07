@@ -3,13 +3,14 @@
 namespace MatthijsThoolen\Slacky\Endpoint;
 
 use \Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use function json_encode;
 use MatthijsThoolen\Slacky\Model\Model;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Slacky;
 
 /**
- * Endpoints are splitted and structured into seperate folders based on this list: https://api.slack.com/methods
+ * Endpoints are splitted and structured into separate folders based on this list: https://api.slack.com/methods
  */
 abstract class Endpoint
 {
@@ -51,6 +52,7 @@ abstract class Endpoint
      * @param string $expect model or array (default)
      * @return Mixed
      * @throws Exception
+     * @throws GuzzleException
      */
     public function send($expect = 'array')
     {
@@ -65,6 +67,7 @@ abstract class Endpoint
     /**
      * @return array
      * @throws Exception
+     * @throws GuzzleException
      */
     public function sendExpectArray()
     {
@@ -74,6 +77,7 @@ abstract class Endpoint
     /**
      * @return Model
      * @throws Exception
+     * @throws GuzzleException
      */
     public function sendExpectModel()
     {
