@@ -5,6 +5,7 @@ namespace MatthijsThoolen\Slacky\Endpoint;
 use \Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use function json_encode;
+use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\Model;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Slacky;
@@ -50,8 +51,8 @@ abstract class Endpoint
      * Send the request
      *
      * @param string $expect model or array (default)
-     * @return Mixed
-     * @throws Exception
+     * @return SlackyResponse
+     * @throws SlackyException
      * @throws GuzzleException
      */
     public function send($expect = 'array')
@@ -65,9 +66,9 @@ abstract class Endpoint
     }
 
     /**
-     * @return array
-     * @throws Exception
+     * @return SlackyResponse
      * @throws GuzzleException
+     * @throws SlackyException
      */
     public function sendExpectArray()
     {
@@ -110,30 +111,39 @@ abstract class Endpoint
     public function getParameters()
     {
         if ($this->method === 'GET') {
+            if ($this->contentType === 'urlencoded') {
+                return [];
+            }
             return array(
                 'query' => $this->parameters
             );
-        } else if ($this->method === 'POST' && $this->contentType === 'json') {
+        } else {
+            if ($this->method === 'POST' && $this->contentType === 'json') {
                 return [
                     'headers' => [
                         'content-type' => 'application/json; charset=utf-8',
                     ],
                     'body'    => json_encode($this->parameters)
                 ];
-        } else if ($this->method === 'POST' && $this->contentType === 'urlencoded') {
-            return [
-                'headers' => [
-                    'content-type' => 'application/x-www-form-urlencoded; charset=utf-8',
-                ],
-                'form_params'    => $this->parameters
-            ];
-        }  else if ($this->method === 'POST' && $this->contentType === 'form-data') {
-            return [
-                'headers' => [
-                    'content-type' => 'multipart/form-data; charset=utf-8',
-                ],
-                'multipart'    => $this->parameters
-            ];
+            } else {
+                if ($this->method === 'POST' && $this->contentType === 'urlencoded') {
+                    return [
+                        'headers'     => [
+                            'content-type' => 'application/x-www-form-urlencoded; charset=utf-8',
+                        ],
+                        'form_params' => $this->parameters
+                    ];
+                } else {
+                    if ($this->method === 'POST' && $this->contentType === 'form-data') {
+                        return [
+                            'headers'   => [
+                                'content-type' => 'multipart/form-data; charset=utf-8',
+                            ],
+                            'multipart' => $this->parameters
+                        ];
+                    }
+                }
+            }
         }
 
         return [];
@@ -142,7 +152,7 @@ abstract class Endpoint
     /**
      * @param SlackyResponse $response
      * @return SlackyResponse
-     * @throws Exception
+     * @throws SlackyException
      */
     public function handleResponse(SlackyResponse $response)
     {
@@ -150,6 +160,6 @@ abstract class Endpoint
             return $response;
         }
 
-        throw new Exception('A slack response failed to execute successfully. Reason: ' . $response->getError(), 0);
+        throw new SlackyException('A slack response failed to execute successfully. Reason: ' . $response->getError(), 0, $response);
     }
 }

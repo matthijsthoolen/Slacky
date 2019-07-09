@@ -3,7 +3,6 @@
 namespace MatthijsThoolen\Slacky\Endpoint\Users;
 
 use Exception;
-use GuzzleHttp\Psr7\Response;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Model\User;

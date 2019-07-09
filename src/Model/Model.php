@@ -3,17 +3,13 @@
 namespace MatthijsThoolen\Slacky\Model;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use MatthijsThoolen\Slacky\Slacky;
 use MatthijsThoolen\Slacky\SlackyFactory;
 
 // TODO: add annotations functionality with https://github.com/doctrine/annotations
 abstract class Model
 {
-    /** @var bool */
-    private $isOk = false;
-
-    /** @var string */
-    private $error;
 
     /** @var string */
     protected $objectName;
@@ -40,22 +36,6 @@ abstract class Model
     }
 
     /**
-     * @return bool
-     */
-    public function isOk()
-    {
-        return $this->isOk;
-    }
-
-    /**
-     * @return string
-     */
-    public function getError()
-    {
-        return $this->error;
-    }
-
-    /**
      * Load the data into the model by using the setters
      *
      * @param array $data
@@ -63,14 +43,6 @@ abstract class Model
      */
     public function loadData(array $data)
     {
-        if (isset($data['ok']) === true) {
-            $this->isOk = $data['ok'];
-        }
-
-        if (isset($data['error']) === true) {
-            $this->error = $data['error'];
-        }
-
         // Loop through a child array if their is data for this specific object
         if ($this->objectName !== null && isset($data[$this->objectName]) === true) {
             $data = $data[$this->objectName];
@@ -95,6 +67,7 @@ abstract class Model
 
     /**
      * @throws Exception
+     * @throws GuzzleException
      */
     protected function get()
     {
@@ -110,6 +83,7 @@ abstract class Model
 
     /**
      * @throws Exception
+     * @throws GuzzleException
      */
     private function doLoad()
     {
@@ -127,7 +101,7 @@ abstract class Model
             throw new Exception('Unable to load model', 0, $e);
         }
 
-        $this->loadData($response);
+        $this->loadData($response->getBody());
     }
 
 }

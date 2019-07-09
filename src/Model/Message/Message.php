@@ -2,9 +2,13 @@
 
 namespace MatthijsThoolen\Slacky\Model\Message;
 
+use GuzzleHttp\Exception\GuzzleException;
 use JsonSerializable;
+use MatthijsThoolen\Slacky\Endpoint\Chat\Delete;
+use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\Message\Block\Block;
 use MatthijsThoolen\Slacky\Model\Model;
+use MatthijsThoolen\Slacky\SlackyFactory;
 
 /**
  * Class Message
@@ -427,12 +431,33 @@ class Message extends Model implements JsonSerializable
         return $this;
     }
 
+    // Actions:
+
+    /**
+     * @return bool
+     * @throws GuzzleException
+     * @throws SlackyException
+     */
+    public function delete()
+    {
+        /** @var Delete $deleteMessage */
+        $deleteMessage = SlackyFactory::build(Delete::class);
+        $response = $deleteMessage->setMessage($this)->send();
+
+        if ($response->isOk()) {
+            $this->ts = null;
+        }
+
+        return $response->isOk();
+    }
+
     /**
      * @return array
      */
     public function jsonSerialize(): array
     {
         $data = [
+            'ts'              => $this->ts,
             'channel'         => $this->channel,
             'as_user'         => $this->as_user,
             'icon_emoji'      => $this->icon_emoji,
@@ -448,7 +473,11 @@ class Message extends Model implements JsonSerializable
         ];
 
         // Remove null values from array
-        $data = array_filter($data, function($var){return !is_null($var);});
+        $data = array_filter(
+            $data, function ($var) {
+            return !is_null($var);
+        }
+        );
 
         if (count($this->blocks) > 0) {
             $data['blocks'] = $this->blocks;

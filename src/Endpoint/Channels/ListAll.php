@@ -9,7 +9,6 @@ use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 /**
  * Class ListAll
- * @package MatthijsThoolen\Slacky\Endpoint\Channels
  */
 class ListAll extends Endpoint
 {
@@ -21,7 +20,7 @@ class ListAll extends Endpoint
 
     /**
      * @param SlackyResponse $response
-     * @return Channel[]
+     * @return SlackyResponse
      * @throws Exception
      */
     public function handleResponse(SlackyResponse $response)
@@ -37,6 +36,8 @@ class ListAll extends Endpoint
             $channels[] = (new Channel())->loadData($channel);
         }
 
-        return $channels;
+        $response->setObject($channels);
+
+        return $response;
     }
 }

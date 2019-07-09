@@ -7,24 +7,23 @@ use MatthijsThoolen\Slacky\Model\Message\Message;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 /**
- * Class postMessage
- *
- * @documentation https://api.slack.com/methods/chat.postMessage
+ * Class Delete
+ * Documentation: https://api.slack.com/methods/chat.delete
  */
-class PostMessage extends Endpoint
+class Delete extends Endpoint
 {
     /** @var string */
     protected $method = 'POST';
 
     /** @var string */
-    protected $uri = 'chat.postMessage';
+    protected $uri = 'chat.delete';
 
     /** @var Message */
     protected $message;
 
     /**
      * @param Message $message
-     * @return PostMessage
+     * @return Delete
      */
     public function setMessage(Message $message)
     {
@@ -41,12 +40,6 @@ class PostMessage extends Endpoint
     public function handleResponse(SlackyResponse $response)
     {
         parent::handleResponse($response);
-
-        /** @noinspection PhpUndefinedMethodInspection */
-        $body = $response->getMessage();
-        $this->message->loadData($body);
-
-        $response->setObject($this->message);
 
         return $response;
     }

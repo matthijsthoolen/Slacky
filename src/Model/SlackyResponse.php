@@ -11,6 +11,9 @@ class SlackyResponse
     /** @var array */
     private $body;
 
+    /** @var Object|Object[] */
+    private $object;
+
     /** @var int */
     private $statusCode;
 
@@ -45,6 +48,25 @@ class SlackyResponse
         if ($this->statusCode === 200) {
             $this->processBody($response->getBody());
         }
+    }
+
+    /**
+     * @return Object|Object[]
+     */
+    public function getObject()
+    {
+        return $this->object;
+    }
+
+    /**
+     * @param Object|Object[] $object
+     * @return $this
+     */
+    public function setObject($object)
+    {
+        $this->object = $object;
+
+        return $this;
     }
 
     /**
