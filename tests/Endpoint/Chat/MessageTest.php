@@ -98,9 +98,12 @@ class MessageTest extends TestCase
 
         $message->setText('Updated message texts for unit test');
 
+        // Test with direct update
         $response = $updateMessage->setMessage($message)->send();
-
         self::assertTrue($response->isOk());
+
+        // Test with update via model
+        self::assertTrue($message->setText('Second update')->update());
 
         return $message;
     }

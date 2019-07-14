@@ -5,6 +5,7 @@ namespace MatthijsThoolen\Slacky\Model\Message;
 use GuzzleHttp\Exception\GuzzleException;
 use JsonSerializable;
 use MatthijsThoolen\Slacky\Endpoint\Chat\Delete;
+use MatthijsThoolen\Slacky\Endpoint\Chat\Update;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\Message\Block\Block;
 use MatthijsThoolen\Slacky\Model\Model;
@@ -447,6 +448,20 @@ class Message extends Model implements JsonSerializable
         if ($response->isOk()) {
             $this->ts = null;
         }
+
+        return $response->isOk();
+    }
+
+    /**
+     * @return bool
+     * @throws GuzzleException
+     * @throws SlackyException
+     */
+    public function update()
+    {
+        /** @var Update $updateMessage */
+        $updateMessage = SlackyFactory::build(Update::class);
+        $response = $updateMessage->setMessage($this)->send();
 
         return $response->isOk();
     }
