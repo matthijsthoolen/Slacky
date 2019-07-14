@@ -8,6 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use MatthijsThoolen\Slacky\Endpoint\Chat\Delete;
 use MatthijsThoolen\Slacky\Endpoint\Chat\getPermalink;
 use MatthijsThoolen\Slacky\Endpoint\Chat\PostMessage;
+use MatthijsThoolen\Slacky\Endpoint\Chat\Update;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\Message\Message;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
@@ -15,7 +16,10 @@ use MatthijsThoolen\Slacky\Slacky;
 use MatthijsThoolen\Slacky\SlackyFactory;
 use PHPUnit\Framework\TestCase;
 
-class PostMessageTest extends TestCase
+/**
+ * Test all Chat endpoint messages
+ */
+class MessageTest extends TestCase
 {
 
     /**
@@ -56,6 +60,9 @@ class PostMessageTest extends TestCase
      * @depends testSendMessage
      * @param Message $message
      * @return Message
+     * @throws GuzzleException
+     * @throws SlackyException
+     * @throws Exception
      */
     public function testGetPermalink(Message $message)
     {
@@ -68,6 +75,33 @@ class PostMessageTest extends TestCase
             ->setChannel($message->getChannel())
             ->send();
 
+        self::assertTrue($permalink->isOk());
+
+        $body = $permalink->getBody();
+        self::assertNotFalse(filter_var($body['permalink'], FILTER_VALIDATE_URL), 'Permalink is not a valid URL');
+
+        return $message;
+    }
+
+    /**
+     * @depends testGetPermalink
+     * @param Message $message
+     * @return Message
+     * @throws Exception
+     * @throws GuzzleException
+     */
+    public function testUpdateMessage(Message $message)
+    {
+        /** @var Update $updateMessage */
+        $updateMessage = SlackyFactory::build(Update::class);
+        self::assertInstanceOf(Update::class, $updateMessage);
+
+        $message->setText('Updated message texts for unit test');
+
+        $response = $updateMessage->setMessage($message)->send();
+
+        self::assertTrue($response->isOk());
+
         return $message;
     }
 
@@ -77,7 +111,7 @@ class PostMessageTest extends TestCase
      *
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Chat\Delete
      * @covers  \MatthijsThoolen\Slacky\Model\Message\Message::delete
-     * @depends testGetPermalink
+     * @depends testUpdateMessage
      * @param Message $message
      * @throws Exception
      * @throws GuzzleException
@@ -100,5 +134,4 @@ class PostMessageTest extends TestCase
             self::assertEquals('message_not_found', $slackyResponse->getError());
         }
     }
-
 }
