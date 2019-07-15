@@ -2,7 +2,7 @@
 
 namespace MatthijsThoolen\Slacky\Model;
 
-use Exception;
+use MatthijsThoolen\Slacky\Exception\SlackyException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -38,7 +38,7 @@ class SlackyResponse
     /**
      * SlackyResponse constructor.
      * @param ResponseInterface $response
-     * @throws Exception
+     * @throws SlackyException
      */
     public function __construct(ResponseInterface $response)
     {
@@ -166,12 +166,12 @@ class SlackyResponse
 
     /**
      * @param StreamInterface $bodyStream
-     * @throws Exception
+     * @throws SlackyException
      */
     private function processBody($bodyStream)
     {
         if ($bodyStream->isReadable() === false) {
-            throw new Exception('Response body could not be read from');
+            throw new SlackyException('Response body could not be read from');
         }
 
         $this->body = json_decode($bodyStream->getContents(), true);

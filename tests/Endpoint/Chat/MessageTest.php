@@ -84,6 +84,8 @@ class MessageTest extends TestCase
     }
 
     /**
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Chat\Update
+     * @covers \MatthijsThoolen\Slacky\Model\Message\Message::update
      * @depends testGetPermalink
      * @param Message $message
      * @return Message

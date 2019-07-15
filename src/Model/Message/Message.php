@@ -5,6 +5,7 @@ namespace MatthijsThoolen\Slacky\Model\Message;
 use GuzzleHttp\Exception\GuzzleException;
 use JsonSerializable;
 use MatthijsThoolen\Slacky\Endpoint\Chat\Delete;
+use MatthijsThoolen\Slacky\Endpoint\Chat\PostMessage;
 use MatthijsThoolen\Slacky\Endpoint\Chat\Update;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\Message\Block\Block;
@@ -21,6 +22,12 @@ class Message extends Model implements JsonSerializable
 
     /** @var string */
     private $channel;
+
+    /** @var string */
+    private $user;
+
+    /** @var int */
+    private $post_at;
 
     /** @var string */
     private $text;
@@ -63,6 +70,9 @@ class Message extends Model implements JsonSerializable
 
     /** @var string */
     private $username;
+
+    /** @var bool */
+    private $ephemeral = false;
 
     protected $allowedProperties = [
         'ts',
@@ -119,6 +129,48 @@ class Message extends Model implements JsonSerializable
     public function setChannel(string $channel): Message
     {
         $this->channel = $channel;
+
+        return $this;
+    }
+
+
+    // TODO: Split functionality for ephemeral message and normal message
+
+    /**
+     * @return string
+     */
+    public function getUser(): string
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param string $channel
+     *
+     * @return Message
+     */
+    public function setUser(string $user): Message
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPostAt(): int
+    {
+        return $this->post_at;
+    }
+
+    /**
+     * @param int $post_at
+     * @return Message
+     */
+    public function setPostAt(int $post_at): Message
+    {
+        $this->post_at = $post_at;
 
         return $this;
     }
@@ -432,7 +484,40 @@ class Message extends Model implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function isEphemeral(): bool
+    {
+        return $this->ephemeral;
+    }
+
+    /**
+     * @param bool $ephemeral
+     * @return $this
+     */
+    public function setEphemeral(bool $ephemeral)
+    {
+        $this->ephemeral = $ephemeral;
+
+        return $this;
+    }
+
     // Actions:
+
+    /**
+     * @return bool
+     * @throws GuzzleException
+     * @throws SlackyException
+     */
+    public function send()
+    {
+        /** @var PostMessage $postMessage */
+        $postMessage = SlackyFactory::build(PostMessage::class);
+        $response    = $postMessage->setMessage($this)->send();
+
+        return $response->isOk();
+    }
 
     /**
      * @return bool
@@ -443,7 +528,7 @@ class Message extends Model implements JsonSerializable
     {
         /** @var Delete $deleteMessage */
         $deleteMessage = SlackyFactory::build(Delete::class);
-        $response = $deleteMessage->setMessage($this)->send();
+        $response      = $deleteMessage->setMessage($this)->send();
 
         if ($response->isOk()) {
             $this->ts = null;
@@ -461,7 +546,7 @@ class Message extends Model implements JsonSerializable
     {
         /** @var Update $updateMessage */
         $updateMessage = SlackyFactory::build(Update::class);
-        $response = $updateMessage->setMessage($this)->send();
+        $response      = $updateMessage->setMessage($this)->send();
 
         return $response->isOk();
     }
@@ -474,6 +559,8 @@ class Message extends Model implements JsonSerializable
         $data = [
             'ts'              => $this->ts,
             'channel'         => $this->channel,
+            'user'            => $this->user,
+            'post_at'         => $this->post_at,
             'as_user'         => $this->as_user,
             'icon_emoji'      => $this->icon_emoji,
             'icon_url'        => $this->icon_url,

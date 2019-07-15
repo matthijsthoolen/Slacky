@@ -53,21 +53,23 @@ abstract class Endpoint
      * @param string $expect model or array (default)
      * @return SlackyResponse
      * @throws SlackyException
-     * @throws GuzzleException
      */
     public function send($expect = 'array')
     {
         if (in_array($expect, ['array', 'model'], true)) {
             $this->expectedResponse = $expect;
         }
-        $response = $this->slacky->sendRequest($this);
+        try {
+            $response = $this->slacky->sendRequest($this);
+        } catch (GuzzleException $e) {
+            throw new SlackyException('Something went wrong. Could not send your request', 0, null, $e);
+        }
 
         return $this->handleResponse($response);
     }
 
     /**
      * @return SlackyResponse
-     * @throws GuzzleException
      * @throws SlackyException
      */
     public function sendExpectArray()
@@ -77,12 +79,15 @@ abstract class Endpoint
 
     /**
      * @return Model
-     * @throws Exception
-     * @throws GuzzleException
+     * @throws SlackyException
      */
     public function sendExpectModel()
     {
-        return $this->send('model');
+        $response = $this->send('model');
+
+        /** @var Model $object */
+        $object = $response->getObject();
+        return $object;
     }
 
     /**

@@ -20,7 +20,6 @@ class Slacky
     /**
      * @param Endpoint $object
      * @return SlackyResponse
-     * @throws Exception
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function sendRequest($object)

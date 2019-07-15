@@ -4,6 +4,7 @@ namespace MatthijsThoolen\Slacky;
 
 use Exception;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
+use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\Model;
 
 class SlackyFactory
@@ -16,7 +17,8 @@ class SlackyFactory
     private static $slacky;
 
     /**
-     * @throws Exception
+     *
+     * @throws SlackyException
      */
     public static function initialize()
     {
@@ -27,7 +29,7 @@ class SlackyFactory
         $slackToken = getenv('SLACK_BOT_TOKEN');
 
         if ($slackToken === false) {
-            throw new Exception('SLACK_TOKEN is not set in the environmental variables.');
+            throw new SlackyException('SLACK_TOKEN is not set in the environmental variables.');
         }
 
         self::$slacky = new Slacky($slackToken);
@@ -38,20 +40,20 @@ class SlackyFactory
     /**
      * @param string $endpointNamespace
      * @return Endpoint|Model
-     * @throws Exception
+     * @throws SlackyException
      */
     public static function build($endpointNamespace)
     {
         self::initialize();
         if ($endpointNamespace === '') {
-            throw new Exception('Invalid endpoint');
+            throw new SlackyException('Invalid endpoint');
         }
 
         if (class_exists($endpointNamespace) === true) {
             $endpoint = new $endpointNamespace(self::$slacky);
             return $endpoint;
         } else {
-            throw new Exception($endpointNamespace . ' does not exist!');
+            throw new SlackyException($endpointNamespace . ' does not exist!');
         }
     }
 
