@@ -4,6 +4,7 @@ namespace MatthijsThoolen\Slacky\Model;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
+use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Slacky;
 use MatthijsThoolen\Slacky\SlackyFactory;
 
@@ -66,8 +67,7 @@ abstract class Model
     }
 
     /**
-     * @throws Exception
-     * @throws GuzzleException
+     * @throws SlackyException
      */
     protected function get()
     {
@@ -82,15 +82,14 @@ abstract class Model
     }
 
     /**
-     * @throws Exception
-     * @throws GuzzleException
+     * @throws SlackyException
      */
     private function doLoad()
     {
         try {
             $endpoint = SlackyFactory::buildEndpoint($this->endpointName);
         } catch (Exception $e) {
-            throw new Exception('Unable to load model', 0, $e);
+            throw new SlackyException('Unable to load model', 0, null, $e);
         }
 
         $endpoint->setModel($this);
@@ -98,7 +97,7 @@ abstract class Model
         try {
             $response = $endpoint->sendExpectArray();
         } catch (Exception $e) {
-            throw new Exception('Unable to load model', 0, $e);
+            throw new SlackyException('Unable to load model', 0, null, $e);
         }
 
         $this->loadData($response->getBody());

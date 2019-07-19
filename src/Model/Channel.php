@@ -2,7 +2,7 @@
 
 namespace MatthijsThoolen\Slacky\Model;
 
-use Exception;
+use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\SlackyFactory;
 
 /**
@@ -94,7 +94,7 @@ class Channel extends Model
 
     /**
      * @return string
-     * @throws Exception
+     * @throws SlackyException
      */
     public function getName(): string
     {
@@ -114,7 +114,7 @@ class Channel extends Model
 
     /**
      * @return bool
-     * @throws Exception
+     * @throws SlackyException
      */
     public function isChannel(): bool
     {
@@ -134,7 +134,7 @@ class Channel extends Model
 
     /**
      * @return int
-     * @throws Exception
+     * @throws SlackyException
      */
     public function getCreated(): int
     {
@@ -154,7 +154,7 @@ class Channel extends Model
 
     /**
      * @return string
-     * @throws Exception
+     * @throws SlackyException
      */
     public function getCreator(): string
     {
@@ -174,7 +174,7 @@ class Channel extends Model
 
     /**
      * @return bool
-     * @throws Exception
+     * @throws SlackyException
      */
     public function isArchived(): bool
     {
@@ -194,7 +194,7 @@ class Channel extends Model
 
     /**
      * @return bool
-     * @throws Exception
+     * @throws SlackyException
      */
     public function isGeneral(): bool
     {
@@ -214,7 +214,7 @@ class Channel extends Model
 
     /**
      * @return bool
-     * @throws Exception
+     * @throws SlackyException
      */
     public function isPrivate(): bool
     {
@@ -234,7 +234,7 @@ class Channel extends Model
 
     /**
      * @return bool
-     * @throws Exception
+     * @throws SlackyException
      */
     public function isMpim(): bool
     {
@@ -254,7 +254,7 @@ class Channel extends Model
 
     /**
      * @return array
-     * @throws Exception
+     * @throws SlackyException
      */
     public function getMembers(): array
     {
@@ -265,7 +265,7 @@ class Channel extends Model
     /**
      * @param array $members
      * @return Channel
-     * @throws Exception
+     * @throws SlackyException
      */
     public function setMembers(array $members): Channel
     {
@@ -284,7 +284,7 @@ class Channel extends Model
 
     /**
      * @return array
-     * @throws Exception
+     * @throws SlackyException
      */
     public function getTopic(): array
     {
@@ -304,7 +304,7 @@ class Channel extends Model
 
     /**
      * @return array
-     * @throws Exception
+     * @throws SlackyException
      */
     public function getPurpose(): array
     {
@@ -324,7 +324,7 @@ class Channel extends Model
 
     /**
      * @return array
-     * @throws Exception
+     * @throws SlackyException
      */
     public function getPreviousNames(): array
     {
@@ -344,7 +344,7 @@ class Channel extends Model
 
     /**
      * @return int
-     * @throws Exception
+     * @throws SlackyException
      */
     public function getNumMembers(): int
     {

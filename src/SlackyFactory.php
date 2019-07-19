@@ -17,7 +17,6 @@ class SlackyFactory
     private static $slacky;
 
     /**
-     *
      * @throws SlackyException
      */
     public static function initialize()
@@ -60,7 +59,7 @@ class SlackyFactory
     /**
      * @param $name
      * @return Endpoint
-     * @throws Exception
+     * @throws SlackyException
      */
     public static function buildEndpoint($name)
     {
@@ -70,7 +69,7 @@ class SlackyFactory
     /**
      * @param $name
      * @return Model
-     * @throws Exception
+     * @throws SlackyException
      */
     public static function buildModel($name)
     {
