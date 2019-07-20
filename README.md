@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/matthijsthoolen/Slacky.svg?branch=master)](https://travis-ci.com/matthijsthoolen/Slacky) [![Coverage Status](https://coveralls.io/repos/github/matthijsthoolen/slacky/badge.svg?branch=master)](https://coveralls.io/github/matthijsthoolen/slacky?branch=master)
+[![Build Status](https://travis-ci.com/matthijsthoolen/Slacky.svg?branch=master)](https://travis-ci.com/matthijsthoolen/Slacky) [![Coverage Status](https://coveralls.io/repos/github/matthijsthoolen/Slacky/badge.svg?branch=master)](https://coveralls.io/github/matthijsthoolen/Slacky?branch=master)
 
 This repository is a work-in-progress Slack Client API. 
 
