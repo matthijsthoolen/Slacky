@@ -34,6 +34,9 @@ abstract class Endpoint
     /** @var string */
     protected $expectedResponse;
 
+    /** @var string */
+    protected $model;
+
     public function __construct(Slacky $slacky)
     {
         $this->slacky = $slacky;
@@ -45,6 +48,8 @@ abstract class Endpoint
      */
     public function setModel($model = null)
     {
+        $this->model = $model;
+
         return $this;
     }
 
