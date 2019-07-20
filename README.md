@@ -5,3 +5,7 @@ This repository is a work-in-progress Slack Client API.
 For examples see the Examples directory.
 
 The documentation will be expanded after the beta release.
+
+## Development
+
+How to change the .env.trav.enc file? https://github.com/travis-ci/travis.rb#encrypt-file
