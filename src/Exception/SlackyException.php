@@ -18,7 +18,9 @@ class SlackyException extends Exception
      * @param SlackyResponse|null $response
      * @param Throwable|null $previous
      */
-    public function __construct($message = "", $code = 0, SlackyResponse $response = null, Throwable $previous = null)
+    public function __construct(
+        $message = "", $code = 0, SlackyResponse $response = null, Throwable $previous = null
+    )
     {
         $this->slackyResponse = $response;
 

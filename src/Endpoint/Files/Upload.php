@@ -2,6 +2,7 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Files;
 
+use Exception;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\File\File;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
@@ -59,7 +60,7 @@ class Upload extends Endpoint
     /**
      * @param SlackyResponse $response
      * @return File
-     * @throws \Exception
+     * @throws Exception
      */
     public function handleResponse(SlackyResponse $response)
     {

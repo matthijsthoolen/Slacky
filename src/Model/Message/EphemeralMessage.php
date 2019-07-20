@@ -2,10 +2,11 @@
 
 namespace MatthijsThoolen\Slacky\Model\Message;
 
+use JsonSerializable;
 use MatthijsThoolen\Slacky\Model\Message\Block\Block;
 use MatthijsThoolen\Slacky\Model\Model;
 
-class EphemeralMessage extends Model implements \JsonSerializable
+class EphemeralMessage extends Model implements JsonSerializable
 {
     /** @var string */
     private $channel;

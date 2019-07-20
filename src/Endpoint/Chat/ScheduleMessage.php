@@ -2,6 +2,7 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Chat;
 
+use Exception;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\Message\Message;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
@@ -34,7 +35,7 @@ class ScheduleMessage extends Endpoint
     /**
      * @param SlackyResponse $response
      * @return SlackyResponse
-     * @throws \Exception
+     * @throws Exception
      */
     public function handleResponse(SlackyResponse $response)
     {

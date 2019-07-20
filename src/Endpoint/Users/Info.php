@@ -3,7 +3,6 @@
 namespace MatthijsThoolen\Slacky\Endpoint\Users;
 
 use Exception;
-use GuzzleHttp\Psr7\Response;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Model\User;
@@ -53,6 +52,7 @@ class Info extends Endpoint
         parent::handleResponse($response);
 
         // TODO: Update the given user instead of creating a new one
-        return $this->expectedResponse === 'user' ? (new User())->loadData($response->getBody()) : $response->getBody();
+        return $this->expectedResponse === 'user' ?
+            (new User())->loadData($response->getBody()) : $response->getBody();
     }
 }

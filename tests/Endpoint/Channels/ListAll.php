@@ -2,6 +2,7 @@
 
 namespace MatthijsThoolen\Slacky\Tests\Endpoint\Channels;
 
+use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use MatthijsThoolen\Slacky\Endpoint\Channels\ListAll;
 use MatthijsThoolen\Slacky\Model\Channel;
@@ -13,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 class ListAllTest extends TestCase
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      * @throws GuzzleException
      */
     public function testListAll()

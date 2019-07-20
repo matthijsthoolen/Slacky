@@ -98,7 +98,8 @@ class SlackyResponse
      */
     public function getError(): string
     {
-        return $this->error ?? $this->reasonPhrase ?? 'Unknown error with statuscode ' . $this->statusCode;
+        return $this->error ?? $this->reasonPhrase ??
+            'Unknown error with statuscode ' . $this->statusCode;
     }
 
     /**
@@ -134,8 +135,9 @@ class SlackyResponse
     }
 
     /**
-     * This __call only processes functions starting with get. Use this functionallity to retrieve fields
-     * from the body. For example to retrieve the response_metadata field call the getResponseMetadata method
+     * This __call only processes functions starting with get. Use this functionallity
+     * to retrieve fields from the body. For example to retrieve the response_metadata field
+     * call the getResponseMetadata method
      *
      * @param string $method
      * @param array $args
@@ -146,7 +148,7 @@ class SlackyResponse
         if (substr($method, 0, 3) === 'get') {
             return $this->dynamicGet(str_replace('get', '', $method));
         } else {
-            trigger_error('Unknown function '.__CLASS__.':'.$method, E_USER_ERROR);
+            trigger_error('Unknown function ' . __CLASS__ . ':' . $method, E_USER_ERROR);
         }
 
         return null;

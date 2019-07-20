@@ -4,6 +4,7 @@ namespace MatthijsThoolen\Slacky\Endpoint\Channels;
 
 use GuzzleHttp\Psr7\Response;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
+use MatthijsThoolen\Slacky\Exception\SlackyException;
 
 /**
  * Class History
@@ -17,23 +18,28 @@ class History extends Endpoint
     /** @var string */
     public $uri = 'channels.history';
 
+    /** @var string */
     protected $channel;
 
+    /** @var int */
     protected $count;
 
+    /** @var bool */
     protected $inclusive;
 
+    /** @var string */
     protected $latest;
 
+    /** @var string */
     protected $oldest;
 
+    /** @var int */
     protected $unreads;
 
-    public function getParameters()
-    {
-        return parent::getParameters();
-    }
-
+    /**
+     * @param Response $response
+     * @throws SlackyException
+     */
     public function request(Response $response)
     {
         $body = parent::handleResponse($response);

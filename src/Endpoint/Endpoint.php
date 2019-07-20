@@ -11,7 +11,8 @@ use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Slacky;
 
 /**
- * Endpoints are splitted and structured into separate folders based on this list: https://api.slack.com/methods
+ * Endpoints are splitted and structured into separate folders based on this list
+ * @documentation: https://api.slack.com/methods
  */
 abstract class Endpoint
 {
@@ -59,11 +60,7 @@ abstract class Endpoint
         if (in_array($expect, ['array', 'model'], true)) {
             $this->expectedResponse = $expect;
         }
-        try {
-            $response = $this->slacky->sendRequest($this);
-        } catch (GuzzleException $e) {
-            throw new SlackyException('Something went wrong. Could not send your request', 0, null, $e);
-        }
+        $response = $this->slacky->sendRequest($this);
 
         return $this->handleResponse($response);
     }
@@ -165,6 +162,8 @@ abstract class Endpoint
             return $response;
         }
 
-        throw new SlackyException('A slack response failed to execute successfully. Reason: ' . $response->getError(), 0, $response);
+        throw new SlackyException(
+            'A slack response failed to execute. Reason: ' . $response->getError(), 0, $response
+        );
     }
 }
