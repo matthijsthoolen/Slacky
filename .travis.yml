@@ -8,6 +8,7 @@ php:
 - nightly
 install:
 - cp .env.trav .env
+- composer install --no-interaction
 before_install:
 - openssl aes-256-cbc -K $encrypted_bf2119c2fc05_key -iv $encrypted_bf2119c2fc05_iv
   -in .env.trav.enc -out .env.trav -d
