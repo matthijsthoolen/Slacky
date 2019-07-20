@@ -163,7 +163,9 @@ abstract class Endpoint
         }
 
         throw new SlackyException(
-            'A slack response failed to execute. Reason: ' . $response->getError(), 0, $response
+            'A slack response failed to execute. Reason: ' . $response->getError(),
+            0,
+            $response
         );
     }
 }
