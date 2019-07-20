@@ -185,5 +185,4 @@ class SlackyResponse
             $this->nextCursor = $this->body['response_metadata']['next_cursor'] ?? null;
         }
     }
-
 }

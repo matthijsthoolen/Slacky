@@ -75,5 +75,4 @@ class SlackyFactory
     {
         return self::build($name);
     }
-
 }

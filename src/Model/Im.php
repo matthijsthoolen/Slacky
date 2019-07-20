@@ -139,5 +139,4 @@ class Im extends Model
         $this->is_user_deleted = $is_user_deleted;
         return $this;
     }
-
 }

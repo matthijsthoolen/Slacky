@@ -11,5 +11,4 @@ use MatthijsThoolen\Slacky\Model\Model;
  */
 class Attachment extends Model
 {
-
 }

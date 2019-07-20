@@ -121,6 +121,4 @@ class Access extends Endpoint
         $this->singleChannel = $singleChannel;
         return $this;
     }
-
-
 }

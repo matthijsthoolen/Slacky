@@ -47,6 +47,4 @@ class LookupByEmail extends Endpoint
         // TODO: Update the given user instead of creating a new one
         return (new User())->loadData($body);
     }
-
-
 }

@@ -187,5 +187,4 @@ class User extends Model
         $this->profile = $profile;
         return $this;
     }
-
 }

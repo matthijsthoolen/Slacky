@@ -8,5 +8,5 @@ namespace MatthijsThoolen\Slacky\Annotations;
  */
 final class ModelAnnotation
 {
-//TODO: continue: https://www.doctrine-project.org/projects/doctrine-annotations/en/1.6/custom.html
+    //TODO: continue: https://www.doctrine-project.org/projects/doctrine-annotations/en/1.6/custom.html
 }

@@ -6,7 +6,7 @@ use Exception;
 use function getenv;
 use GuzzleHttp\Exception\GuzzleException;
 use MatthijsThoolen\Slacky\Endpoint\Chat\Delete;
-use MatthijsThoolen\Slacky\Endpoint\Chat\getPermalink;
+use MatthijsThoolen\Slacky\Endpoint\Chat\GetPermalink;
 use MatthijsThoolen\Slacky\Endpoint\Chat\PostMessage;
 use MatthijsThoolen\Slacky\Endpoint\Chat\Update;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
@@ -66,9 +66,9 @@ class MessageTest extends TestCase
      */
     public function testGetPermalink(Message $message)
     {
-        /** @var getPermalink $getPermalink */
-        $getPermalink = SlackyFactory::build(getPermalink::class);
-        self::assertInstanceOf(getPermalink::class, $getPermalink);
+        /** @var GetPermalink $getPermalink */
+        $getPermalink = SlackyFactory::build(GetPermalink::class);
+        self::assertInstanceOf(GetPermalink::class, $getPermalink);
 
         $permalink = $getPermalink
             ->setMessageTs($message->getTs())

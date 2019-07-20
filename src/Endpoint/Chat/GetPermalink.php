@@ -6,7 +6,7 @@ use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
-class getPermalink extends Endpoint
+class GetPermalink extends Endpoint
 {
     /** @var string */
     protected $method = 'GET';

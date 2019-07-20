@@ -78,7 +78,6 @@ abstract class Model
 
         // Else doLoad
         $this->doLoad();
-
     }
 
     /**
@@ -102,5 +101,4 @@ abstract class Model
 
         $this->loadData($response->getBody());
     }
-
 }

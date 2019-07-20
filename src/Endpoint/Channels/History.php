@@ -31,15 +31,11 @@ class History extends Endpoint
 
     public function getParameters()
     {
-
-
         return parent::getParameters();
     }
 
     public function request(Response $response)
     {
         $body = parent::handleResponse($response);
-
-
     }
 }

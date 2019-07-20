@@ -13,7 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 class ScheduledMessageTest extends TestCase
 {
-
     public function testScheduleMessage()
     {
         $slackToken = getenv('SLACK_BOT_TOKEN');
@@ -39,5 +38,4 @@ class ScheduledMessageTest extends TestCase
 
         return $message;
     }
-
 }

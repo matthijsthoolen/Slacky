@@ -576,9 +576,10 @@ class Message extends Model implements JsonSerializable
 
         // Remove null values from array
         $data = array_filter(
-            $data, function ($var) {
-            return !is_null($var);
-        }
+            $data,
+            function ($var) {
+                return !is_null($var);
+            }
         );
 
         if (count($this->blocks) > 0) {

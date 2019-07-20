@@ -48,5 +48,4 @@ class ListAll extends Endpoint
 
         return $users;
     }
-
 }
