@@ -1,11 +1,13 @@
 language: php
 php:
-    - '7.0'
-    - '7.1'
-    - '7.2'
-    - '7.3'
-    - hhvm # on Trusty only
-    - nightly
-
+- '7.0'
+- '7.1'
+- '7.2'
+- '7.3'
+- hhvm
+- nightly
 install:
-    - composer install --no-interaction
+- cp .env.trav .env
+before_install:
+- openssl aes-256-cbc -K $encrypted_bf2119c2fc05_key -iv $encrypted_bf2119c2fc05_iv
+  -in .env.trav.enc -out .env.trav -d
