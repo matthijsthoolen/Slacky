@@ -23,7 +23,8 @@ class SlackyException extends Exception
         $code = 0,
         SlackyResponse $response = null,
         Throwable $previous = null
-    ) {
+    )
+    {
         $this->slackyResponse = $response;
 
         parent::__construct($message, $code, $previous);

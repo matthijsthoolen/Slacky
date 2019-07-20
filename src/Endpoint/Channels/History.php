@@ -2,9 +2,9 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Channels;
 
-use GuzzleHttp\Psr7\Response;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
+use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 /**
  * Class History
@@ -37,11 +37,14 @@ class History extends Endpoint
     protected $unreads;
 
     /**
-     * @param Response $response
+     * @param SlackyResponse $response
+     * @return SlackyResponse
      * @throws SlackyException
      */
-    public function request(Response $response)
+    public function request(SlackyResponse $response)
     {
         $body = parent::handleResponse($response);
+
+        return $body;
     }
 }
