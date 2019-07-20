@@ -10,7 +10,6 @@ before_install:
   -in .env.trav.enc -out .env.trav -d
 script:
 - "./vendor/bin/phpunit --coverage-clover ./tests/logs/clover.xml"
-- "./vendor/bin/php-cs-fixer fix ./ -v --diff --dry-run"
 - "./vendor/bin/phpmd src/,tests/ text ./phpmd.xml"
 - "./vendor/bin/phpcs src/ --standard=./phpcs.xml"
 after_script:
