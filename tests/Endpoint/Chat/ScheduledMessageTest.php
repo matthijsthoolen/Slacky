@@ -10,6 +10,7 @@ use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\SlackyFactory;
 use PHPUnit\Framework\TestCase;
 use function getenv;
+use function time;
 
 /**
  * Class ScheduledMessageTest
@@ -25,6 +26,11 @@ class ScheduledMessageTest extends TestCase
      * - Check if scheduled message id is succesfully added to the message model
      *
      * @covers \MatthijsThoolen\Slacky\Endpoint\Chat\ScheduleMessage
+     * @covers ::jsonSerialize
+     * @covers ::__construct
+     * @covers ::setPostAt
+     * @covers ::getPostAt
+     * @covers ::send
      * @return ScheduledMessage
      * @throws SlackyException
      */
@@ -34,10 +40,14 @@ class ScheduledMessageTest extends TestCase
         $scheduleMessage = SlackyFactory::build(ScheduleMessage::class);
         self::assertInstanceOf(ScheduleMessage::class, $scheduleMessage);
 
+        $postAtTime = time() + 600;
+
         $message = new ScheduledMessage();
         $message->setChannel(getenv('SLACK_PHPUNIT_CHANNEL'));
-        $message->setPostAt(time() + 600);
+        $message->setPostAt($postAtTime);
         $message->setText('A unit test scheduled for the future!');
+
+        self::assertSame($postAtTime, $message->getPostAt());
 
         $response = $scheduleMessage->setMessage($message)->send();
         self::assertInstanceOf(SlackyResponse::class, $response);
