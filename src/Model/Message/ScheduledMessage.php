@@ -2,7 +2,11 @@
 
 namespace MatthijsThoolen\Slacky\Model\Message;
 
+use MatthijsThoolen\Slacky\Endpoint\Chat\DeleteScheduledMessage;
+use MatthijsThoolen\Slacky\Endpoint\Chat\ScheduleMessage;
+use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Slacky;
+use MatthijsThoolen\Slacky\SlackyFactory;
 
 class ScheduledMessage extends BaseMessage
 {
@@ -23,7 +27,7 @@ class ScheduledMessage extends BaseMessage
     /**
      * @return string
      */
-    public function getScheduledMessageId(): string
+    public function getScheduledMessageId()
     {
         return $this->scheduled_message_id;
     }
@@ -32,7 +36,7 @@ class ScheduledMessage extends BaseMessage
      * @param $scheduledMessageId
      * @return string
      */
-    public function setScheduledMessageId($scheduledMessageId): string
+    public function setScheduledMessageId($scheduledMessageId)
     {
         $this->scheduled_message_id = $scheduledMessageId;
 
@@ -56,6 +60,40 @@ class ScheduledMessage extends BaseMessage
         $this->post_at = $post_at;
 
         return $this;
+    }
+
+    /**
+     * ACTIONS
+     */
+
+    /**
+     * @return bool
+     * @throws SlackyException
+     */
+    public function send()
+    {
+        /** @var ScheduleMessage $scheduleMessage */
+        $scheduleMessage = SlackyFactory::build(ScheduleMessage::class);
+        $response        = $scheduleMessage->setMessage($this)->send();
+
+        return $response->isOk();
+    }
+
+    /**
+     * @return bool
+     * @throws SlackyException
+     */
+    public function delete()
+    {
+        /** @var DeleteScheduledMessage $deleteScheduledMessage */
+        $deleteScheduledMessage = SlackyFactory::build(DeleteScheduledMessage::class);
+        $response               = $deleteScheduledMessage->setMessage($this)->send();
+
+        if ($response->isOk()) {
+            $this->setScheduledMessageId(null);
+        }
+
+        return $response->isOk();
     }
 
     /**

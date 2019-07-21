@@ -42,8 +42,7 @@ class ScheduleMessage extends Endpoint
     {
         parent::handleResponse($response);
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        $body = $response->getMessage();
+        $body = $response->getBody();
         $this->message->loadData($body);
 
         $response->setObject($this->message);

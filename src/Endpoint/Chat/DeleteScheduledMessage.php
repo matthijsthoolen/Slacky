@@ -3,7 +3,7 @@
 namespace MatthijsThoolen\Slacky\Endpoint\Chat;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
-use MatthijsThoolen\Slacky\Model\Message\Message;
+use MatthijsThoolen\Slacky\Model\Message\ScheduledMessage;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 class DeleteScheduledMessage extends Endpoint
@@ -14,23 +14,23 @@ class DeleteScheduledMessage extends Endpoint
     /** @var string */
     protected $uri = 'chat.deleteScheduledMessage';
 
-    /** @var Message */
+    /** @var ScheduledMessage */
     protected $message;
 
-    public function setMessage(Message $message)
+    /**
+     * @param ScheduledMessage $message
+     * @return DeleteScheduledMessage
+     */
+    public function setMessage(ScheduledMessage $message)
     {
-        $this->message = $message;
+        $this->message = $this->parameters = $message;
+
+        return $this;
     }
 
     public function handleResponse(SlackyResponse $response)
     {
         parent::handleResponse($response);
-
-        /** @noinspection PhpUndefinedMethodInspection */
-        $body = $response->getMessage();
-        $this->message->loadData($body);
-
-        $response->setObject($this->message);
 
         return $response;
     }

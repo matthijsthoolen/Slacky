@@ -2,16 +2,14 @@
 
 namespace MatthijsThoolen\Slacky\Tests\Endpoint\Chat;
 
-use function getenv;
 use MatthijsThoolen\Slacky\Endpoint\Chat\PostEphemeral;
-use MatthijsThoolen\Slacky\Endpoint\Chat\PostMessage;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\Message\EphemeralMessage;
-use MatthijsThoolen\Slacky\Model\Message\Message;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Slacky;
 use MatthijsThoolen\Slacky\SlackyFactory;
 use PHPUnit\Framework\TestCase;
+use function getenv;
 
 class EphemeralMessageTest extends TestCase
 {
