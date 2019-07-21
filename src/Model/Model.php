@@ -3,7 +3,6 @@
 namespace MatthijsThoolen\Slacky\Model;
 
 use Exception;
-use GuzzleHttp\Exception\GuzzleException;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Slacky;
 use MatthijsThoolen\Slacky\SlackyFactory;

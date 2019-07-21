@@ -4,7 +4,7 @@ namespace MatthijsThoolen\Slacky\Endpoint\Chat;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
-use MatthijsThoolen\Slacky\Model\Message\Message;
+use MatthijsThoolen\Slacky\Model\Message\EphemeralMessage;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 class PostEphemeral extends Endpoint
@@ -15,14 +15,14 @@ class PostEphemeral extends Endpoint
     /** @var string */
     protected $uri = 'chat.postEphemeral';
 
-    /** @var Message */
+    /** @var EphemeralMessage */
     protected $message;
 
     /**
-     * @param Message $message
+     * @param EphemeralMessage $message
      * @return $this
      */
-    public function setMessage(Message $message)
+    public function setMessage(EphemeralMessage $message)
     {
         $this->message = $this->parameters = $message;
 
@@ -42,7 +42,6 @@ class PostEphemeral extends Endpoint
         $body = $response->getBody();
 
         $this->message->setTs($body['message_ts']);
-        $this->message->setEphemeral(true);
 
         $response->setObject($this->message);
 

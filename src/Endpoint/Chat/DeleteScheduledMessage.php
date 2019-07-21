@@ -2,42 +2,26 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Chat;
 
-use Exception;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\Message\Message;
-use MatthijsThoolen\Slacky\Model\Message\ScheduledMessage;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
-/**
- * @documentation https://api.slack.com/methods/chat.scheduleMessage
- */
-class ScheduleMessage extends Endpoint
+class DeleteScheduledMessage extends Endpoint
 {
     /** @var string */
     protected $method = 'POST';
 
     /** @var string */
-    protected $uri = 'chat.scheduleMessage';
+    protected $uri = 'chat.deleteScheduledMessage';
 
-    /** @var ScheduledMessage */
+    /** @var Message */
     protected $message;
 
-    /**
-     * @param ScheduledMessage $message
-     * @return $this
-     */
-    public function setMessage(ScheduledMessage $message)
+    public function setMessage(Message $message)
     {
-        $this->message = $this->parameters = $message;
-
-        return $this;
+        $this->message = $message;
     }
 
-    /**
-     * @param SlackyResponse $response
-     * @return SlackyResponse
-     * @throws Exception
-     */
     public function handleResponse(SlackyResponse $response)
     {
         parent::handleResponse($response);

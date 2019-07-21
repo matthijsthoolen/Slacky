@@ -5,6 +5,8 @@ namespace MatthijsThoolen\Slacky\Tests\Endpoint\Chat;
 use function getenv;
 use MatthijsThoolen\Slacky\Endpoint\Chat\PostEphemeral;
 use MatthijsThoolen\Slacky\Endpoint\Chat\PostMessage;
+use MatthijsThoolen\Slacky\Exception\SlackyException;
+use MatthijsThoolen\Slacky\Model\Message\EphemeralMessage;
 use MatthijsThoolen\Slacky\Model\Message\Message;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Slacky;
@@ -13,16 +15,20 @@ use PHPUnit\Framework\TestCase;
 
 class EphemeralMessageTest extends TestCase
 {
+    /**
+     * @return EphemeralMessage|Object|Object[]
+     * @throws SlackyException
+     */
     public function testSendEphemeralMessage()
     {
         $slackToken = getenv('SLACK_BOT_TOKEN');
         new Slacky($slackToken);
 
-        /** @var PostMessage $postMessage */
+        /** @var PostEphemeral $postMessage */
         $postMessage = SlackyFactory::build(PostEphemeral::class);
         self::assertInstanceOf(PostEphemeral::class, $postMessage);
 
-        $message = new Message();
+        $message = new EphemeralMessage();
         $message->setChannel(getenv('SLACK_PHPUNIT_CHANNEL'));
         $message->setUser(getenv('SLACK_PHPUNIT_USER'));
         $message->setText('Unit test Ephemeral message');
@@ -32,7 +38,7 @@ class EphemeralMessageTest extends TestCase
         self::assertSame(200, $response->getStatusCode());
 
         $message = $response->getObject();
-        self::assertInstanceOf(Message::class, $message);
+        self::assertInstanceOf(EphemeralMessage::class, $message);
         self::assertNotNull($message->getTs());
         self::assertTrue($response->isOk());
         self::assertEquals('OK', $response->getError());

@@ -30,6 +30,9 @@ class SlackyException extends Exception
         parent::__construct($message, $code, $previous);
     }
 
+    /**
+     * @return SlackyResponse|null
+     */
     public function getSlackyResponse()
     {
         return $this->slackyResponse;
