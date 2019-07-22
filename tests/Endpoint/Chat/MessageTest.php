@@ -3,8 +3,6 @@
 namespace MatthijsThoolen\Slacky\Tests\Endpoint\Chat;
 
 use Exception;
-use function getenv;
-use GuzzleHttp\Exception\GuzzleException;
 use MatthijsThoolen\Slacky\Endpoint\Chat\Delete;
 use MatthijsThoolen\Slacky\Endpoint\Chat\GetPermalink;
 use MatthijsThoolen\Slacky\Endpoint\Chat\PostMessage;
@@ -15,6 +13,7 @@ use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Slacky;
 use MatthijsThoolen\Slacky\SlackyFactory;
 use PHPUnit\Framework\TestCase;
+use function getenv;
 
 /**
  * Test all Chat endpoint messages
@@ -28,7 +27,6 @@ class MessageTest extends TestCase
      * @covers \MatthijsThoolen\Slacky\Model\Message\Message
      * @covers \MatthijsThoolen\Slacky\Endpoint\Chat\PostMessage
      * @throws Exception
-     * @throws GuzzleException
      */
     public function testSendMessage()
     {
@@ -60,9 +58,7 @@ class MessageTest extends TestCase
      * @depends testSendMessage
      * @param Message $message
      * @return Message
-     * @throws GuzzleException
      * @throws SlackyException
-     * @throws Exception
      */
     public function testGetPermalink(Message $message)
     {
@@ -78,19 +74,24 @@ class MessageTest extends TestCase
         self::assertTrue($permalink->isOk());
 
         $body = $permalink->getBody();
-        self::assertNotFalse(filter_var($body['permalink'], FILTER_VALIDATE_URL), 'Permalink is not a valid URL');
+        self::assertNotFalse(
+            filter_var(
+                $body['permalink'],
+                FILTER_VALIDATE_URL
+            ),
+            'Permalink is not a valid URL'
+        );
 
         return $message;
     }
 
     /**
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Chat\Update
-     * @covers \MatthijsThoolen\Slacky\Model\Message\Message::update
+     * @covers  \MatthijsThoolen\Slacky\Endpoint\Chat\Update
+     * @covers  \MatthijsThoolen\Slacky\Model\Message\Message::update
      * @depends testGetPermalink
      * @param Message $message
      * @return Message
-     * @throws Exception
-     * @throws GuzzleException
+     * @throws SlackyException
      */
     public function testUpdateMessage(Message $message)
     {
@@ -118,8 +119,7 @@ class MessageTest extends TestCase
      * @covers  \MatthijsThoolen\Slacky\Model\Message\Message::delete
      * @depends testUpdateMessage
      * @param Message $message
-     * @throws Exception
-     * @throws GuzzleException
+     * @throws SlackyException
      */
     public function testDeleteMessage(Message $message)
     {

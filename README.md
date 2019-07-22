@@ -8,4 +8,5 @@ The documentation will be expanded after the beta release.
 
 ## Development
 
-How to change the .env.trav.enc file? https://github.com/travis-ci/travis.rb#encrypt-file
+How to change the .env.trav.enc file? 
+[https://github.com/travis-ci/travis.rb#encrypt-file][documentation]

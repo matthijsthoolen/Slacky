@@ -10,7 +10,7 @@ $file = new File();
 $file->setTitle('Titel voor het bericht')
     ->setInitialComment('Dit is een file die is geupload als plaintext')
     ->setFilename('voorbeeld bestand')
-    ->setContent('Dit is de content van de file. Zonder verdere aanpassingen wordt het opgeslagen als .txt')
+    ->setContent('Dit is de content van de file.')
     ->addChannel('CHBTBLNMP');
 
 // Print request
