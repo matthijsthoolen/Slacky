@@ -21,7 +21,18 @@ class ScheduledMessage extends BaseMessage
         parent::__construct($slacky);
 
         $this->allowedProperties[] = 'scheduled_message_id';
+        $this->allowedProperties[] = 'id';
         $this->allowedProperties[] = 'post_at';
+    }
+
+    /**
+     * ScheduledMessage endpoint returns ID instead of scheduled_message_id
+     *
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->scheduled_message_id = $id;
     }
 
     /**

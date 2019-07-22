@@ -3,6 +3,7 @@
 namespace MatthijsThoolen\Slacky\Tests\Endpoint\Chat;
 
 use MatthijsThoolen\Slacky\Endpoint\Chat\DeleteScheduledMessage;
+use MatthijsThoolen\Slacky\Endpoint\Chat\ScheduledMessages\ListAll;
 use MatthijsThoolen\Slacky\Endpoint\Chat\ScheduleMessage;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\Message\ScheduledMessage;
@@ -64,6 +65,38 @@ class ScheduledMessageTest extends TestCase
     }
 
     /**
+     * @depends testScheduleMessage
+     * @param ScheduledMessage $message
+     * @return ScheduledMessage
+     * @throws SlackyException
+     */
+    public function testListScheduledMessages(ScheduledMessage $message)
+    {
+        $listScheduledMessages = SlackyFactory::build(ListAll::class);
+        self::assertInstanceOf(ListAll::class, $listScheduledMessages);
+
+        /** @var ScheduledMessage[] $scheduledMessages */
+        $scheduledMessages = $listScheduledMessages->send();
+        self::assertGreaterThan(0, count($scheduledMessages));
+
+        self::assertContainsOnlyInstancesOf(ScheduledMessage::class, $scheduledMessages);
+
+        $found = false;
+
+        /** @var ScheduledMessage $scheduledMessage */
+        foreach ($scheduledMessages as $scheduledMessage) {
+            // TODO: Scheduled message id is not correctly saved to model
+            if ($message->getScheduledMessageId() === $scheduledMessage->getScheduledMessageId()) {
+                $found = true;
+            }
+        }
+
+        self::assertTrue($found);
+
+        return $message;
+    }
+
+    /**
      * - A scheduled message is retrieved from testScheduleMessage
      * - Create the class with the factory and check if the correct class is returned
      * - Delete the message and check if scheduledMessageId is set to null
@@ -71,7 +104,7 @@ class ScheduledMessageTest extends TestCase
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Chat\DeleteScheduledMessage
      * @covers ::delete
      * @covers ::getScheduledMessageId
-     * @depends testScheduleMessage
+     * @depends testListScheduledMessages
      *
      * @param ScheduledMessage $message
      * @throws SlackyException
