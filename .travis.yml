@@ -15,3 +15,8 @@ script:
 after_script:
 - "./vendor/bin/php-coveralls -v"
 - "./vendor/bin/codacycoverage clover ./tests/logs/clover.xml -v"
+- https://raw.githubusercontent.com/report-ci/scripts/master/upload.py
+- python <(curl -s https://raw.githubusercontent.com/report-ci/scripts/master/upload.py)
+
+after_failure:
+- curl -s https://raw.githubusercontent.com/report-ci/scripts/master/upload.py | python - --tool phpunit --input ./tests/logs/clover.xml
