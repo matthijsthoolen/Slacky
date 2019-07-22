@@ -67,5 +67,4 @@ class MeMessage extends Endpoint
 
         return $response;
     }
-
 }
