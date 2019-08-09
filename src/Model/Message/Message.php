@@ -48,7 +48,7 @@ class Message extends BaseMessage
         return $this;
     }
 
-    // Actions:
+    /** ACTIONS */
 
     /**
      * @return bool
