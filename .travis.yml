@@ -9,7 +9,7 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_bf2119c2fc05_key -iv $encrypted_bf2119c2fc05_iv
   -in .env.trav.enc -out .env.trav -d
 script:
-- "./vendor/bin/paratest -p8 --runner=WrapperRunner --coverage-clover ./tests/logs/clover.xml"
+- "./vendor/bin/phpunit --coverage-clover ./tests/logs/clover.xml"
 - "./vendor/bin/phpmd src/,tests/ text ./phpmd.xml"
 - "./vendor/bin/phpcs src/ --standard=./phpcs.xml"
 after_script:
