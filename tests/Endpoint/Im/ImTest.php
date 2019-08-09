@@ -14,8 +14,8 @@ class ImTest extends TestCase
 
     /**
      * @covers \MatthijsThoolen\Slacky\Endpoint\Im\Open
-     * @covers Im::setUser()
-     * @covers Im::isOpen()
+     * @covers Open::setUser
+     * @covers Im::isOpen
      * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\Info::send
      * @throws SlackyException
      */
@@ -42,9 +42,10 @@ class ImTest extends TestCase
      * Close a open IM and check if the state is now closed
      *
      * @depends testOpenIm
-     * @covers Im::close()
-     * @covers Im::isOpen()
-     * @covers Im::refreshInfo()
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Im\Close
+     * @covers Im::close
+     * @covers Im::isOpen
+     * @covers Im::refreshInfo
      * @param Im $im
      * @throws SlackyException
      */
