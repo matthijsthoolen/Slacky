@@ -14,7 +14,6 @@ class ImTest extends TestCase
 
     /**
      * @covers \MatthijsThoolen\Slacky\Endpoint\Im\Open
-     * @covers Open::setUser
      * @covers Im::isOpen
      * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\Info::send
      * @throws SlackyException
@@ -43,7 +42,6 @@ class ImTest extends TestCase
      *
      * @depends testOpenIm
      * @covers \MatthijsThoolen\Slacky\Endpoint\Im\Close
-     * @covers Im::close
      * @covers Im::isOpen
      * @covers Im::refreshInfo
      * @param Im $im
