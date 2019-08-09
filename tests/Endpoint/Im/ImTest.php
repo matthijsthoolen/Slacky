@@ -57,6 +57,5 @@ class ImTest extends TestCase
         $im->refreshInfo();
 
         self::assertFalse($im->isOpen());
-        self::assertTrue($im->isArchived());
     }
 }
