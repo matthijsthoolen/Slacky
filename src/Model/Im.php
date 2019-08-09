@@ -2,6 +2,7 @@
 
 namespace MatthijsThoolen\Slacky\Model;
 
+use MatthijsThoolen\Slacky\Endpoint\Conversations\Info;
 use MatthijsThoolen\Slacky\Endpoint\Im\Close;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\SlackyFactory;
@@ -306,6 +307,19 @@ class Im extends Model
     }
 
     /** ACTIONS */
+
+    /**
+     * @return bool
+     * @throws SlackyException
+     */
+    public function refreshInfo()
+    {
+        /** @var Info $info */
+        $info     = SlackyFactory::build(Info::class);
+        $response = $info->setConversation($this)->send();
+
+        return $response->isOk();
+    }
 
     /**
      * @return bool

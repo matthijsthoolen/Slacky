@@ -14,6 +14,9 @@ class ImTest extends TestCase
 
     /**
      * @covers \MatthijsThoolen\Slacky\Endpoint\Im\Open
+     * @covers Im::setUser()
+     * @covers Im::isOpen()
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\Info::send
      * @throws SlackyException
      */
     public function testOpenIm()
@@ -29,13 +32,19 @@ class ImTest extends TestCase
         $im       = $response->getObject();
         self::assertInstanceOf(Im::class, $im);
 
+        $im->refreshInfo();
+        self::assertTrue($im->isOpen());
+
         return $im;
     }
 
     /**
-     * Close a open IM and check if the state is now closed and archived
+     * Close a open IM and check if the state is now closed
      *
      * @depends testOpenIm
+     * @covers Im::close()
+     * @covers Im::isOpen()
+     * @covers Im::refreshInfo()
      * @param Im $im
      * @throws SlackyException
      */
@@ -44,6 +53,7 @@ class ImTest extends TestCase
         self::assertTrue($im->isOpen());
 
         $im->close();
+        $im->refreshInfo();
 
         self::assertFalse($im->isOpen());
         self::assertTrue($im->isArchived());

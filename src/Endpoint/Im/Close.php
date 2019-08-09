@@ -41,7 +41,6 @@ class Close extends Endpoint
 
         if ($response->isOk()) {
             $this->im->setIsOpen(false);
-            $this->im->setIsArchived(true);
         }
 
         return $response;
