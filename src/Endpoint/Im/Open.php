@@ -9,12 +9,16 @@ use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Model\User;
 use MatthijsThoolen\Slacky\Slacky;
 
+/**
+ * Class Open
+ * @documentation https://api.slack.com/methods/im.open
+ */
 class Open extends Endpoint
 {
     /** @var string */
     protected $method = 'POST';
 
-    /** $var string */
+    /** @var string */
     protected $uri = 'im.open';
 
     /** @var Im */
