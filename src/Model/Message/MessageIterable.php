@@ -17,5 +17,4 @@ class MessageIterable extends SlackyIterable
 
         return $message;
     }
-
 }
