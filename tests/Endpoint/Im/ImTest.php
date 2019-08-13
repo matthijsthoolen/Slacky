@@ -9,6 +9,7 @@ use MatthijsThoolen\Slacky\Model\Im;
 use MatthijsThoolen\Slacky\Model\Message\Message;
 use MatthijsThoolen\Slacky\Model\User;
 use MatthijsThoolen\Slacky\SlackyFactory;
+use MatthijsThoolen\Slacky\Tests\Helpers\MessageHelper;
 use PHPUnit\Framework\TestCase;
 
 class ImTest extends TestCase
@@ -60,6 +61,9 @@ class ImTest extends TestCase
         $historyFactory = SlackyFactory::build(History::class);
         $messages       = $historyFactory->setIm($im)->setCount(1)->send();
 
+        MessageHelper::sendMessage($im->getId(), 'Friends are at');
+        MessageHelper::sendMessage($im->getId(), 'Central Perk');
+
         $count = 0;
         foreach ($messages as $message) {
             $count++;
@@ -95,5 +99,13 @@ class ImTest extends TestCase
         $im->refreshInfo();
 
         self::assertFalse($im->isOpen());
+    }
+
+    /**
+     * @throws SlackyException
+     */
+    public static function tearDownAfterClass() :void
+    {
+        MessageHelper::cleanUp();
     }
 }
