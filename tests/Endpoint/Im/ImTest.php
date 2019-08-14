@@ -93,8 +93,8 @@ class ImTest extends TestCase
      * @depends testHistory
      *
      * @covers \MatthijsThoolen\Slacky\Endpoint\Im\Mark
-     * @covers Im::getLastRead
-     * @covers Im::refreshInfo
+     * @covers \MatthijsThoolen\Slacky\Model\Im::getLastRead
+     * @covers \MatthijsThoolen\Slacky\Model\Im::refreshInfo
      */
     public function testMark(Im $im)
     {
@@ -124,7 +124,7 @@ class ImTest extends TestCase
      * @depends testHistory
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Im\Close
      * @covers  \MatthijsThoolen\Slacky\Model\Im::isOpen
-     * @covers  Im::refreshInfo
+     * @covers  \MatthijsThoolen\Slacky\Model\Im::refreshInfo
      */
     public function testCloseIm(Im $im)
     {
@@ -139,7 +139,7 @@ class ImTest extends TestCase
     /**
      * @throws SlackyException
      *
-     * @covers ListAll::send
+     * @covers MatthijsThoolen\Slacky\Endpoint\Im\ListAll::send
      */
     public function testListAll()
     {
