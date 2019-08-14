@@ -7,7 +7,6 @@ use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\Im;
 use MatthijsThoolen\Slacky\Model\Message\MessageIterable;
-use MatthijsThoolen\Slacky\Model\SlackyIterable;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 /**

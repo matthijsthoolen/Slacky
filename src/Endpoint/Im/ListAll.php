@@ -7,6 +7,9 @@ use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\Im;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
+/**
+ * @documentation https://api.slack.com/methods/im.listroo
+ */
 class ListAll extends Endpoint
 {
     /** @var string */
@@ -17,27 +20,29 @@ class ListAll extends Endpoint
 
     /**
      * @param SlackyResponse $response
-     * @return Im[]
+     * @return SlackyResponse
      * @throws Exception
      */
-    public function request(SlackyResponse $response)
+    public function handleResponse(SlackyResponse $response)
     {
         //TODO: Switch to cursor based pagination
-        $slackyResponse = parent::handleResponse($response);
+        parent::handleResponse($response);
 
         $ims = array();
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $bodyIms = $slackyResponse->getIms();
+        $bodyIms = $response->getIms();
 
         if ($bodyIms === null) {
-            return $ims;
+            return $response;
         }
 
         foreach ($bodyIms as $im) {
             $ims[] = (new Im())->loadData($im);
         }
 
-        return $ims;
+        $response->setObject($ims);
+
+        return $response;
     }
 }

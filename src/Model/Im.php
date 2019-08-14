@@ -27,7 +27,7 @@ class Im extends Model
     /** @var User */
     private $user;
 
-    /** @var float */
+    /** @var string */
     private $last_read;
 
     /** @var array */
@@ -181,18 +181,18 @@ class Im extends Model
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function getLastRead(): float
+    public function getLastRead(): string
     {
         return $this->last_read;
     }
 
     /**
-     * @param float $last_read
+     * @param string $last_read
      * @return Im
      */
-    public function setLastRead(float $last_read): Im
+    public function setLastRead(string $last_read): Im
     {
         $this->last_read = $last_read;
         return $this;

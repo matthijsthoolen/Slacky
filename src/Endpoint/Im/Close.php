@@ -7,6 +7,9 @@ use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\Im;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
+/**
+ * @documentation https://api.slack.com/methods/im.close
+ */
 class Close extends Endpoint
 {
     /** @var string */

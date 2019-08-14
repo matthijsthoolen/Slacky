@@ -8,13 +8,14 @@ use MatthijsThoolen\Slacky\Model\Message\Message;
 class MessageHelper
 {
     /** @var Message[] */
-    private static $messages;
+    private static $messages = [];
 
     /**
      * Send a message to the given channel. Will be cleaned when cleanUp is called.
      *
      * @param $channel
      * @param $text
+     * @return Message
      * @throws SlackyException
      */
     public static function sendMessage($channel, $text)
@@ -26,6 +27,8 @@ class MessageHelper
             ->send();
 
         self::$messages[] = $message;
+
+        return $message;
     }
 
     /**

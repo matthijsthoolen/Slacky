@@ -3,6 +3,7 @@
 namespace MatthijsThoolen\Slacky\Endpoint\Conversations;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
+use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\Channel;
 use MatthijsThoolen\Slacky\Model\Im;
 use MatthijsThoolen\Slacky\Model\Message\Message;
@@ -53,6 +54,11 @@ class Info extends Endpoint
         return $this;
     }
 
+    /**
+     * @param SlackyResponse $response
+     * @return SlackyResponse
+     * @throws SlackyException
+     */
     public function handleResponse(SlackyResponse $response)
     {
         parent::handleResponse($response);
