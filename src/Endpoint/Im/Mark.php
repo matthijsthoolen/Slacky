@@ -34,7 +34,7 @@ class Mark extends Endpoint
      */
     public function setChannel(Im $channel): Mark
     {
-        $this->channel = $channel;
+        $this->channel               = $channel;
         $this->parameters['channel'] = $channel->getId();
         return $this;
     }
