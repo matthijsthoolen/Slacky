@@ -1,4 +1,8 @@
 language: php
+## Cache composer bits
+cache:
+    directories:
+        - $HOME/.composer/cache/files
 php:
     - '7.2'
     - '7.3'
