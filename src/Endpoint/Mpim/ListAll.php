@@ -1,6 +1,6 @@
 <?php
 
-namespace MatthijsThoolen\Slacky\Endpoint\Im;
+namespace MatthijsThoolen\Slacky\Endpoint\Mpim;
 
 use Exception;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
@@ -8,15 +8,15 @@ use MatthijsThoolen\Slacky\Model\Im;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 /**
- * @documentation https://api.slack.com/methods/im.listroo
+ * @documentation https://api.slack.com/methods/mpim.list
  */
 class ListAll extends Endpoint
 {
     /** @var string */
-    protected $method = 'GET';
+    public $method = 'GET';
 
     /** @var string */
-    protected $uri = 'im.list';
+    public $uri = 'mpim.list';
 
     /**
      * @param SlackyResponse $response
