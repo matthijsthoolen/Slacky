@@ -16,13 +16,13 @@ class Im extends Channel
     private $created;
 
     /** @var bool */
-    private $is_archived;
+    private $is_archived = false;
 
     /** @var bool */
-    private $is_im;
+    private $is_im = true;
 
     /** @var bool */
-    private $is_org_shared;
+    private $is_org_shared = false;
 
     /** @var User */
     private $user;
@@ -40,13 +40,13 @@ class Im extends Channel
     private $unread_count_display;
 
     /** @var bool */
-    private $is_open;
+    private $is_open = false;
 
     /** @var int */
     private $priority;
 
     /** @var bool */
-    private $is_user_deleted;
+    private $is_user_deleted = false;
 
     /** @var array */
     protected $allowedProperties = array(
@@ -291,7 +291,7 @@ class Im extends Channel
     /** ACTIONS */
 
     /**
-     * @return bool
+     * @return $this
      * @throws SlackyException
      */
     public function refreshInfo()
@@ -300,7 +300,7 @@ class Im extends Channel
         $info     = SlackyFactory::build(Info::class);
         $response = $info->setConversation($this)->send();
 
-        return $response->isOk();
+        return $this;
     }
 
     /**

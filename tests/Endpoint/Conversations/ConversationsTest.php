@@ -3,6 +3,8 @@
 namespace MatthijsThoolen\Slacky\Tests\Endpoint\Conversations;
 
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Archive;
+use MatthijsThoolen\Slacky\Endpoint\Conversations\Close;
+use MatthijsThoolen\Slacky\Endpoint\Conversations\Open;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Unarchive;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\Im;
@@ -31,8 +33,7 @@ class ConversationsTest extends TestCase
         $unarchive = SlackyFactory::build(Unarchive::class);
         static::assertInstanceOf(Unarchive::class, $unarchive);
 
-        $im = new Im();
-        $im->setId(getenv('SLACK_PHPUNIT_CHANNEL'))->refreshInfo();
+        $im = (new Im())->setId(getenv('SLACK_PHPUNIT_CHANNEL'))->refreshInfo();
 
         if ($im->isArchived()) {
             $unarchive->setChannel($im)->send();
@@ -41,12 +42,40 @@ class ConversationsTest extends TestCase
         self::assertFalse($im->isArchived());
 
         $archive->setChannel($im)->send();
-        self::assertTrue($im->refreshInfo());
+        $im->refreshInfo();
 
         self::assertTrue($im->isArchived());
 
         $unarchive->setChannel($im)->send();
         $im->refreshInfo();
         self::assertFalse($im->isArchived());
+    }
+
+    /**
+     * @throws SlackyException
+     *
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\Close
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\Open
+     * @covers \MatthijsThoolen\Slacky\Model\Im::isOpen
+     * @covers \MatthijsThoolen\Slacky\Model\Im::isClose
+     */
+    public function testOpenClose()
+    {
+        /** @var Open $open */
+        $open = SlackyFactory::build(Open::class);
+        /** @var Close $close */
+        $close = SlackyFactory::build(Close::class);
+
+        $im = (new Im())->setId(getenv('SLACK_PHPUNIT_IM'))->refreshInfo();
+        if ($im->isOpen()) {
+            $close->setChannel($im)->send();
+            $im->refreshInfo();
+        }
+
+        $open->setChannel($im)->send();
+        self::assertTrue($im->refreshInfo()->isOpen());
+
+        $close->setChannel($im)->send();
+        self::assertFalse($im->refreshInfo()->isOpen());
     }
 }
