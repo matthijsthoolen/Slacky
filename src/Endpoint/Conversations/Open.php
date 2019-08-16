@@ -29,7 +29,7 @@ class Open extends Endpoint
 
     /**
      * @param Channel $channel
-     * @return Archive
+     * @return Open
      */
     public function setChannel(Channel $channel): Open
     {

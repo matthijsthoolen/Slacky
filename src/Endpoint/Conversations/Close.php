@@ -29,7 +29,7 @@ class Close extends Endpoint
 
     /**
      * @param Channel $channel
-     * @return Archive
+     * @return Close
      */
     public function setChannel(Channel $channel): Close
     {
