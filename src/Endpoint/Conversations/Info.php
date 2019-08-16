@@ -4,9 +4,8 @@ namespace MatthijsThoolen\Slacky\Endpoint\Conversations;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
-use MatthijsThoolen\Slacky\Model\Channel;
 use MatthijsThoolen\Slacky\Model\Im;
-use MatthijsThoolen\Slacky\Model\Message\Message;
+use MatthijsThoolen\Slacky\Model\Channel;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 class Info extends Endpoint
@@ -17,7 +16,7 @@ class Info extends Endpoint
     /** @var string */
     protected $uri = 'conversations.info';
 
-    /** @var Im|Channel */
+    /** @var Channel */
     protected $conversation;
 
     /**

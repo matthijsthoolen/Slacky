@@ -1,6 +1,6 @@
 <?php
 
-use MatthijsThoolen\Slacky\Model\Channel;
+use MatthijsThoolen\Slacky\Model\PublicChannel;
 use MatthijsThoolen\Slacky\Model\User;
 use MatthijsThoolen\Slacky\SlackyFactory as SlackyFactory;
 
@@ -11,7 +11,7 @@ require_once('head.php');
 $listAllChannel = SlackyFactory::build(\MatthijsThoolen\Slacky\Endpoint\Channels\ListAll::class);
 $channels       = $listAllChannel->send();
 
-/** @var Channel $channel */
+/** @var PublicChannel $channel */
 foreach ($channels as $channel) {
     $members = $channel->getMembers();
 

@@ -7,10 +7,10 @@ use MatthijsThoolen\Slacky\Endpoint\Im\Close;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\SlackyFactory;
 
-class Im extends Model
+class Im extends Channel
 {
     /** @var string */
-    private $id;
+    protected $id;
 
     /** @var int */
     private $created;
@@ -64,24 +64,6 @@ class Im extends Model
         'priority',
         'is_user_deleted'
     );
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param string $id
-     * @return Im
-     */
-    public function setId(string $id): Im
-    {
-        $this->id = $id;
-        return $this;
-    }
 
     /**
      * @return int

@@ -5,7 +5,7 @@ namespace MatthijsThoolen\Slacky\Tests\Endpoint\Channels;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use MatthijsThoolen\Slacky\Endpoint\Channels\ListAll;
-use MatthijsThoolen\Slacky\Model\Channel;
+use MatthijsThoolen\Slacky\Model\PublicChannel;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Slacky;
 use MatthijsThoolen\Slacky\SlackyFactory;
@@ -28,6 +28,6 @@ class ListAllTest extends TestCase
         $response = $listAllChannel->send();
         self::assertInstanceOf(SlackyResponse::class, $response);
 
-        self::assertContainsOnlyInstancesOf(Channel::class, $response->getObject());
+        self::assertContainsOnlyInstancesOf(PublicChannel::class, $response->getObject());
     }
 }
