@@ -2,7 +2,39 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Conversations;
 
-class Join
-{
+use MatthijsThoolen\Slacky\Endpoint\Endpoint;
+use MatthijsThoolen\Slacky\Model\Channel;
 
+/**
+ * @documentation https://api.slack.com/methods/conversations.join
+ */
+class Join extends Endpoint
+{
+    /** @var string */
+    protected $method = 'POST';
+
+    /** @var string */
+    protected $uri = 'conversations.join';
+
+    /** @var Channel */
+    protected $channel;
+
+    /**
+     * @return Channel
+     */
+    public function getChannel(): Channel
+    {
+        return $this->channel;
+    }
+
+    /**
+     * @param Channel $channel
+     * @return Join
+     */
+    public function setChannel(Channel $channel): Join
+    {
+        $this->channel               = $channel;
+        $this->parameters['channel'] = $channel->getId();
+        return $this;
+    }
 }

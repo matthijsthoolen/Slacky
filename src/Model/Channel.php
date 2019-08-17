@@ -36,6 +36,8 @@ abstract class Channel extends Model
     /** ACTIONS */
 
     /**
+     * @return $this
+     *
      * @throws SlackyException
      */
     public function refreshInfo()
@@ -45,5 +47,7 @@ abstract class Channel extends Model
 
         /** @noinspection PhpUndefinedMethodInspection */
         $this->loadData($response->getChannel());
+
+        return $this;
     }
 }

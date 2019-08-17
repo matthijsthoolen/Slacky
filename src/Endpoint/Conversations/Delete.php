@@ -6,7 +6,8 @@ use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Model\Channel;
 
 /**
- * Be aware that this API is not officially supported by Slack!!!
+ * Be aware that this API is not officially supported by Slack!!! It will most likely not work
+ * with a normal API token.
  */
 class Delete extends Endpoint
 {
