@@ -33,7 +33,7 @@ class Delete extends Endpoint
      */
     public function setChannel(Channel $channel): Delete
     {
-        $this->channel = $channel;
+        $this->channel               = $channel;
         $this->parameters['channel'] = $channel->getId();
         return $this;
     }
