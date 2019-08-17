@@ -56,7 +56,7 @@ class Kick extends Endpoint
      */
     public function setUser(User $user): Kick
     {
-        $this->user = $user;
+        $this->user               = $user;
         $this->parameters['user'] = $user->getId();
         return $this;
     }
