@@ -297,8 +297,8 @@ class Im extends Channel
     public function refreshInfo()
     {
         /** @var Info $info */
-        $info     = SlackyFactory::build(Info::class);
-        $response = $info->setConversation($this)->send();
+        $info = SlackyFactory::build(Info::class);
+        $info->setConversation($this)->send();
 
         return $this;
     }

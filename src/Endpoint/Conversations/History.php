@@ -2,7 +2,9 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Conversations;
 
-class history
+use MatthijsThoolen\Slacky\Endpoint\Endpoint;
+
+class History extends Endpoint
 {
 
 }

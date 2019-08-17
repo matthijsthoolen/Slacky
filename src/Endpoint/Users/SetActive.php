@@ -2,7 +2,9 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Users;
 
-class setActive
+use MatthijsThoolen\Slacky\Endpoint\Endpoint;
+
+class SetActive extends Endpoint
 {
 
 }
