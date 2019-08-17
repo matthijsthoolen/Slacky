@@ -11,7 +11,7 @@ use MatthijsThoolen\Slacky\SlackyFactory;
 class PublicChannel extends Channel
 {
     /** @var string */
-    private $id;
+    protected $id;
 
     /** @var string */
     private $name;
@@ -72,24 +72,6 @@ class PublicChannel extends Channel
         'previous_names',
         'num_members'
     );
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param string $id
-     * @return PublicChannel
-     */
-    public function setId(string $id): PublicChannel
-    {
-        $this->id = $id;
-        return $this;
-    }
 
     /**
      * @return string

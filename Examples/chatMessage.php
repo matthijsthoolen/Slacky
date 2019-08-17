@@ -22,7 +22,7 @@ $textBlock->setText('Hallo iedereen, wat fijn dat je er bent!');
 $message->addBlock($textBlock);
 
 /** @var PostMessage $postMessage */
-$postMessage = SlackyFactory::build(PostMessage::class);
+$postMessage = SlackyFactory::make(PostMessage::class);
 $postMessage->setMessage($message)->send();
 
 // Print request

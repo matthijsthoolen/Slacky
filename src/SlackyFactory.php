@@ -37,11 +37,14 @@ class SlackyFactory
     }
 
     /**
+     * Use PHP-DI plugin for correct autocomplete in PHPStorm for returned classes of this function
+     * https://plugins.jetbrains.com/plugin/7694-php-di-plugin
+     *
      * @param string $endpointNamespace
-     * @return Endpoint|Model
+     * @return mixed
      * @throws SlackyException
      */
-    public static function build($endpointNamespace)
+    public static function make($endpointNamespace)
     {
         self::initialize();
         if ($endpointNamespace === '') {
@@ -63,7 +66,7 @@ class SlackyFactory
      */
     public static function buildEndpoint($name)
     {
-        return self::build($name);
+        return self::make($name);
     }
 
     /**
@@ -73,6 +76,6 @@ class SlackyFactory
      */
     public static function buildModel($name)
     {
-        return self::build($name);
+        return self::make($name);
     }
 }

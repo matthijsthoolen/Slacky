@@ -74,6 +74,16 @@ abstract class Endpoint
      * @return SlackyResponse
      * @throws SlackyException
      */
+    public function sendSpecial()
+    {
+        $response = $this->slacky->sendXoxcRequest($this);
+        return $this->handleResponse($response);
+    }
+
+    /**
+     * @return SlackyResponse
+     * @throws SlackyException
+     */
     public function sendExpectArray()
     {
         return $this->send('array');

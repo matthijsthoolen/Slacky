@@ -4,51 +4,87 @@ namespace MatthijsThoolen\Slacky\Tests\Endpoint\Conversations;
 
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Archive;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Close;
+use MatthijsThoolen\Slacky\Endpoint\Conversations\Create;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Open;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Unarchive;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
+use MatthijsThoolen\Slacky\Model\Channel;
 use MatthijsThoolen\Slacky\Model\Im;
+use MatthijsThoolen\Slacky\Model\PublicChannel;
+use MatthijsThoolen\Slacky\Model\User;
 use MatthijsThoolen\Slacky\SlackyFactory;
 use PHPUnit\Framework\TestCase;
+use function getenv;
+use function strtolower;
+use function uniqid;
 
 class ConversationsTest extends TestCase
 {
+    /**
+     *
+     * @throws SlackyException
+     *
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\Create
+     * @covers \MatthijsThoolen\Slacky\Model\PublicChannel
+     * @covers \MatthijsThoolen\Slacky\Model\User::setId
+     */
+    public function testCreate()
+    {
+        $create = SlackyFactory::make(Create::class);
+
+        $name     = strtolower(uniqid('UT'));
+        $response = $create
+            ->setName($name)
+            ->setIsPrivate(false)
+            ->setUsers([(new User())->setId(getenv('SLACK_PHPUNIT_USER'))])
+            ->send();
+
+        /** @var PublicChannel $channel */
+        $channel = $response->getObject();
+        static::assertInstanceOf(PublicChannel::class, $channel);
+
+        $channel->refreshInfo();
+        static::assertEquals(1, $channel->getNumMembers());
+        static::assertEquals($name, $channel->getName());
+
+        return $channel;
+    }
+
     /**
      * 1) Make sure the channel is currently not archived before the test starts
      * 2) Archive the chat, refreshinfo and check
      * 3) Unarchive the chat, refreshinfo and check
      *
+     * @param PublicChannel $channel
+     *
      * @throws SlackyException
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\Archive
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\Unarchive
-     * @covers \MatthijsThoolen\Slacky\Model\Im::setId
+     *
+     * @depends testCreate
+     * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\Archive
+     * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\Unarchive
      */
-    public function testArchive()
+    public function testArchive($channel)
     {
-        /** @var Archive $archive */
-        $archive = SlackyFactory::build(Archive::class);
+        $archive = SlackyFactory::make(Archive::class);
         static::assertInstanceOf(Archive::class, $archive);
 
-        /** @var Unarchive $unarchive */
-        $unarchive = SlackyFactory::build(Unarchive::class);
+        $unarchive = SlackyFactory::make(Unarchive::class);
         static::assertInstanceOf(Unarchive::class, $unarchive);
 
-        $im = (new Im())->setId(getenv('SLACK_PHPUNIT_CHANNEL'))->refreshInfo();
-
-        if ($im->isArchived()) {
-            $unarchive->setChannel($im)->send();
+        if ($channel->isArchived()) {
+            $unarchive->setChannel($channel)->send();
         }
 
-        self::assertFalse($im->isArchived());
+        self::assertFalse($channel->isArchived());
 
-        $archive->setChannel($im)->send();
-        $im->refreshInfo();
+        $archive->setChannel($channel)->send();
+        $channel->refreshInfo();
 
-        self::assertTrue($im->isArchived());
+        self::assertTrue($channel->isArchived());
 
-        $unarchive->setChannel($im)->send();
-        $im->refreshInfo();
-        self::assertFalse($im->isArchived());
+        $unarchive->setChannel($channel)->send();
+        $channel->refreshInfo();
+        self::assertFalse($channel->isArchived());
     }
 
     /**
@@ -60,10 +96,8 @@ class ConversationsTest extends TestCase
      */
     public function testOpenClose()
     {
-        /** @var Open $open */
-        $open = SlackyFactory::build(Open::class);
-        /** @var Close $close */
-        $close = SlackyFactory::build(Close::class);
+        $open  = SlackyFactory::make(Open::class);
+        $close = SlackyFactory::make(Close::class);
 
         $im = (new Im())->setId(getenv('SLACK_PHPUNIT_IM'))->refreshInfo();
         if ($im->isOpen()) {

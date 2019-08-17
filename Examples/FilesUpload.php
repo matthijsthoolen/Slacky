@@ -17,7 +17,7 @@ $file->setTitle('Titel voor het bericht')
 echo '<pre>' . var_dump($file) . '</pre>';
 
 /** @var Upload $filesUpload */
-$filesUpload = SlackyFactory::build(Upload::class);
+$filesUpload = SlackyFactory::make(Upload::class);
 $response    = $filesUpload->setFile($file)->send();
 
 // Print response

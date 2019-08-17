@@ -2,6 +2,10 @@
 
 namespace MatthijsThoolen\Slacky\Model;
 
+use MatthijsThoolen\Slacky\Endpoint\Conversations\Info;
+use MatthijsThoolen\Slacky\Exception\SlackyException;
+use MatthijsThoolen\Slacky\SlackyFactory;
+
 /**
  * Abstract class for all channel-like Slack models (IM, MPIM, Public Channels and Groups)
  */
@@ -27,5 +31,19 @@ abstract class Channel extends Model
         $this->id = $id;
 
         return $this;
+    }
+
+    /** ACTIONS */
+
+    /**
+     * @throws SlackyException
+     */
+    public function refreshInfo()
+    {
+        $info     = SlackyFactory::make(Info::class);
+        $response = $info->setConversation($this)->setIncludeNumMembers(true)->send();
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        $this->loadData($response->getChannel());
     }
 }

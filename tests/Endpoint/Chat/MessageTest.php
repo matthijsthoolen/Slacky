@@ -34,7 +34,7 @@ class MessageTest extends TestCase
         new Slacky($slackToken);
 
         /** @var PostMessage $postMessage */
-        $postMessage = SlackyFactory::build(PostMessage::class);
+        $postMessage = SlackyFactory::make(PostMessage::class);
         self::assertInstanceOf(PostMessage::class, $postMessage);
 
         $message = new Message();
@@ -63,7 +63,7 @@ class MessageTest extends TestCase
     public function testGetPermalink(Message $message)
     {
         /** @var GetPermalink $getPermalink */
-        $getPermalink = SlackyFactory::build(GetPermalink::class);
+        $getPermalink = SlackyFactory::make(GetPermalink::class);
         self::assertInstanceOf(GetPermalink::class, $getPermalink);
 
         $permalink = $getPermalink
@@ -96,7 +96,7 @@ class MessageTest extends TestCase
     public function testUpdateMessage(Message $message)
     {
         /** @var Update $updateMessage */
-        $updateMessage = SlackyFactory::build(Update::class);
+        $updateMessage = SlackyFactory::make(Update::class);
         self::assertInstanceOf(Update::class, $updateMessage);
 
         $message->setText('Updated message texts for unit test');
@@ -126,7 +126,7 @@ class MessageTest extends TestCase
         self::assertTrue($message->delete());
 
         /** @var Delete $deleteMessage */
-        $deleteMessage = SlackyFactory::build(Delete::class);
+        $deleteMessage = SlackyFactory::make(Delete::class);
         self::assertInstanceOf(Delete::class, $deleteMessage);
 
         try {

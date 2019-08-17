@@ -38,7 +38,7 @@ class ScheduledMessageTest extends TestCase
     public function testScheduleMessage()
     {
         /** @var ScheduleMessage $scheduleMessage */
-        $scheduleMessage = SlackyFactory::build(ScheduleMessage::class);
+        $scheduleMessage = SlackyFactory::make(ScheduleMessage::class);
         self::assertInstanceOf(ScheduleMessage::class, $scheduleMessage);
 
         $postAtTime = time() + 600;
@@ -72,7 +72,7 @@ class ScheduledMessageTest extends TestCase
      */
     public function testListScheduledMessages(ScheduledMessage $message)
     {
-        $listScheduledMessages = SlackyFactory::build(ListAll::class);
+        $listScheduledMessages = SlackyFactory::make(ListAll::class);
         self::assertInstanceOf(ListAll::class, $listScheduledMessages);
 
         /** @var ScheduledMessage[] $scheduledMessages */
@@ -111,7 +111,7 @@ class ScheduledMessageTest extends TestCase
      */
     public function testDeleteScheduledMessage(ScheduledMessage $message)
     {
-        $deleteScheduledMessage = SlackyFactory::build(DeleteScheduledMessage::class);
+        $deleteScheduledMessage = SlackyFactory::make(DeleteScheduledMessage::class);
         self::assertInstanceOf(DeleteScheduledMessage::class, $deleteScheduledMessage);
 
         self::assertNotNull($message->getScheduledMessageId());

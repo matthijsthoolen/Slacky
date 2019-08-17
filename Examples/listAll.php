@@ -9,7 +9,7 @@ require_once('head.php');
 $slackToken = getenv('SLACK_BOT_TOKEN');
 $slacky     = new Slacky($slackToken);
 
-$listAllChannel = SlackyFactory::build(ListAll::class);
+$listAllChannel = SlackyFactory::make(ListAll::class);
 $response       = $listAllChannel->send();
 
 echo '<pre>';

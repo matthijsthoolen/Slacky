@@ -31,7 +31,7 @@ class ImTest extends TestCase
         $user->setId(getenv('SLACK_PHPUNIT_USER'));
 
         /** @var Open $openIm */
-        $openIm = SlackyFactory::build(Open::class);
+        $openIm = SlackyFactory::make(Open::class);
         self::assertInstanceOf(Open::class, $openIm);
 
         $response = $openIm->setUser($user)->send();
@@ -62,7 +62,7 @@ class ImTest extends TestCase
     public function testHistory(Im $im)
     {
         /** @var History $historyFactory */
-        $historyFactory = SlackyFactory::build(History::class);
+        $historyFactory = SlackyFactory::make(History::class);
         $messages       = $historyFactory->setIm($im)->setCount(1)->send();
 
         MessageHelper::sendMessage($im->getId(), 'Friends are at');
@@ -99,7 +99,7 @@ class ImTest extends TestCase
     public function testMark(Im $im)
     {
         /** @var Mark $mark */
-        $mark = SlackyFactory::build(Mark::class);
+        $mark = SlackyFactory::make(Mark::class);
         static::assertInstanceOf(Mark::class, $mark);
 
         $message1 = MessageHelper::sendMessage($im->getId(), 'Mark me!');
@@ -144,7 +144,7 @@ class ImTest extends TestCase
     public function testListAll()
     {
         /** @var ListAll $listAll */
-        $listAll = SlackyFactory::build(ListAll::class);
+        $listAll = SlackyFactory::make(ListAll::class);
         static::assertInstanceOf(ListAll::class, $listAll);
 
         $response = $listAll->send();

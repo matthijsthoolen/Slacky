@@ -297,7 +297,7 @@ class Im extends Channel
     public function refreshInfo()
     {
         /** @var Info $info */
-        $info = SlackyFactory::build(Info::class);
+        $info = SlackyFactory::make(Info::class);
         $info->setConversation($this)->send();
 
         return $this;
@@ -310,7 +310,7 @@ class Im extends Channel
     public function close()
     {
         /** @var Close $ImClose */
-        $ImClose  = SlackyFactory::build(Close::class);
+        $ImClose  = SlackyFactory::make(Close::class);
         $response = $ImClose->setIm($this)->send();
 
         return $response->isOk();

@@ -23,7 +23,7 @@ class EphemeralMessageTest extends TestCase
         new Slacky($slackToken);
 
         /** @var PostEphemeral $postMessage */
-        $postMessage = SlackyFactory::build(PostEphemeral::class);
+        $postMessage = SlackyFactory::make(PostEphemeral::class);
         self::assertInstanceOf(PostEphemeral::class, $postMessage);
 
         $message = new EphemeralMessage();

@@ -24,7 +24,7 @@ class MeMessageTest extends TestCase
     public function testMeMessage()
     {
         /** @var MeMessage $meMessage */
-        $meMessage = SlackyFactory::build(MeMessage::class);
+        $meMessage = SlackyFactory::make(MeMessage::class);
         self::assertInstanceOf(MeMessage::class, $meMessage);
 
         $response = $meMessage

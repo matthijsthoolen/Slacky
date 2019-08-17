@@ -22,7 +22,7 @@ class ListAllTest extends TestCase
         $slackToken = getenv('SLACK_BOT_TOKEN');
         new Slacky($slackToken);
 
-        $listAllChannel = SlackyFactory::build(ListAll::class);
+        $listAllChannel = SlackyFactory::make(ListAll::class);
         self::assertInstanceOf(ListAll::class, $listAllChannel);
 
         $response = $listAllChannel->send();

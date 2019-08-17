@@ -84,7 +84,7 @@ class ScheduledMessage extends BaseMessage
     public function send()
     {
         /** @var ScheduleMessage $scheduleMessage */
-        $scheduleMessage = SlackyFactory::build(ScheduleMessage::class);
+        $scheduleMessage = SlackyFactory::make(ScheduleMessage::class);
         $response        = $scheduleMessage->setMessage($this)->send();
 
         return $response->isOk();
@@ -97,7 +97,7 @@ class ScheduledMessage extends BaseMessage
     public function delete()
     {
         /** @var DeleteScheduledMessage $deleteScheduledMessage */
-        $deleteScheduledMessage = SlackyFactory::build(DeleteScheduledMessage::class);
+        $deleteScheduledMessage = SlackyFactory::make(DeleteScheduledMessage::class);
         $response               = $deleteScheduledMessage->setMessage($this)->send();
 
         if ($response->isOk()) {

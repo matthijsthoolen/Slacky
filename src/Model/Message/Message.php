@@ -57,7 +57,7 @@ class Message extends BaseMessage
     public function send()
     {
         /** @var PostMessage $postMessage */
-        $postMessage = SlackyFactory::build(PostMessage::class);
+        $postMessage = SlackyFactory::make(PostMessage::class);
         $response    = $postMessage->setMessage($this)->send();
 
         return $response->isOk();
@@ -70,7 +70,7 @@ class Message extends BaseMessage
     public function delete()
     {
         /** @var Delete $deleteMessage */
-        $deleteMessage = SlackyFactory::build(Delete::class);
+        $deleteMessage = SlackyFactory::make(Delete::class);
         $response      = $deleteMessage->setMessage($this)->send();
 
         if ($response->isOk()) {
@@ -87,7 +87,7 @@ class Message extends BaseMessage
     public function update()
     {
         /** @var Update $updateMessage */
-        $updateMessage = SlackyFactory::build(Update::class);
+        $updateMessage = SlackyFactory::make(Update::class);
         $response      = $updateMessage->setMessage($this)->send();
 
         return $response->isOk();
