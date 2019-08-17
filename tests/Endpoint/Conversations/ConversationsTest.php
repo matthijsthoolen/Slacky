@@ -57,7 +57,6 @@ class ConversationsTest extends TestCase
      * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\Close
      * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\Open
      * @covers \MatthijsThoolen\Slacky\Model\Im::isOpen
-     * @covers \MatthijsThoolen\Slacky\Model\Im::isClose
      */
     public function testOpenClose()
     {

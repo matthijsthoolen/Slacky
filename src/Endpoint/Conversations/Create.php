@@ -14,5 +14,4 @@ class Create extends Endpoint
 
     /** @var string */
     protected $uri = 'conversations.create';
-
 }
