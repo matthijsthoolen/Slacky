@@ -9,6 +9,7 @@ use MatthijsThoolen\Slacky\Endpoint\Conversations\Invite;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Join;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Kick;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Leave;
+use MatthijsThoolen\Slacky\Endpoint\Conversations\Members;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Open;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Rename;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\SetPurpose;
@@ -107,7 +108,10 @@ class ConversationsTest extends TestCase
         $purposeEndpoint = SlackyFactory::make(SetPurpose::class);
         $topicEndpoint   = SlackyFactory::make(SetTopic::class);
 
-        $purposeEndpoint->setChannel($channel)->setPurposeString('Purpose are for unit tests')->send();
+        $purposeEndpoint
+            ->setChannel($channel)
+            ->setPurposeString('Purpose are for unit tests')
+            ->send();
         $topicEndpoint->setChannel($channel)->setTopicString('Unit Test')->send();
 
         $channel->refreshInfo();
@@ -144,6 +148,39 @@ class ConversationsTest extends TestCase
     }
 
     /**
+     * 1) The channel this function received should contain 2 members
+     * 2) Check if the members endpoint returns a cursor after the first call
+     * 3) Check the content of the first call
+     * 4) Send a request for the nextPage
+     * 5) Check if next page is filled, and no more pages are following.
+     *
+     * @param Channel $channel
+     *
+     * @return Channel
+     * @throws SlackyException
+     *
+     * @depends testInvite
+     * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\Members
+     * @covers  \MatthijsThoolen\Slacky\Helpers\Traits\Cursor
+     */
+    public function testMembers(Channel $channel)
+    {
+        self::assertEquals(2, $channel->refreshInfo()->getNumMembers());
+
+        $membersEndpoint = SlackyFactory::make(Members::class);
+        $response        = $membersEndpoint->setChannel($channel)->setLimit(1)->send();
+
+        self::assertNotNull($response->getNextCursor());
+
+        $page2 = $membersEndpoint->nextPage();
+
+        self::assertContainsOnlyInstancesOf(User::class, $page2->getObject());
+        self::assertEmpty($page2->getNextCursor());
+
+        return $channel;
+    }
+
+    /**
      * 1) Count the current number of members
      * 2) Leave the channel, check if response is OK
      * 3) Make sure the new count = previous - 1
@@ -157,7 +194,7 @@ class ConversationsTest extends TestCase
      *
      * @throws SlackyException
      *
-     * @depends testInvite
+     * @depends testMembers
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\Leave
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\Join
      * @covers  \MatthijsThoolen\Slacky\Model\Channel::getNumMembers
@@ -258,6 +295,11 @@ class ConversationsTest extends TestCase
     }
 
     /**
+     * 1) Create a IM channel
+     * 2) Check if it's open
+     * 3) Open the channel, and check if it's correctly opened
+     * 4) Close channel
+     *
      * @throws SlackyException
      *
      * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\Close

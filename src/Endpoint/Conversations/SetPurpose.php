@@ -17,7 +17,7 @@ class SetPurpose extends Endpoint
     protected $uri = 'conversations.setPurpose';
 
     /** @var Conversation */
-    protected $channel;
+    private $channel;
 
     /** @var string */
     private $purpose;
