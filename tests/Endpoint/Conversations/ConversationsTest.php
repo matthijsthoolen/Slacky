@@ -150,7 +150,7 @@ class ConversationsTest extends TestCase
             ->send();
 
         static::assertTrue($response->isOk());
-        static::assertSame($invite->getChannel, $channel);
+        static::assertSame($invite->getChannel(), $channel);
         static::assertEquals($invite->getUsers(), $users);
 
         return $channel;
