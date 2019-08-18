@@ -7,7 +7,7 @@ use MatthijsThoolen\Slacky\Endpoint\Im\Close;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\SlackyFactory;
 
-class Im extends Channel
+class Im extends Conversation
 {
     /** @var string */
     protected $id;

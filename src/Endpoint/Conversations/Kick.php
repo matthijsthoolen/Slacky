@@ -3,7 +3,7 @@
 namespace MatthijsThoolen\Slacky\Endpoint\Conversations;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
-use MatthijsThoolen\Slacky\Model\Channel;
+use MatthijsThoolen\Slacky\Model\Conversation;
 use MatthijsThoolen\Slacky\Model\User;
 
 /**
@@ -17,25 +17,25 @@ class Kick extends Endpoint
     /** @var string */
     protected $uri = 'conversations.kick';
 
-    /** @var Channel */
+    /** @var Conversation */
     protected $channel;
 
     /** @var User */
     protected $user;
 
     /**
-     * @return Channel
+     * @return Conversation
      */
-    public function getChannel(): Channel
+    public function getChannel(): Conversation
     {
         return $this->channel;
     }
 
     /**
-     * @param Channel $channel
+     * @param Conversation $channel
      * @return Kick
      */
-    public function setChannel(Channel $channel): Kick
+    public function setChannel(Conversation $channel): Kick
     {
         $this->channel               = $channel;
         $this->parameters['channel'] = $channel->getId();

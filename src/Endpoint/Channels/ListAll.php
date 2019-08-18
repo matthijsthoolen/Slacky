@@ -4,7 +4,7 @@ namespace MatthijsThoolen\Slacky\Endpoint\Channels;
 
 use Exception;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
-use MatthijsThoolen\Slacky\Model\PublicChannel;
+use MatthijsThoolen\Slacky\Model\Channel;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 /**
@@ -33,7 +33,7 @@ class ListAll extends Endpoint
         $bodyChannels = $body->getChannels();
 
         foreach ($bodyChannels as $channel) {
-            $channels[] = (new PublicChannel())->loadData($channel);
+            $channels[] = (new Channel())->loadData($channel);
         }
 
         $response->setObject($channels);

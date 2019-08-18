@@ -5,7 +5,7 @@ namespace MatthijsThoolen\Slacky\Endpoint\Conversations;
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\PrivateChannel;
-use MatthijsThoolen\Slacky\Model\PublicChannel;
+use MatthijsThoolen\Slacky\Model\Channel;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Model\User;
 
@@ -113,7 +113,7 @@ class Create extends Endpoint
         $channel = $response->getChannel();
 
         if ($channel['is_private'] === false) {
-            $channelObject = new PublicChannel();
+            $channelObject = new Channel();
         } else {
             $channelObject = new PrivateChannel();
         }

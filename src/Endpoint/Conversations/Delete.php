@@ -3,7 +3,7 @@
 namespace MatthijsThoolen\Slacky\Endpoint\Conversations;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
-use MatthijsThoolen\Slacky\Model\Channel;
+use MatthijsThoolen\Slacky\Model\Conversation;
 
 /**
  * Be aware that this API is not officially supported by Slack!!! It will most likely not work
@@ -17,22 +17,22 @@ class Delete extends Endpoint
     /** @var string */
     protected $uri = 'conversations.delete';
 
-    /** @var Channel */
+    /** @var Conversation */
     protected $channel;
 
     /**
-     * @return Channel
+     * @return Conversation
      */
-    public function getChannel(): Channel
+    public function getChannel(): Conversation
     {
         return $this->channel;
     }
 
     /**
-     * @param Channel $channel
+     * @param Conversation $channel
      * @return Delete
      */
-    public function setChannel(Channel $channel): Delete
+    public function setChannel(Conversation $channel): Delete
     {
         $this->channel               = $channel;
         $this->parameters['channel'] = $channel->getId();

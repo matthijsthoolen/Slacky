@@ -4,7 +4,7 @@ namespace MatthijsThoolen\Slacky\Endpoint\Chat\ScheduledMessages;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
-use MatthijsThoolen\Slacky\Model\PublicChannel;
+use MatthijsThoolen\Slacky\Model\Channel;
 use MatthijsThoolen\Slacky\Model\Message\ScheduledMessage;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
@@ -16,7 +16,7 @@ class ListAll extends Endpoint
     /** @var string */
     protected $uri = 'chat.scheduledMessages.list';
 
-    /** @var PublicChannel */
+    /** @var Channel */
     private $channel;
 
     /** @var int */
@@ -29,18 +29,18 @@ class ListAll extends Endpoint
     private $oldest;
 
     /**
-     * @return PublicChannel
+     * @return Channel
      */
-    public function getChannel(): PublicChannel
+    public function getChannel(): Channel
     {
         return $this->channel;
     }
 
     /**
-     * @param PublicChannel $channel
+     * @param Channel $channel
      * @return ListAll
      */
-    public function setChannel(PublicChannel $channel): ListAll
+    public function setChannel(Channel $channel): ListAll
     {
         $this->channel = $this->parameters['channel'] = $channel;
         return $this;

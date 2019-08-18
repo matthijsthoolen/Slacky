@@ -3,7 +3,7 @@
 namespace MatthijsThoolen\Slacky\Endpoint\Conversations;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
-use MatthijsThoolen\Slacky\Model\Channel;
+use MatthijsThoolen\Slacky\Model\Conversation;
 
 /**
  * @documentation https://api.slack.com/methods/conversations.close
@@ -16,22 +16,22 @@ class Close extends Endpoint
     /** @var string */
     protected $uri = 'conversations.close';
 
-    /** @var Channel */
+    /** @var Conversation */
     protected $channel;
 
     /**
-     * @return Channel
+     * @return Conversation
      */
-    public function getChannel(): Channel
+    public function getChannel(): Conversation
     {
         return $this->channel;
     }
 
     /**
-     * @param Channel $channel
+     * @param Conversation $channel
      * @return Close
      */
-    public function setChannel(Channel $channel): Close
+    public function setChannel(Conversation $channel): Close
     {
         $this->channel = $channel;
 

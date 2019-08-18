@@ -2,7 +2,16 @@
 
 namespace MatthijsThoolen\Slacky\Endpoint\Conversations;
 
-class Rename
-{
+use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 
+/**
+ * @documentation https://api.slack.com/methods/conversations.rename
+ */
+class Rename extends Endpoint
+{
+    /** @var string */
+    protected $method = 'POST';
+
+    /** @var string */
+    protected $uri = 'conversations.rename';
 }

@@ -3,7 +3,7 @@
 namespace MatthijsThoolen\Slacky\Endpoint\Conversations;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
-use MatthijsThoolen\Slacky\Model\Channel;
+use MatthijsThoolen\Slacky\Model\Conversation;
 
 /**
  * @documentation https://api.slack.com/methods/conversations.leave
@@ -16,22 +16,22 @@ class Leave extends Endpoint
     /** @var string */
     protected $uri = 'conversations.leave';
 
-    /** @var Channel */
+    /** @var Conversation */
     protected $channel;
 
     /**
-     * @return Channel
+     * @return Conversation
      */
-    public function getChannel(): Channel
+    public function getChannel(): Conversation
     {
         return $this->channel;
     }
 
     /**
-     * @param Channel $channel
+     * @param Conversation $channel
      * @return $this
      */
-    public function setChannel(Channel $channel): Leave
+    public function setChannel(Conversation $channel): Leave
     {
         $this->channel               = $channel;
         $this->parameters['channel'] = $channel->getId();

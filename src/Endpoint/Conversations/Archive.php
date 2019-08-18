@@ -3,8 +3,8 @@
 namespace MatthijsThoolen\Slacky\Endpoint\Conversations;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
+use MatthijsThoolen\Slacky\Model\Conversation;
 use MatthijsThoolen\Slacky\Model\Channel;
-use MatthijsThoolen\Slacky\Model\PublicChannel;
 
 /**
  * @documentation https://api.slack.com/methods/conversations.archive
@@ -17,22 +17,22 @@ class Archive extends Endpoint
     /** @var string */
     protected $uri = 'conversations.archive';
 
-    /** @var Channel */
+    /** @var Conversation */
     protected $channel;
 
     /**
-     * @return Channel
+     * @return Conversation
      */
-    public function getChannel(): Channel
+    public function getChannel(): Conversation
     {
         return $this->channel;
     }
 
     /**
-     * @param Channel $channel
-     * @return Archive
+     * @param Conversation $channel
+     * @return $this
      */
-    public function setChannel(Channel $channel): Archive
+    public function setChannel(Conversation $channel): Archive
     {
         $this->channel = $channel;
 

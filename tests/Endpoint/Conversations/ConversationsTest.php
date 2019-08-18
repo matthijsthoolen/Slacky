@@ -10,10 +10,12 @@ use MatthijsThoolen\Slacky\Endpoint\Conversations\Join;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Kick;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Leave;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Open;
+use MatthijsThoolen\Slacky\Endpoint\Conversations\SetPurpose;
+use MatthijsThoolen\Slacky\Endpoint\Conversations\SetTopic;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Unarchive;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\Im;
-use MatthijsThoolen\Slacky\Model\PublicChannel;
+use MatthijsThoolen\Slacky\Model\Channel;
 use MatthijsThoolen\Slacky\Model\User;
 use MatthijsThoolen\Slacky\SlackyFactory;
 use PHPUnit\Framework\TestCase;
@@ -32,7 +34,7 @@ class ConversationsTest extends TestCase
      * @throws SlackyException
      *
      * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\Create
-     * @covers \MatthijsThoolen\Slacky\Model\PublicChannel
+     * @covers \MatthijsThoolen\Slacky\Model\Channel
      * @covers \MatthijsThoolen\Slacky\Model\User::setId
      */
     public function testCreate()
@@ -46,9 +48,9 @@ class ConversationsTest extends TestCase
             ->setUsers([(new User())->setId(getenv('SLACK_PHPUNIT_USER'))])
             ->send();
 
-        /** @var PublicChannel $channel */
+        /** @var Channel $channel */
         $channel = $response->getObject();
-        static::assertInstanceOf(PublicChannel::class, $channel);
+        static::assertInstanceOf(Channel::class, $channel);
 
         $channel->refreshInfo();
         static::assertEquals(1, $channel->getNumMembers());
@@ -58,15 +60,47 @@ class ConversationsTest extends TestCase
     }
 
     /**
-     * 1) Invite a new user to a channel created in TestCreate
+     * 1) Set the purpose and topic with the endpoint helpers.
+     * 2) Reload the channel information
+     * 3) Test if the channel has the correct topic and purpose
      *
-     * @param PublicChannel $channel
+     * @param Channel $channel
+     * @return Channel
+     *
+     * @throws SlackyException
      *
      * @depends testCreate
-     * @return PublicChannel
+     * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\SetPurpose
+     * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\SetTopic
+     */
+    public function testPurposeAndTopic(Channel $channel)
+    {
+        $purposeEndpoint = SlackyFactory::make(SetPurpose::class);
+        $topicEndpoint   = SlackyFactory::make(SetTopic::class);
+
+        $purposeEndpoint->setChannel($channel)->setPurpose('Purpose are for unit tests')->send();
+        $topicEndpoint->setChannel($channel)->setTopic('Unit Test')->send();
+
+        $channel->refreshInfo();
+
+        $purpose = $channel->getPurpose();
+        $topic   = $channel->getTopic();
+        self::assertEquals('Purpose are for unit tests', $purpose['value']);
+        self::assertEquals('Unit Test', $topic['value']);
+
+        return $channel;
+    }
+
+    /**
+     * 1) Invite a new user to a channel created in TestCreate
+     *
+     * @param Channel $channel
+     *
+     * @depends testPurposeAndTopic
+     * @return Channel
      * @throws SlackyException
      */
-    public function testInvite(PublicChannel $channel)
+    public function testInvite(Channel $channel)
     {
         $invite = SlackyFactory::make(Invite::class);
 
@@ -88,17 +122,17 @@ class ConversationsTest extends TestCase
      * 5) Check the count
      * 6) Check if a warning is returned if trying to join while already in channel
      *
-     * @param PublicChannel $channel
-     * @return PublicChannel
+     * @param Channel $channel
+     * @return Channel
      *
      * @throws SlackyException
      *
      * @depends testInvite
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\Leave
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\Join
-     * @covers  \MatthijsThoolen\Slacky\Model\PublicChannel::getNumMembers
+     * @covers  \MatthijsThoolen\Slacky\Model\Channel::getNumMembers
      */
-    public function testLeaveAndJoin(PublicChannel $channel)
+    public function testLeaveAndJoin(Channel $channel)
     {
         $numMembers = $channel->refreshInfo()->getNumMembers();
 
@@ -126,16 +160,16 @@ class ConversationsTest extends TestCase
      * 2) Expect error 'cant_kick_self'
      * 3) Kick friend, expect response is ok.
      *
-     * @param PublicChannel $channel
+     * @param Channel $channel
      *
-     * @return PublicChannel
+     * @return Channel
      * @throws SlackyException
      *
      * @depends testCreate
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\Kick
      * @covers  \MatthijsThoolen\Slacky\Model\SlackyResponse::getError
      */
-    public function testKick(PublicChannel $channel)
+    public function testKick(Channel $channel)
     {
         $kick = SlackyFactory::make(Kick::class);
 
@@ -163,10 +197,10 @@ class ConversationsTest extends TestCase
 
     /**
      * 1) Make sure the channel is currently not archived before the test starts
+     * 3) Try to unarchive the chat, check if this gives the expected error
      * 2) Archive the chat, refreshinfo and check
-     * 3) Unarchive the chat, refreshinfo and check
      *
-     * @param PublicChannel $channel
+     * @param Channel $channel
      *
      * @throws SlackyException
      *
@@ -174,7 +208,7 @@ class ConversationsTest extends TestCase
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\Archive
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\Unarchive
      */
-    public function testArchive(PublicChannel $channel)
+    public function testArchive(Channel $channel)
     {
         $archive = SlackyFactory::make(Archive::class);
         static::assertInstanceOf(Archive::class, $archive);
