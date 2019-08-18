@@ -187,6 +187,9 @@ class ConversationsTest extends TestCase
         self::assertContainsOnlyInstancesOf(User::class, $page2->getObject());
         self::assertEmpty($page2->getNextCursor());
 
+        self::assertNull($membersEndpoint->nextPage());
+        self::assertEquals(1, $membersEndpoint->getLimit());
+
         return $channel;
     }
 
@@ -218,12 +221,14 @@ class ConversationsTest extends TestCase
         self::assertTrue($response->isOk());
 
         self::assertEquals($numMembers - 1, $channel->refreshInfo()->getNumMembers());
+        self::assertSame($channel, $leave->getChannel());
 
         $join     = SlackyFactory::make(Join::class);
         $response = $join->setChannel($channel)->send();
         self::assertTrue($response->isOk());
 
         self::assertEquals($numMembers, $channel->refreshInfo()->getNumMembers());
+        self::assertSame($channel, $join->getChannel());
 
         $response = $join->send();
         $body     = $response->getBody();
