@@ -43,9 +43,8 @@ class ConversationsTest extends TestCase
     {
         $create = SlackyFactory::make(Create::class);
 
-        $name     = strtolower(uniqid('UT'));
         $response = $create
-            ->setName($name)
+            ->setName(strtolower(uniqid('UT')))
             ->setIsPrivate(false)
             ->setUsers([(new User())->setId(getenv('SLACK_PHPUNIT_USER'))])
             ->send();
@@ -56,7 +55,14 @@ class ConversationsTest extends TestCase
 
         $channel->refreshInfo();
         static::assertEquals(1, $channel->getNumMembers());
-        static::assertEquals($name, $channel->getName());
+        static::assertEquals($create->getName(), $channel->getName());
+        static::assertFalse($create->isPrivate());
+
+        $userIds = [];
+        foreach ($channel->getMembers() as $member) {
+            $userIds[] = $member->getId();
+        }
+        static::assertEquals($create->getUserIds(), $userIds);
 
         return $channel;
     }
@@ -137,12 +143,15 @@ class ConversationsTest extends TestCase
     {
         $invite = SlackyFactory::make(Invite::class);
 
+        $users    = [(new User())->setId(getenv('SLACK_PHPUNIT_USER_FRIEND'))];
         $response = $invite
             ->setChannel($channel)
-            ->setUsers([(new User())->setId(getenv('SLACK_PHPUNIT_USER_FRIEND'))])
+            ->setUsers($users)
             ->send();
 
         static::assertTrue($response->isOk());
+        static::assertSame($invite->getChannel, $channel);
+        static::assertEquals($invite->getUsers(), $users);
 
         return $channel;
     }
@@ -171,6 +180,7 @@ class ConversationsTest extends TestCase
         $response        = $membersEndpoint->setChannel($channel)->setLimit(1)->send();
 
         self::assertNotNull($response->getNextCursor());
+        self::assertSame($channel, $membersEndpoint->getChannel());
 
         $page2 = $membersEndpoint->nextPage();
 
@@ -241,7 +251,7 @@ class ConversationsTest extends TestCase
         $kick = SlackyFactory::make(Kick::class);
 
         try {
-            $response = $kick
+            $kick
                 ->setChannel($channel)
                 ->setUser((new User())->setId(getenv('SLACK_PHPUNIT_USER')))
                 ->send();
@@ -289,9 +299,11 @@ class ConversationsTest extends TestCase
             self::assertStringContainsString('not_archived', $e->getMessage());
         }
         self::assertFalse($channel->refreshInfo()->isArchived());
+        self::assertSame($channel, $unarchive->getChannel());
 
         $archive->setChannel($channel)->send();
         self::assertTrue($channel->refreshInfo()->isArchived());
+        self::assertSame($channel, $archive->getChannel());
     }
 
     /**

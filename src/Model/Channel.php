@@ -38,7 +38,7 @@ class Channel extends Conversation
     private $isMpim;
 
     /** @var array */
-    private $members;
+    protected $members;
 
     /** @var array */
     private $topic;
@@ -231,16 +231,6 @@ class Channel extends Conversation
     {
         $this->isMpim = $isMpim;
         return $this;
-    }
-
-    /**
-     * @return array
-     * @throws SlackyException
-     */
-    public function getMembers(): array
-    {
-        parent::get();
-        return $this->members;
     }
 
     /**

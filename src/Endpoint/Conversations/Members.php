@@ -45,6 +45,12 @@ class Members extends Endpoint
         return $this;
     }
 
+    /**
+     * @param SlackyResponse $response
+     *
+     * @return SlackyResponse
+     * @throws \MatthijsThoolen\Slacky\Exception\SlackyException
+     */
     public function handleResponse(SlackyResponse $response)
     {
         parent::handleResponse($response);

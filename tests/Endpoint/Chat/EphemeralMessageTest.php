@@ -34,6 +34,7 @@ class EphemeralMessageTest extends TestCase
         $response = $postMessage->setMessage($message)->send();
         self::assertInstanceOf(SlackyResponse::class, $response);
         self::assertSame(200, $response->getStatusCode());
+        self::assertSame($message->getUser(), getenv('SLACK_PHPUNIT_USER'));
 
         $message = $response->getObject();
         self::assertInstanceOf(EphemeralMessage::class, $message);
