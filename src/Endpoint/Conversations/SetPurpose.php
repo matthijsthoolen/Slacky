@@ -32,6 +32,7 @@ class SetPurpose extends Endpoint
 
     /**
      * @param Conversation $channel
+     *
      * @return $this
      */
     public function setChannel(Conversation $channel): SetPurpose
@@ -51,10 +52,13 @@ class SetPurpose extends Endpoint
     }
 
     /**
+     * Function name appended with String due to PHP4 constructor warnings
+     *
      * @param string $purpose
+     *
      * @return SetPurpose
      */
-    public function setPurpose(string $purpose): SetPurpose
+    public function setPurposeString(string $purpose): SetPurpose
     {
         $this->purpose = $this->parameters['purpose'] = $purpose;
         return $this;

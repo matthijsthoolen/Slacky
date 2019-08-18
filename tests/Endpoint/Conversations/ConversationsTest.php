@@ -107,8 +107,8 @@ class ConversationsTest extends TestCase
         $purposeEndpoint = SlackyFactory::make(SetPurpose::class);
         $topicEndpoint   = SlackyFactory::make(SetTopic::class);
 
-        $purposeEndpoint->setChannel($channel)->setPurpose('Purpose are for unit tests')->send();
-        $topicEndpoint->setChannel($channel)->setTopic('Unit Test')->send();
+        $purposeEndpoint->setChannel($channel)->setPurposeString('Purpose are for unit tests')->send();
+        $topicEndpoint->setChannel($channel)->setTopicString('Unit Test')->send();
 
         $channel->refreshInfo();
 

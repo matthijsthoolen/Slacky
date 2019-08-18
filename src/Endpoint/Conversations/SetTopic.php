@@ -32,6 +32,7 @@ class SetTopic extends Endpoint
 
     /**
      * @param Conversation $channel
+     *
      * @return $this
      */
     public function setChannel(Conversation $channel): SetTopic
@@ -48,13 +49,16 @@ class SetTopic extends Endpoint
     public function getTopic(): string
     {
         return $this->topic;
-    }/**
+    }
 
     /**
+     * Function name appended with String due to PHP4 constructor warnings
+     *
      * @param string $topic
+     *
      * @return SetTopic
      */
-    public function setTopic(string $topic): SetTopic
+    public function setTopicString(string $topic): SetTopic
     {
         $this->topic = $this->parameters['topic'] = $topic;
         return $this;
