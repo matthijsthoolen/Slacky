@@ -3,6 +3,7 @@
 namespace MatthijsThoolen\Slacky\Endpoint\Conversations;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
+use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Helpers\Traits\Cursor;
 use MatthijsThoolen\Slacky\Model\Conversation;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
@@ -49,7 +50,7 @@ class Members extends Endpoint
      * @param SlackyResponse $response
      *
      * @return SlackyResponse
-     * @throws \MatthijsThoolen\Slacky\Exception\SlackyException
+     * @throws SlackyException
      */
     public function handleResponse(SlackyResponse $response)
     {
