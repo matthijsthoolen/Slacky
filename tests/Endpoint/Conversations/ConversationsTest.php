@@ -10,6 +10,7 @@ use MatthijsThoolen\Slacky\Endpoint\Conversations\Join;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Kick;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Leave;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Open;
+use MatthijsThoolen\Slacky\Endpoint\Conversations\Rename;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\SetPurpose;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\SetTopic;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Unarchive;
@@ -60,16 +61,44 @@ class ConversationsTest extends TestCase
     }
 
     /**
+     * 1) Get the current name
+     * 2) Add -rename to the end of the current name, and save
+     * 3) Check if the name new is correctly set after a refreshInfo call
+     * 4) Check if the previousName is set in getPreviousNames
+     *
+     * @param Channel $channel
+     *
+     * @return Channel
+     * @throws SlackyException
+     *
+     * @depends testCreate
+     */
+    public function testRename(Channel $channel)
+    {
+        $renameEndpoint = SlackyFactory::make(Rename::class);
+
+        $oldName = $channel->getName();
+        $newName = $oldName . '-renamed';
+        $renameEndpoint->setChannel($channel)->setName($newName)->send();
+
+        self::assertEquals($newName, $channel->refreshInfo()->getName());
+        self::assertContains($oldName, $channel->getPreviousNames());
+
+        return $channel;
+    }
+
+    /**
      * 1) Set the purpose and topic with the endpoint helpers.
      * 2) Reload the channel information
      * 3) Test if the channel has the correct topic and purpose
      *
      * @param Channel $channel
+     *
      * @return Channel
      *
      * @throws SlackyException
      *
-     * @depends testCreate
+     * @depends testRename
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\SetPurpose
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\SetTopic
      */
@@ -123,6 +152,7 @@ class ConversationsTest extends TestCase
      * 6) Check if a warning is returned if trying to join while already in channel
      *
      * @param Channel $channel
+     *
      * @return Channel
      *
      * @throws SlackyException
