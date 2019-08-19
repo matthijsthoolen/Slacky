@@ -4,6 +4,8 @@ namespace MatthijsThoolen\Slacky\Tests\Endpoint\Conversations;
 
 use MatthijsThoolen\Slacky\Endpoint\Conversations\History;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
+use MatthijsThoolen\Slacky\Model\Channel;
+use MatthijsThoolen\Slacky\Model\Message\Message;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\SlackyFactory;
 use MatthijsThoolen\Slacky\Tests\Helpers\ChannelHelper;
@@ -14,24 +16,45 @@ use function uniqid;
 class ConversationsHistoryTest extends TestCase
 {
 
+    /** @var string[] */
+    private static $messageIds;
+
+    /** @var Message[] */
+    private static $messages;
+
+    /** @var Channel */
+    private static $channel;
+
     /**
      * @throws SlackyException
+     */
+    public static function setupBeforeClass(): void
+    {
+        self::$channel = ChannelHelper::createChannel();
+
+        // Create three messages
+        for ($i = 0; $i <= 2; $i++) {
+            $message            = MessageHelper::sendMessage(self::$channel, uniqid());
+            self::$messageIds[] = $message->getTs();
+            self::$messages[]   = $message;
+        }
+    }
+
+    /**
+     * @throws SlackyException
+     *
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::hasNextPage()
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::nextPage
+     *
      */
     public function testChannelHistory()
     {
         $historyEndpoint = SlackyFactory::make(History::class);
-
-        $channel = ChannelHelper::createChannel();
-
-        $messageOne   = MessageHelper::sendMessage($channel, uniqid());
-        $messageTwo   = MessageHelper::sendMessage($channel, uniqid());
-        $messageThree = MessageHelper::sendMessage($channel, uniqid());
-
         $historyEndpoint->setLimit(1);
 
-        $responses = [];
-
-        $responses[] = $historyEndpoint->setChannel($channel)->send();
+        $responses = [$historyEndpoint->setChannel(self::$channel)->send()];
+        self::assertSame(self::$channel, $historyEndpoint->getChannel());
 
         while ($historyEndpoint->hasNextPage()) {
             $nextPage = $historyEndpoint->nextPage();
@@ -41,19 +64,52 @@ class ConversationsHistoryTest extends TestCase
 
         $messageIds = [];
         foreach ($responses as $response) {
-            $message      = $response->getMessages()[0];
-            $messageIds[] = $message['ts'];
+            $messageIds[] = $response->getMessages()[0]['ts'];
         }
 
         // All send messages should be returned. There might be more messages returned (joined etc.)
-        static::assertTrue(!array_diff(
-            [$messageOne->getTs(), $messageTwo->getTs(), $messageThree->getTs()],
-            $messageIds
-        ));
+        static::assertTrue(!array_diff(self::$messageIds, $messageIds));
     }
 
     /**
+     * 1) Set the latest to the third (of three total) messages, limit set to 2
+     * 2) Expect to receive the second and first message.
+     * 3) Check if latest is now set to the first send message
+     * 4) If we set inclusive to true, and limit to 1, the endpoint should return the first message
+     *
      * @throws SlackyException
+     */
+    public function testTimeBasedPagination()
+    {
+        $historyEndpoint = SlackyFactory::make(History::class);
+
+        $response = $historyEndpoint
+            ->setChannel(self::$channel)
+            ->setLimit(2)
+            ->setLatest(self::$messages[2]->getTs())
+            ->send();
+
+        self::assertEquals(2, $historyEndpoint->getLimit());
+
+        /** @var Message[] $messages */
+        $messages = $response->getObject();
+        self::assertEquals(self::$messageIds[1], $messages[0]->getTs());
+        self::assertEquals(self::$messageIds[0], $messages[1]->getTs());
+
+        self::assertEquals(self::$messageIds[0], $historyEndpoint->getLatest());
+
+        $response = $historyEndpoint->setInclusive(true)->setLimit(1)->send();
+
+        /** @var Message[] $messages */
+        $messages = $response->getObject();
+        self::assertCount(1, $messages);
+        self::assertContainsOnlyInstancesOf(Message::class, $messages);
+
+        self::assertEquals(self::$messages[0]->getTs(), $messages[0]->getTs());
+    }
+
+    /**
+     * Remove all created data
      */
     public static function tearDownAfterClass(): void
     {

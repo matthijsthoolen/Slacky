@@ -103,9 +103,9 @@ class SlackyResponse
     }
 
     /**
-     * @return float
+     * @return string
      */
-    public function getLatest(): float
+    public function getLatest(): string
     {
         return $this->latest;
     }

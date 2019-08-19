@@ -2,6 +2,7 @@
 
 namespace MatthijsThoolen\Slacky\Helpers\Traits;
 
+use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 trait PaginationByTime
@@ -9,6 +10,7 @@ trait PaginationByTime
     use Pagination {
         Pagination::nextPage as parentNextPage;
         Pagination::hasNextPage as parentHasNextPage;
+        Pagination::handleResponse as parentHandleResponse;
     }
 
     /** @var bool */
@@ -94,19 +96,46 @@ trait PaginationByTime
             return $this->parentNextPage();
         }
 
-        $response = $this->send();
+        return $this->send();
+    }
 
-        $this->setOldest(null);
-
-        // Reset latest and oldest if no more messages available
-        if ($response->isHasMore() === false) {
-            $this->setLatest(null);
-
-            return $response;
+    /**
+     * @param SlackyResponse $response
+     *
+     * @return SlackyResponse
+     * @throws SlackyException
+     */
+    public function handleResponse(SlackyResponse $response)
+    {
+        // Make sure the pagination logic is called when we dont deal with timeBased pagination
+        if ($this->latest === null && $this->oldest === null) {
+            return $this->parentHandleResponse($response);
         }
 
-        $this->setLatest($response->getLatest());
+        // call endpoints handleResponse
+        parent::handleResponse($response);
+
+        // Reset latest
+        $this->setLatest(null);
+
+        $response->setObject($this->getObjectFromResponse($response));
+
+        // If there is more, get the objects from the response
+        if ($response->isHasMore()) {
+            $objects    = $response->getObject();
+            $lastObject = end($objects);
+            $this->setLatest($lastObject->getTs());
+        }
 
         return $response;
     }
+
+    /**
+     * Return a object corresponding to the endpoint
+     *
+     * @param SlackyResponse $response
+     *
+     * @return mixed
+     */
+    abstract protected function getObjectFromResponse(SlackyResponse $response);
 }
