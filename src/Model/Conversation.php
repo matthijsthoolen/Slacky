@@ -76,7 +76,10 @@ abstract class Conversation extends Model
     public function refreshInfo()
     {
         $info     = SlackyFactory::make(Info::class);
-        $response = $info->setConversation($this)->setIncludeNumMembers(true)->send();
+        $response = $info
+            ->setConversation($this)
+            ->setIncludeNumMembers(true)
+            ->send();
 
         /** @noinspection PhpUndefinedMethodInspection */
         $this->loadData($response->getChannel());

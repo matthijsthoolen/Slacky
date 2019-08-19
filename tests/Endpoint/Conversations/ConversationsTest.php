@@ -5,6 +5,7 @@ namespace MatthijsThoolen\Slacky\Tests\Endpoint\Conversations;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Archive;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Close;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Create;
+use MatthijsThoolen\Slacky\Endpoint\Conversations\Info;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Invite;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Join;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Kick;
@@ -119,6 +120,11 @@ class ConversationsTest extends TestCase
             ->setPurposeString('Purpose are for unit tests')
             ->send();
         $topicEndpoint->setChannel($channel)->setTopicString('Unit Test')->send();
+
+        static::assertEquals('Purpose are for unit tests', $purposeEndpoint->getPurpose());
+        static::assertSame($channel, $purposeEndpoint->getChannel());
+        static::assertEquals('Unit Test', $topicEndpoint->getTopic());
+        static::assertSame($channel, $topicEndpoint->getChannel());
 
         $channel->refreshInfo();
 
@@ -266,13 +272,45 @@ class ConversationsTest extends TestCase
 
         $numMembers = $channel->refreshInfo()->getNumMembers();
 
+        $user     = (new User())->setId(getenv('SLACK_PHPUNIT_USER_FRIEND'));
         $response = $kick
             ->setChannel($channel)
-            ->setUser((new User())->setId(getenv('SLACK_PHPUNIT_USER_FRIEND')))
+            ->setUser($user)
             ->send();
 
         self::assertTrue($response->isOk());
         self::assertEquals($numMembers - 1, $channel->refreshInfo()->getNumMembers());
+        self::assertSame($channel, $kick->getChannel());
+        self::assertSame($user, $kick->getUser());
+
+        return $channel;
+    }
+
+    /**
+     * 1) Test Info factory
+     * 2) Test if information is updated correctly
+     *
+     * @param Channel $channel
+     *
+     * @return Channel
+     * @throws SlackyException
+     *
+     * @depends testKick
+     */
+    public function testInfo(Channel $channel)
+    {
+        $infoEndpoint = SlackyFactory::make(Info::class);
+        static::assertInstanceOf(Info::class, $infoEndpoint);
+
+        $response = $infoEndpoint
+            ->setIncludeLocale(false)
+            ->setIncludeNumMembers(true)
+            ->setConversation($channel)
+            ->send();
+
+        static::assertTrue($response->isOk());
+        static::assertInstanceOf(Channel::class, $response->getObject());
+        static::assertSame($channel, $response->getObject());
 
         return $channel;
     }
@@ -286,7 +324,7 @@ class ConversationsTest extends TestCase
      *
      * @throws SlackyException
      *
-     * @depends testKick
+     * @depends testInfo
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\Archive
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\Unarchive
      */
@@ -336,8 +374,10 @@ class ConversationsTest extends TestCase
 
         $open->setChannel($im)->send();
         self::assertTrue($im->refreshInfo()->isOpen());
+        self::assertSame($im, $open->getChannel());
 
         $close->setChannel($im)->send();
         self::assertFalse($im->refreshInfo()->isOpen());
+        self::assertSame($im, $close->getChannel());
     }
 }

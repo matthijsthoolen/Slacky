@@ -61,6 +61,7 @@ class Info extends Endpoint
     public function handleResponse(SlackyResponse $response)
     {
         parent::handleResponse($response);
+
         /** @noinspection PhpUndefinedMethodInspection */
         $response->setObject($this->conversation->loadData($response->getChannel()));
 

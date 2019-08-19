@@ -45,12 +45,39 @@ class ImTest extends TestCase
     }
 
     /**
+     * 1) Create a new IM object
+     * 2) Try to set the empty IM object to openEndpoint. Expect a exception.
+     * 3) Set User to IM object, and try again
+     *
+     * @throws SlackyException
+     *
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Im\Open::setIm()
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Im\Open::setUser()
+     */
+    public function testOpenExistingIm()
+    {
+        $im     = new Im();
+        $openIm = SlackyFactory::make(Open::class);
+
+        try {
+            $openIm->setIm($im);
+        } catch (SlackyException $e) {
+            static::assertStringContainsString('Im user is not set', $e->getMessage());
+        }
+
+        $im->setUser((new User())->setId(getenv('SLACK_PHPUNIT_USER')));
+
+        static::assertInstanceOf(Open::class, $openIm->setIm($im));
+    }
+
+    /**
      * 1) Send 2 messages into the channel
      * 2) Get the history, only ask for one message at a time
      * 3) Check if all messages are a Message instance
      * 4) Make sure the MessageIterable::next() function is called at least once
      *
      * @param Im $im
+     *
      * @return Im
      *
      * @throws SlackyException
@@ -88,13 +115,14 @@ class ImTest extends TestCase
      * 3) Check if first message is indeed marked
      *
      * @param Im $im
+     *
      * @throws SlackyException
      *
      * @depends testHistory
      *
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Im\Mark
-     * @covers \MatthijsThoolen\Slacky\Model\Im::getLastRead
-     * @covers \MatthijsThoolen\Slacky\Model\Im::refreshInfo
+     * @covers  \MatthijsThoolen\Slacky\Endpoint\Im\Mark
+     * @covers  \MatthijsThoolen\Slacky\Model\Im::getLastRead
+     * @covers  \MatthijsThoolen\Slacky\Model\Im::refreshInfo
      */
     public function testMark(Im $im)
     {

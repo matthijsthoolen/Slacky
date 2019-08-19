@@ -24,7 +24,7 @@ class Im extends Conversation
     /** @var bool */
     private $is_org_shared = false;
 
-    /** @var User */
+    /** @var User|null */
     private $user;
 
     /** @var string */
@@ -138,9 +138,9 @@ class Im extends Conversation
     }
 
     /**
-     * @return User
+     * @return User|null
      */
-    public function getUser(): User
+    public function getUser()
     {
         return $this->user;
     }

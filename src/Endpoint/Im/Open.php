@@ -35,16 +35,17 @@ class Open extends Endpoint
 
     /**
      * @param Im $im
+     *
      * @return $this
      * @throws SlackyException
      */
     public function setIm(Im $im)
     {
-        $this->im = $im;
-
         if ($im->getUser() === null) {
             throw new SlackyException('Im user is not set!');
         }
+
+        $this->im                 = $im;
         $this->parameters['user'] = $im->getUser()->getId();
 
         return $this;
@@ -52,6 +53,7 @@ class Open extends Endpoint
 
     /**
      * @param User $user
+     *
      * @return Open
      */
     public function setUser(User $user)
@@ -64,6 +66,7 @@ class Open extends Endpoint
 
     /**
      * @param SlackyResponse $response
+     *
      * @return SlackyResponse
      * @throws SlackyException
      */
