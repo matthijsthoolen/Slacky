@@ -17,8 +17,10 @@ use MatthijsThoolen\Slacky\Endpoint\Conversations\SetPurpose;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\SetTopic;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Unarchive;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
+use MatthijsThoolen\Slacky\Model\Conversation;
 use MatthijsThoolen\Slacky\Model\Im;
 use MatthijsThoolen\Slacky\Model\Channel;
+use MatthijsThoolen\Slacky\Model\PrivateChannel;
 use MatthijsThoolen\Slacky\Model\User;
 use MatthijsThoolen\Slacky\SlackyFactory;
 use PHPUnit\Framework\TestCase;
@@ -69,10 +71,34 @@ class ConversationsTest extends TestCase
     }
 
     /**
+     * 1) Create a private channel
+     * 2) archive the private channel
+     *
+     * @throws SlackyException
+     */
+    public function testCreatePrivate()
+    {
+        $create = SlackyFactory::make(Create::class);
+
+        $response = $create
+            ->setName(strtolower(uniqid('UT-private')))
+            ->setIsPrivate(true)
+            ->setUsers([(new User())->setId(getenv('SLACK_PHPUNIT_USER'))])
+            ->send();
+
+        /** @var PrivateChannel $channel */
+        $channel = $response->getObject();
+        static::assertInstanceOf(PrivateChannel::class, $channel);
+
+        $archive = SlackyFactory::make(Archive::class);
+        static::assertTrue($archive->setChannel($channel)->send());
+    }
+
+    /**
      * 1) Get the current name
      * 2) Add -rename to the end of the current name, and save
      * 3) Check if the name new is correctly set after a refreshInfo call
-     * 4) Check if the previousName is set in getPreviousNames
+     * 4) Check if the previousName is set in ge tPreviousNames
      *
      * @param Channel $channel
      *
@@ -88,6 +114,9 @@ class ConversationsTest extends TestCase
         $oldName = $channel->getName();
         $newName = $oldName . '-renamed';
         $renameEndpoint->setChannel($channel)->setName($newName)->send();
+
+        self::assertSame($channel, $renameEndpoint->getChannel());
+        self::assertEquals($newName, $renameEndpoint->getName());
 
         self::assertEquals($newName, $channel->refreshInfo()->getName());
         self::assertContains($oldName, $channel->getPreviousNames());

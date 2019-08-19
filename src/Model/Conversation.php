@@ -2,6 +2,7 @@
 
 namespace MatthijsThoolen\Slacky\Model;
 
+use MatthijsThoolen\Slacky\Endpoint\Conversations\Create;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Info;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Members;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
@@ -17,6 +18,12 @@ abstract class Conversation extends Model
 
     /** @var array */
     protected $members;
+
+    /** @var array */
+    protected $allowedProperties = array(
+        'id',
+        'members'
+    );
 
     /**
      * @return string

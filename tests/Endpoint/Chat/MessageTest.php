@@ -55,6 +55,26 @@ class MessageTest extends TestCase
     }
 
     /**
+     * 1) Try to send a message with
+     *
+     * @throws SlackyException
+     */
+    public function testMessageSend()
+    {
+        $message = new Message();
+        $message->setChannel(getenv('SLACK_PHPUNIT_CHANNEL'));
+        $message->setText('Unit test testSendMessage');
+
+        self::assertTrue($message->send());
+
+        self::assertInstanceOf(Message::class, $message);
+        self::assertNotNull($message->getTs());
+
+        // And cleanup
+        static::assertTrue($message->delete());
+    }
+
+    /**
      * @depends testSendMessage
      * @param Message $message
      * @return Message
