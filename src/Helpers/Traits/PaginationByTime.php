@@ -79,7 +79,9 @@ trait PaginationByTime
 
     public function hasNextPage()
     {
-        return $this->latest !== null || $this->oldest !== null || $this->parentHasNextPage() !== false;
+        return $this->latest !== null ||
+            $this->oldest !== null ||
+            $this->parentHasNextPage() !== false;
     }
 
     /**
