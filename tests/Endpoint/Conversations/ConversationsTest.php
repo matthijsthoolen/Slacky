@@ -21,6 +21,7 @@ use MatthijsThoolen\Slacky\Model\Conversation;
 use MatthijsThoolen\Slacky\Model\Im;
 use MatthijsThoolen\Slacky\Model\Channel;
 use MatthijsThoolen\Slacky\Model\PrivateChannel;
+use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Model\User;
 use MatthijsThoolen\Slacky\SlackyFactory;
 use PHPUnit\Framework\TestCase;
@@ -90,8 +91,10 @@ class ConversationsTest extends TestCase
         $channel = $response->getObject();
         static::assertInstanceOf(PrivateChannel::class, $channel);
 
-        $archive = SlackyFactory::make(Archive::class);
-        static::assertTrue($archive->setChannel($channel)->send());
+        $archive  = SlackyFactory::make(Archive::class);
+        $response = $archive->setChannel($channel)->send();
+        static::assertInstanceOf(SlackyResponse::class, $response);
+        static::assertTrue($response->isOk());
     }
 
     /**
