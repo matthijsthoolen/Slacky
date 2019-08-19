@@ -17,9 +17,8 @@ use MatthijsThoolen\Slacky\Endpoint\Conversations\SetPurpose;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\SetTopic;
 use MatthijsThoolen\Slacky\Endpoint\Conversations\Unarchive;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
-use MatthijsThoolen\Slacky\Model\Conversation;
-use MatthijsThoolen\Slacky\Model\Im;
 use MatthijsThoolen\Slacky\Model\Channel;
+use MatthijsThoolen\Slacky\Model\Im;
 use MatthijsThoolen\Slacky\Model\PrivateChannel;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Model\User;
@@ -208,7 +207,7 @@ class ConversationsTest extends TestCase
      *
      * @depends testInvite
      * @covers  \MatthijsThoolen\Slacky\Endpoint\Conversations\Members
-     * @covers  \MatthijsThoolen\Slacky\Helpers\Traits\Cursor
+     * @covers  \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime
      */
     public function testMembers(Channel $channel)
     {

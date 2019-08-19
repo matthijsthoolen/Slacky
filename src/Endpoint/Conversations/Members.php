@@ -4,7 +4,7 @@ namespace MatthijsThoolen\Slacky\Endpoint\Conversations;
 
 use MatthijsThoolen\Slacky\Endpoint\Endpoint;
 use MatthijsThoolen\Slacky\Exception\SlackyException;
-use MatthijsThoolen\Slacky\Helpers\Traits\Cursor;
+use MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime;
 use MatthijsThoolen\Slacky\Model\Conversation;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 use MatthijsThoolen\Slacky\Model\User;
@@ -14,7 +14,7 @@ use MatthijsThoolen\Slacky\Model\User;
  */
 class Members extends Endpoint
 {
-    use Cursor;
+    use PaginationByTime;
 
     /** @var string */
     protected $method = 'GET';

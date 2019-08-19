@@ -92,8 +92,8 @@ class ImTest extends TestCase
         $historyFactory = SlackyFactory::make(History::class);
         $messages       = $historyFactory->setIm($im)->setCount(1)->send();
 
-        MessageHelper::sendMessage($im->getId(), 'Friends are at');
-        MessageHelper::sendMessage($im->getId(), 'Central Perk');
+        MessageHelper::sendMessage($im, 'Friends are at');
+        MessageHelper::sendMessage($im, 'Central Perk');
 
         $count = 0;
         foreach ($messages as $message) {
@@ -130,8 +130,8 @@ class ImTest extends TestCase
         $mark = SlackyFactory::make(Mark::class);
         static::assertInstanceOf(Mark::class, $mark);
 
-        $message1 = MessageHelper::sendMessage($im->getId(), 'Mark me!');
-        MessageHelper::sendMessage($im->getId(), 'NEVER READ ME!');
+        $message1 = MessageHelper::sendMessage($im, 'Mark me!');
+        MessageHelper::sendMessage($im, 'NEVER READ ME!');
 
         self::assertInstanceOf(
             SlackyResponse::class, $mark->setChannel($im)->setTs($message1->getTs())->send()

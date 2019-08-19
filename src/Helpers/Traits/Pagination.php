@@ -4,13 +4,13 @@ namespace MatthijsThoolen\Slacky\Helpers\Traits;
 
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
-trait Cursor
+trait Pagination
 {
     /** @var string */
     private $cursor;
 
     /** @var int */
-    private $limit;
+    private $limit = 100;
 
     /** @var array */
     protected $parameters = [];
@@ -53,6 +53,11 @@ trait Cursor
         return $this;
     }
 
+    public function hasNextPage()
+    {
+        return $this->getCursor() !== null;
+    }
+
     /**
      * @return SlackyResponse
      */
@@ -63,12 +68,16 @@ trait Cursor
         }
 
         $response = $this->send();
+        $this->setCursor($response->getNextCursor() !== '' ? $response->getNextCursor() : null);
 
-        if ($response->isOk() && $response->getNextCursor() !== '') {
-            $this->setCursor($response->getNextCursor());
-        } else {
-            $this->setCursor(null);
-        }
+        return $response;
+    }
+
+    public function handleResponse(SlackyResponse $response)
+    {
+        parent::handleResponse($response);
+
+        $this->setCursor($response->getNextCursor());
 
         return $response;
     }

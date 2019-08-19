@@ -119,9 +119,9 @@ class SlackyResponse
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getNextCursor(): string
+    public function getNextCursor()
     {
         return $this->nextCursor;
     }
