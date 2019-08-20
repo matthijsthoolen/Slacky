@@ -84,6 +84,11 @@ class ConversationsHistoryTest extends TestCase
     }
 
     /**
+     * 1) Set limit to 1
+     * 2) Check some historyEndpoint getters
+     * 3) Loop through nextPage until all items are found
+     * 4) Check if all messages are retrieved
+     *
      * @throws SlackyException
      *
      * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History
@@ -121,9 +126,8 @@ class ConversationsHistoryTest extends TestCase
      * 2) Check if messages are receivest from oldest to newest
      * @throws SlackyException
      *
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::setOldest
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::handleResponse
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::handlePagination
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime
      */
     public function testTimeBasedPaginationPageForward()
     {
