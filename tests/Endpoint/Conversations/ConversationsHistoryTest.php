@@ -47,14 +47,8 @@ class ConversationsHistoryTest extends TestCase
      * 4) If we set inclusive to true, and limit to 1, the endpoint should return the first message
      *
      * @throws SlackyException
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::getObjectFromResponse
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::setChannel
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::setLatest
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::getLatest
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::setInclusive
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::setLimit
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::nextPage
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::hasNextPage
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination
      */
     public function testTimeBasedPagination()
     {
@@ -92,14 +86,8 @@ class ConversationsHistoryTest extends TestCase
     /**
      * @throws SlackyException
      *
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::getChannel
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::hasNextPage
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::nextPage
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::setCursor
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::handleResponse
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::handlePagination
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::getOldest
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::isInclusive
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination
      *
      */
     public function testChannelHistoryCursor()
