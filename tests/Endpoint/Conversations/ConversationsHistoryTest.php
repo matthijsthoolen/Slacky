@@ -41,43 +41,6 @@ class ConversationsHistoryTest extends TestCase
     }
 
     /**
-     * @throws SlackyException
-     *
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::hasNextPage
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination:Pagination::nextPage
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination:Pagination::setCursor
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination:PaginationByTime::isInclusive
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination:PaginationByTime::getOldest
-     *
-     */
-    public function testChannelHistoryCursor()
-    {
-        $historyEndpoint = SlackyFactory::make(History::class);
-        $historyEndpoint->setLimit(1);
-
-        $responses = [$historyEndpoint->setChannel(self::$channel)->send()];
-        self::assertSame(self::$channel, $historyEndpoint->getChannel());
-
-        self::assertEquals(false, $historyEndpoint->isInclusive());
-        self::assertEquals(null, $historyEndpoint->getOldest());
-
-        while ($historyEndpoint->hasNextPage()) {
-            $nextPage = $historyEndpoint->nextPage();
-            static::assertInstanceOf(SlackyResponse::class, $nextPage);
-            $responses[] = $nextPage;
-        }
-
-        $messageIds = [];
-        foreach ($responses as $response) {
-            $messageIds[] = $response->getMessages()[0]['ts'];
-        }
-
-        // All send messages should be returned. There might be more messages returned (joined etc.)
-        static::assertTrue(!array_diff(self::$messageIds, $messageIds));
-    }
-
-    /**
      * 1) Set the latest to the third (of three total) messages, limit set to 2
      * 2) Expect to receive the second and first message.
      * 3) Check if latest is now set to the first send message
@@ -120,6 +83,43 @@ class ConversationsHistoryTest extends TestCase
 
         $response = $historyEndpoint->nextPage();
         self::assertEquals(self::$messageIds[0], $response->getObject()[0]->getTs());
+    }
+
+    /**
+     * @throws SlackyException
+     *
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::hasNextPage
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::nextPage
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::setCursor
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::getOldest
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::isInclusive
+     *
+     */
+    public function testChannelHistoryCursor()
+    {
+        $historyEndpoint = SlackyFactory::make(History::class);
+        $historyEndpoint->setLimit(1);
+
+        $responses = [$historyEndpoint->setChannel(self::$channel)->send()];
+        self::assertSame(self::$channel, $historyEndpoint->getChannel());
+
+        self::assertEquals(false, $historyEndpoint->isInclusive());
+        self::assertEquals(null, $historyEndpoint->getOldest());
+
+        while ($historyEndpoint->hasNextPage()) {
+            $nextPage = $historyEndpoint->nextPage();
+            static::assertInstanceOf(SlackyResponse::class, $nextPage);
+            $responses[] = $nextPage;
+        }
+
+        $messageIds = [];
+        foreach ($responses as $response) {
+            $messageIds[] = $response->getMessages()[0]['ts'];
+        }
+
+        // All send messages should be returned. There might be more messages returned (joined etc.)
+        static::assertTrue(!array_diff(self::$messageIds, $messageIds));
     }
 
     /**
