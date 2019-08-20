@@ -93,15 +93,17 @@ class ConversationsHistoryTest extends TestCase
      *
      * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination
-     *
+     * @covers \MatthijsThoolen\Slacky\Model\SlackyResponse::getNextCursor
      */
     public function testChannelHistoryCursor()
     {
         $historyEndpoint = SlackyFactory::make(History::class);
         $historyEndpoint->setLimit(1);
 
+        /** @var SlackyResponse[] $responses */
         $responses = [$historyEndpoint->setChannel(self::$channel)->send()];
         self::assertSame(self::$channel, $historyEndpoint->getChannel());
+        self::assertNotNull($responses[0]->getNextCursor());
 
         self::assertEquals(false, $historyEndpoint->isInclusive());
         self::assertEquals(null, $historyEndpoint->getOldest());
@@ -112,8 +114,13 @@ class ConversationsHistoryTest extends TestCase
             $responses[] = $nextPage;
         }
 
+        $lastResponse = end($responses);
+        self::assertNull($lastResponse->getNextCursor());
+        reset($responses);
+
         $messageIds = [];
         foreach ($responses as $response) {
+            /** @noinspection PhpUndefinedMethodInspection */
             $messageIds[] = $response->getMessages()[0]['ts'];
         }
 
@@ -128,6 +135,7 @@ class ConversationsHistoryTest extends TestCase
      *
      * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime
+     * @covers \MatthijsThoolen\Slacky\Model\SlackyResponse::isHasMore
      */
     public function testTimeBasedPaginationPageForward()
     {
