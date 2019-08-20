@@ -68,7 +68,7 @@ class ConversationsHistoryTest extends TestCase
         self::assertEquals(self::$messageIds[1], $messages[0]->getTs());
         self::assertEquals(self::$messageIds[0], $messages[1]->getTs());
 
-        self::assertEquals(self::$messageIds[0], $historyEndpoint->getLatest());
+        self::assertEquals(self::$messageIds[2], $historyEndpoint->getLatest());
 
         $response = $historyEndpoint->setInclusive(true)->setLimit(1)->send();
 
