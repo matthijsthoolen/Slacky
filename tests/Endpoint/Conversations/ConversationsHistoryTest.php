@@ -92,6 +92,8 @@ class ConversationsHistoryTest extends TestCase
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::hasNextPage
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::nextPage
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::setCursor
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::handleResponse
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::handlePagination
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::getOldest
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::isInclusive
      *
@@ -128,6 +130,8 @@ class ConversationsHistoryTest extends TestCase
      * @throws SlackyException
      *
      * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::setOldest
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::handleResponse
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::handlePagination
      */
     public function testTimeBasedPaginationPageForward()
     {

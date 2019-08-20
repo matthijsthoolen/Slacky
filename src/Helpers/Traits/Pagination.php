@@ -76,6 +76,8 @@ trait Pagination
 
     /**
      * @param SlackyResponse $response
+     *
+     * @return SlackyResponse
      */
     public function handlePagination(SlackyResponse $response)
     {
