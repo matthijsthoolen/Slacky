@@ -47,11 +47,14 @@ class ConversationsHistoryTest extends TestCase
      * 4) If we set inclusive to true, and limit to 1, the endpoint should return the first message
      *
      * @throws SlackyException
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::setLatest
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::setInclusive
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::setLimit
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::nextPage
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::hasNextPage
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::getObjectFromResponse
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::setChannel
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::setLatest
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::getLatest
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::setInclusive
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::setLimit
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::nextPage
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::hasNextPage
      */
     public function testTimeBasedPagination()
     {
@@ -64,6 +67,7 @@ class ConversationsHistoryTest extends TestCase
             ->send();
 
         self::assertEquals(2, $historyEndpoint->getLimit());
+        self::assertEquals(self::$messages[2]->getTs(), $historyEndpoint->getLatest());
 
         /** @var Message[] $messages */
         $messages = $response->getObject();
@@ -88,7 +92,7 @@ class ConversationsHistoryTest extends TestCase
     /**
      * @throws SlackyException
      *
-     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::getChannel
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::hasNextPage
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::nextPage
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::setCursor
