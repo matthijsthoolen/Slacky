@@ -44,17 +44,23 @@ class ConversationsHistoryTest extends TestCase
      * @throws SlackyException
      *
      * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::hasNextPage()
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime::nextPage
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::hasNextPage
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination:Pagination::nextPage
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination:Pagination::setCursor
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination:PaginationByTime::getInclusive
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination:PaginationByTime::getOldest
      *
      */
-    public function testChannelHistory()
+    public function testChannelHistoryCursor()
     {
         $historyEndpoint = SlackyFactory::make(History::class);
         $historyEndpoint->setLimit(1);
 
         $responses = [$historyEndpoint->setChannel(self::$channel)->send()];
         self::assertSame(self::$channel, $historyEndpoint->getChannel());
+
+        self::assertEquals(false, $historyEndpoint->getInclusive());
+        self::assertEquals(null, $historyEndpoint->getOldest());
 
         while ($historyEndpoint->hasNextPage()) {
             $nextPage = $historyEndpoint->nextPage();
@@ -78,6 +84,11 @@ class ConversationsHistoryTest extends TestCase
      * 4) If we set inclusive to true, and limit to 1, the endpoint should return the first message
      *
      * @throws SlackyException
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::setLatest
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::setInclusive
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::setLimit
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::nextPage
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::hasNextPage
      */
     public function testTimeBasedPagination()
     {
@@ -106,6 +117,36 @@ class ConversationsHistoryTest extends TestCase
         self::assertContainsOnlyInstancesOf(Message::class, $messages);
 
         self::assertEquals(self::$messages[0]->getTs(), $messages[0]->getTs());
+
+        $response = $historyEndpoint->nextPage();
+        self::assertEquals(self::$messageIds[0], $response->getObject()[0]->getTs());
+    }
+
+    /**
+     * 1) Provide oldest parameter
+     * 2) Check if messages are receivest from oldest to newest
+     * @throws SlackyException
+     *
+     * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History::setOldest
+     */
+    public function testTimeBasedPaginationPageForward()
+    {
+        $expectedMessages = [self::$messageIds[1], self::$messageIds[0]];
+
+        $historyEndpoint = SlackyFactory::make(History::class);
+        $response        = $historyEndpoint
+            ->setChannel(self::$channel)
+            ->setLimit(2)
+            ->setOldest(self::$messageIds[0])
+            ->setInclusive(true)
+            ->send();
+
+        $messages = $response->getObject();
+        self::assertCount(2, $messages);
+        self::assertEquals(
+            $expectedMessages,
+            [$messages[0]->getTs(), $messages[1]->getTs()]
+        );
     }
 
     /**
