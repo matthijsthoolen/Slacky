@@ -2,6 +2,7 @@
 
 namespace MatthijsThoolen\Slacky\Helpers\Traits;
 
+use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
 
 trait Pagination
@@ -73,11 +74,28 @@ trait Pagination
         return $response;
     }
 
+    /**
+     * @param SlackyResponse $response
+     */
+    public function handlePagination(SlackyResponse $response)
+    {
+        $this->setCursor($response->getNextCursor());
+
+        return $response;
+    }
+
+    /**
+     * If this function is overwritten, make sure handlePagination is still called
+     *
+     * @param SlackyResponse $response
+     *
+     * @return SlackyResponse
+     * @throws SlackyException
+     */
     public function handleResponse(SlackyResponse $response)
     {
         parent::handleResponse($response);
-
-        $this->setCursor($response->getNextCursor());
+        $this->handlePagination($response);
 
         return $response;
     }

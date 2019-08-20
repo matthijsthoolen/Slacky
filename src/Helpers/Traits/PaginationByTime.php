@@ -4,12 +4,14 @@ namespace MatthijsThoolen\Slacky\Helpers\Traits;
 
 use MatthijsThoolen\Slacky\Exception\SlackyException;
 use MatthijsThoolen\Slacky\Model\SlackyResponse;
+use function end;
 
 trait PaginationByTime
 {
     use Pagination {
         Pagination::nextPage as parentNextPage;
         Pagination::hasNextPage as parentHasNextPage;
+        Pagination::handlePagination as parentHandlePagination;
         Pagination::handleResponse as parentHandleResponse;
     }
 
@@ -102,18 +104,14 @@ trait PaginationByTime
     /**
      * @param SlackyResponse $response
      *
-     * @return SlackyResponse
-     * @throws SlackyException
+     * @return SlackyResponse|void
      */
-    public function handleResponse(SlackyResponse $response)
+    public function handlePagination(SlackyResponse $response)
     {
         // Make sure the pagination logic is called when we dont deal with timeBased pagination
         if ($this->latest === null && $this->oldest === null) {
-            return $this->parentHandleResponse($response);
+            return $this->parentHandlePagination($response);
         }
-
-        // call endpoints handleResponse
-        parent::handleResponse($response);
 
         // Reset latest
         $this->setLatest(null);
@@ -128,6 +126,22 @@ trait PaginationByTime
         }
 
         return $response;
+    }
+
+    /**
+     * @param SlackyResponse $response
+     *
+     * @return SlackyResponse
+     * @throws SlackyException
+     */
+    public function handleResponse(SlackyResponse $response)
+    {
+        if ($this->latest === null && $this->oldest === null) {
+            return $this->parentHandleResponse($response);
+        }
+
+        parent::handleResponse($response);
+        return $this->handlePagination($response);
     }
 
     /**

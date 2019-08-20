@@ -47,7 +47,7 @@ class ConversationsHistoryTest extends TestCase
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination::hasNextPage
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination:Pagination::nextPage
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination:Pagination::setCursor
-     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination:PaginationByTime::getInclusive
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination:PaginationByTime::isInclusive
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination:PaginationByTime::getOldest
      *
      */
@@ -59,7 +59,7 @@ class ConversationsHistoryTest extends TestCase
         $responses = [$historyEndpoint->setChannel(self::$channel)->send()];
         self::assertSame(self::$channel, $historyEndpoint->getChannel());
 
-        self::assertEquals(false, $historyEndpoint->getInclusive());
+        self::assertEquals(false, $historyEndpoint->isInclusive());
         self::assertEquals(null, $historyEndpoint->getOldest());
 
         while ($historyEndpoint->hasNextPage()) {
