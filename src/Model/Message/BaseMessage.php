@@ -14,6 +14,12 @@ abstract class BaseMessage extends Model implements JsonSerializable
     private $channel;
 
     /** @var string */
+    private $type;
+
+    /** @var string */
+    private $subtype;
+
+    /** @var string */
     private $text;
 
     /** @var bool */
@@ -57,6 +63,8 @@ abstract class BaseMessage extends Model implements JsonSerializable
 
     protected $allowedProperties = [
         'channel',
+        'type',
+        'subtype',
         'text',
         'as_user',
         'attachments',
@@ -90,6 +98,44 @@ abstract class BaseMessage extends Model implements JsonSerializable
     {
         $this->channel = $channel;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return BaseMessage
+     */
+    public function setType(string $type): BaseMessage
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubtype(): string
+    {
+        return $this->subtype;
+    }
+
+    /**
+     * @param string $subtype
+     *
+     * @return BaseMessage
+     */
+    public function setSubtype(string $subtype): BaseMessage
+    {
+        $this->subtype = $subtype;
         return $this;
     }
 
@@ -404,7 +450,7 @@ abstract class BaseMessage extends Model implements JsonSerializable
 
     /**
      * Specify data which should be serialized to JSON
-     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
      * which is a value of any type other than a resource.
      * @since 5.4.0

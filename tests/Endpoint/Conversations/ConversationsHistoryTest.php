@@ -49,6 +49,7 @@ class ConversationsHistoryTest extends TestCase
      * @throws SlackyException
      * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime
      */
     public function testTimeBasedPagination()
     {
@@ -61,26 +62,28 @@ class ConversationsHistoryTest extends TestCase
             ->send();
 
         self::assertEquals(2, $historyEndpoint->getLimit());
-        self::assertEquals(self::$messages[2]->getTs(), $historyEndpoint->getLatest());
+        self::assertEquals(self::$messageIds[0], $historyEndpoint->getLatest());
 
         /** @var Message[] $messages */
         $messages = $response->getObject();
         self::assertEquals(self::$messageIds[1], $messages[0]->getTs());
         self::assertEquals(self::$messageIds[0], $messages[1]->getTs());
 
-        self::assertEquals(self::$messageIds[2], $historyEndpoint->getLatest());
-
-        $response = $historyEndpoint->setInclusive(true)->setLimit(1)->send();
+        $response = $historyEndpoint->setInclusive(true)->setLimit(1)->nextPage();
 
         /** @var Message[] $messages */
         $messages = $response->getObject();
+
+        // The endpoint is now set to inclusive, and the last message we received from the previous
+        // call was the third message. Because the limit is set to 1, we only expect this message
         self::assertCount(1, $messages);
         self::assertContainsOnlyInstancesOf(Message::class, $messages);
+        self::assertEquals(self::$messageIds[0], $messages[0]->getTs());
 
-        self::assertEquals(self::$messages[0]->getTs(), $messages[0]->getTs());
-
-        $response = $historyEndpoint->nextPage();
-        self::assertEquals(self::$messageIds[0], $response->getObject()[0]->getTs());
+        $response = $historyEndpoint->setInclusive(false)->nextPage();
+        /** @var Message[] $message */
+        $message = $response->getObject();
+        self::assertEquals('channel_join', $message[0]->getSubtype());
     }
 
     /**
@@ -93,6 +96,7 @@ class ConversationsHistoryTest extends TestCase
      *
      * @covers \MatthijsThoolen\Slacky\Endpoint\Conversations\History
      * @covers \MatthijsThoolen\Slacky\Helpers\Traits\Pagination
+     * @covers \MatthijsThoolen\Slacky\Helpers\Traits\PaginationByTime
      * @covers \MatthijsThoolen\Slacky\Model\SlackyResponse::getNextCursor
      */
     public function testChannelHistoryCursor()
