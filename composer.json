@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "6.3.*",
+        "guzzlehttp/guzzle": "6.5.1",
         "symfony/dotenv": "4.3.*",
         "ext-json": "*"
     },
