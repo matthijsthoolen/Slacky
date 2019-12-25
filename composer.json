@@ -12,7 +12,8 @@
     "require": {
         "guzzlehttp/guzzle": "6.3.*",
         "symfony/dotenv": "4.3.*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "phpunit/phpunit": "8.5.1"
     },
     "require-dev": {
         "brianium/paratest": "3.0",
@@ -20,7 +21,6 @@
         "friendsofphp/php-cs-fixer": "~2.15",
         "squizlabs/php_codesniffer": "3.*",
         "phpmd/phpmd": "@stable",
-        "phpunit/phpunit": "8.3.4",
         "codacy/coverage": "^1.4"
     },
     "autoload": {
